@@ -15,7 +15,7 @@ namespace esphome
   namespace ripnetuk_neopixel
   {
 
-    static const char *TAG = "memory";
+    static const char *TAG = "ripnetuk_neopixel";
 
     void RipnetUkNeopixelComponent::update()
     {
@@ -25,7 +25,7 @@ namespace esphome
       uint32_t free_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
 #endif
 
-      ESP_LOGD(TAG, "yyyyFree Heap Size: %u bytes", free_heap);
+      ESP_LOGD(TAG, "neopixel Heap Size: %u bytes", free_heap);
     }
 
     float RipnetUkNeopixelComponent::get_setup_priority() const
