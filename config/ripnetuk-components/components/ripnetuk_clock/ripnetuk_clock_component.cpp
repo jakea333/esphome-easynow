@@ -1,5 +1,6 @@
 #include "ripnetuk_clock_component.h"
 #include "esphome/core/log.h"
+#include "esphome/core/hal.h"
 
 namespace esphome
 {

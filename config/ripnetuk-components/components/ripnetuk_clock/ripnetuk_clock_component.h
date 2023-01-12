@@ -15,7 +15,7 @@ namespace esphome
     private:
       float speed;
       template_::TemplateSwitch *_ha_clock_reset;
-      template_::TemplateSwitch *_ha_clock_paus;
+      template_::TemplateSwitch *_ha_clock_pause;
       template_::TemplateNumber *_ha_clock_speed;
       int _epoch_millis;
       int _last_log_millis;
