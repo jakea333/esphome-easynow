@@ -4,10 +4,10 @@
 
 namespace esphome
 {
-  namespace debug
+  namespace ripnetuk_neopixel
   {
 
-    class MemoryComponent : public PollingComponent
+    class RipnetUkNeopixelComponent : public PollingComponent
     {
     public:
       void update() override;

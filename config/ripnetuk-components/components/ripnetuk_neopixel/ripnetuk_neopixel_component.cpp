@@ -1,4 +1,4 @@
-#include "memory_component.h"
+#include "ripnetuk_neopixel_component.h"
 #include "esphome/core/log.h"
 
 #ifdef USE_ESP_IDF
@@ -12,12 +12,12 @@
 
 namespace esphome
 {
-  namespace debug
+  namespace ripnetuk_neopixel
   {
 
     static const char *TAG = "memory";
 
-    void MemoryComponent::update()
+    void RipnetUkNeopixelComponent::update()
     {
 #ifdef USE_ARDUINO
       uint32_t free_heap = ESP.getFreeHeap(); // NOLINT(readability-static-accessed-through-instance)
@@ -28,7 +28,7 @@ namespace esphome
       ESP_LOGD(TAG, "yyyyFree Heap Size: %u bytes", free_heap);
     }
 
-    float MemoryComponent::get_setup_priority() const
+    float RipnetUkNeopixelComponent::get_setup_priority() const
     {
       return setup_priority::LATE;
     }
