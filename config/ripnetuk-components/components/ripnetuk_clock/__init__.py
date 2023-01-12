@@ -2,7 +2,7 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.const import CONF_ID
 
-DEPENDENCIES = ['logger']
+DEPENDENCIES = ['logger', 'template']
 
 debug_ns = cg.esphome_ns.namespace('ripnetuk_clock')
 RipnetUkNeopixelComponent = debug_ns.class_('RipnetUkClockComponent', cg.Component)
