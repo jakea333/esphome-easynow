@@ -30,6 +30,7 @@ namespace esphome
 
     float RipnetUkNeopixelComponent::get_setup_priority() const
     {
+      ESP_LOGD(TAG, "prior");
       return setup_priority::LATE;
     }
 

@@ -4,10 +4,10 @@ from esphome.const import CONF_ID
 
 DEPENDENCIES = ['logger']
 
-debug_ns = cg.esphome_ns.namespace('debug')
-MemoryComponent = debug_ns.class_('MemoryComponent', cg.PollingComponent)
+debug_ns = cg.esphome_ns.namespace('ripnetuk_neopixel')
+RipnetUkNeopixelComponent = debug_ns.class_('RipnetUkNeopixelComponent', cg.PollingComponent)
 CONFIG_SCHEMA = cv.Schema({
-    cv.GenerateID(): cv.declare_id(MemoryComponent),
+    cv.GenerateID(): cv.declare_id(RipnetUkNeopixelComponent),
 }).extend(cv.polling_component_schema('1min'))
 
 
