@@ -10,24 +10,28 @@
 #include <Esp.h>
 #endif
 
-namespace esphome {
-namespace debug {
+namespace esphome
+{
+  namespace debug
+  {
 
-static const char *TAG = "memory";
+    static const char *TAG = "memory";
 
-void MemoryComponent::update() {
+    void MemoryComponent::update()
+    {
 #ifdef USE_ARDUINO
-  uint32_t free_heap = ESP.getFreeHeap();  // NOLINT(readability-static-accessed-through-instance)
+      uint32_t free_heap = ESP.getFreeHeap(); // NOLINT(readability-static-accessed-through-instance)
 #elif defined(USE_ESP_IDF)
-  uint32_t free_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
+      uint32_t free_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
 #endif
 
-  ESP_LOGD(TAG, "Free Heap Size: %u bytes", free_heap);
-}
+      ESP_LOGD(TAG, "XXXXFree Heap Size: %u bytes", free_heap);
+    }
 
-float MemoryComponent::get_setup_priority() const {
-  return setup_priority::LATE;
-}
+    float MemoryComponent::get_setup_priority() const
+    {
+      return setup_priority::LATE;
+    }
 
-}  // namespace debug
-}  // namespace esphome
+  } // namespace debug
+} // namespace esphome
