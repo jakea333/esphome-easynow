@@ -10,6 +10,7 @@ namespace esphome
     class RipnetUkClockComponent : public PollingComponent
     {
     public:
+      void setup() override;
       void update() override;
       float get_setup_priority() const override;
     };
