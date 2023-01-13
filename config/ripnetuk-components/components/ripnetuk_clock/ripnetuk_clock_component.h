@@ -3,7 +3,7 @@
 #include "esphome/components/switch/switch.h"
 // #include "esphome/components/template/number/template_number.h"
 #include "esphome/core/component.h"
-#include "../ripnetuk_ui/ripnetuk_switch_component.h"
+#include "../ripnetuk_switch/ripnetuk_switch_component.h"
 
 #define LOG_INTERVAL 1000
 #

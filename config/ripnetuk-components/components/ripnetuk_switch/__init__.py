@@ -4,7 +4,7 @@ from esphome.const import CONF_ID
 
 DEPENDENCIES = ['logger']
 
-debug_ns = cg.esphome_ns.namespace('ripnetuk_ui')
+debug_ns = cg.esphome_ns.namespace('ripnetuk_switch')
 RipnetUkSwitchComponent = debug_ns.class_('RipnetUkSwitchComponent', cg.Component)
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(RipnetUkSwitchComponent),

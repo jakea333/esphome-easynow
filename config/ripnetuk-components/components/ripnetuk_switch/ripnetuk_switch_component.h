@@ -6,10 +6,11 @@
 
 namespace esphome
 {
-  namespace ripnetuk_ui
+  namespace ripnetuk_switch
   {
 
     class RipnetUkSwitchComponent : public switch_::Switch, public Component
+        // class RipnetUkSwitchComponent : public switch_::Switch, public Component
     {
     public:
       RipnetUkSwitchComponent();

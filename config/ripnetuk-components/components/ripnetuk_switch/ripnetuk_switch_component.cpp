@@ -3,7 +3,7 @@
 
 namespace esphome
 {
-  namespace ripnetuk_ui
+  namespace ripnetuk_switch
   {
 
     static const char *TAG = "ripnetuk_switch";
