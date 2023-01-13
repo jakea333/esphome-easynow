@@ -28,6 +28,7 @@ namespace esphome
       void setPaused(bool is_paused);
 
       void setup() override;
+      void loop() override;
       float get_setup_priority() const override;
     };
 

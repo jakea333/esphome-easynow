@@ -54,6 +54,23 @@ namespace esphome
       ESP_LOGD(TAG, "CONSTRUCTOR");
     }
 
+    void RipnetUkClockComponent::loop()
+    {
+      if (_ha_clock_reset->state)
+      {
+        reset();
+      }
+      setPaused(_ha_clock_pause->state);
+
+      // Want to log a tick every LOG_INTERVAL ms
+      if (millis() - _last_log_millis >= LOG_INTERVAL)
+      {
+        int currentTime = time();
+        ESP_LOGD(TAG, "............................................................................(%d)", currentTime);
+        _last_log_millis = millis();
+      }
+    }
+
     float RipnetUkClockComponent::get_setup_priority() const
     {
       return setup_priority::LATE;
@@ -67,11 +84,6 @@ namespace esphome
 
     int RipnetUkClockComponent::time()
     {
-      if (_ha_clock_reset->state)
-      {
-        reset();
-      }
-      setPaused(_ha_clock_pause->state);
       speed = _ha_clock_speed->state;
 
       int virtual_millis = millis();
@@ -83,13 +95,6 @@ namespace esphome
 
       // Adust for epoch
       virtual_millis -= _epoch_millis;
-
-      // Want to log a tick every LOG_INTERVAL ms
-      if (millis() - _last_log_millis >= LOG_INTERVAL)
-      {
-        ESP_LOGD(TAG, "..................................................................(%d)..........E(%d)", virtual_millis, _epoch_millis);
-        _last_log_millis = millis();
-      }
 
       return virtual_millis * speed;
     }
