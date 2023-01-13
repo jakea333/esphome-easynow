@@ -5,7 +5,7 @@
 #include "esphome/core/component.h"
 
 #define LOG_INTERVAL 1000
-
+#
 namespace esphome
 {
   namespace ripnetuk_clock
