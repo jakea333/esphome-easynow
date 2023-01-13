@@ -23,6 +23,7 @@ namespace esphome
       bool _paused;
 
     public:
+      RipnetUkClockComponent();
       int time();
       void reset();
       void setPaused(bool is_paused);

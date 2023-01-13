@@ -9,8 +9,8 @@ namespace esphome
   {
 
     static const char *TAG = "ripnetuk_clock";
-
-    void RipnetUkClockComponent::setup()
+    
+    RipnetUkClockComponent::RipnetUkClockComponent()
     {
       _ha_clock_reset = new template_::TemplateSwitch();
       App.register_switch(_ha_clock_reset);
@@ -52,6 +52,10 @@ namespace esphome
       reset();
       _last_log_millis = millis();
       ESP_LOGD(TAG, "CONSTRUCTOR");
+    }
+
+    void RipnetUkClockComponent::setup()
+    {
     }
 
     void RipnetUkClockComponent::loop()
