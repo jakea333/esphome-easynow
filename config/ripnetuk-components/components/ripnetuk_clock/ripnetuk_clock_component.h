@@ -15,7 +15,7 @@ namespace esphome
     {
     private:
       float speed;
-      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_reset = new ripnetuk_ui::RipnetUkSwitchComponent();
+      // ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_reset = new ripnetuk_ui::RipnetUkSwitchComponent();
       switch_::Switch *_ha_clock_pause;
       //template_::Number *_ha_clock_speed;
       int _epoch_millis;
