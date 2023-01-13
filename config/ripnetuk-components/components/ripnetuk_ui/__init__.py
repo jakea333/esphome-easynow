@@ -5,10 +5,10 @@ from esphome.const import CONF_ID
 DEPENDENCIES = ['logger']
 
 debug_ns = cg.esphome_ns.namespace('ripnetuk_ui')
-RipnetUkSwitchComponent = debug_ns.class_('RipnetUkSwitchComponent', cg.PollingComponent)
+RipnetUkSwitchComponent = debug_ns.class_('RipnetUkSwitchComponent', cg.Component)
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(RipnetUkSwitchComponent),
-}).extend(cv.polling_component_schema('1min'))
+})
 
 
 def to_code(config):
