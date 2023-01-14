@@ -10,6 +10,11 @@ namespace esphome
 
     static const char *TAG = "ripnetuk_clock";
 
+RipnetUkClockComponent::RipnetUkClockComponent()
+{
+  this->set_name("Clock Time");
+}
+
     void RipnetUkClockComponent::setup()
     {
       reset();

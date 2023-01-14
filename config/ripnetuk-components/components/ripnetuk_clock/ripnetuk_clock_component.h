@@ -23,7 +23,6 @@ namespace esphome
                                                                                                               { this->reset(); });
       ripnetuk_ui::RipnetUkNumberComponent *_ha_clock_speed_number = new ripnetuk_ui::RipnetUkNumberComponent("Clock Speed", number::NUMBER_MODE_BOX, 0, 4, 0.05, [this](float state)
                                                                                                               { this->_speed = state; });
-      // template_::Number *_ha_clock_speed;
       int _epoch_millis;
       int _last_log_millis;
       int _pause_millis;
@@ -32,6 +31,8 @@ namespace esphome
       bool _paused;
 
     public:
+      RipnetUkClockComponent();
+
       int time();
       void reset();
       void setPaused(bool is_paused);
