@@ -2,6 +2,7 @@
 
 #include "esphome/components/switch/switch.h"
 #include "esphome/core/component.h"
+#include "../ripnetuk_ui/ripnetuk_switch_component.h"
 
 #define LOG_INTERVAL 1000
 
@@ -16,7 +17,7 @@ namespace esphome
     private:
       float speed;
       // ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_reset = new ripnetuk_ui::RipnetUkSwitchComponent();
-      RipnetUkClockSwitch *_ha_clock_pause;
+      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause;
       // template_::Number *_ha_clock_speed;
       int _epoch_millis;
       int _last_log_millis;
@@ -32,16 +33,6 @@ namespace esphome
       void setup() override;
       void loop() override;
       float get_setup_priority() const override;
-    };
-
-    class RipnetUkClockSwitch : public Component, public switch_::Switch
-    {
-    public:
-      void set_parent(RipnetUkClockComponent *parent) { this->parent_ = parent; }
-
-    protected:
-      void write_state(bool state) override;
-      RipnetUkClockComponent *parent_;
     };
   } // namespace debug
 } // namespace esphome

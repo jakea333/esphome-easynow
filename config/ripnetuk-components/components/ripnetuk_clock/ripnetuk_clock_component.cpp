@@ -23,13 +23,12 @@ namespace esphome
       // _ha_clock_reset->set_assumed_state(false);
       // _ha_clock_reset->set_restore_state(false);
 
-      _ha_clock_pause = new RipnetUkClockSwitch();
-      _ha_clock_pause->set_parent(this);
-      // App.register_switch(_ha_clock_pause);
+      _ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent();
+      App.register_switch(_ha_clock_pause);
       _ha_clock_pause->set_name("Clock Pause");
       _ha_clock_pause->set_disabled_by_default(false);
       _ha_clock_pause->set_component_source("RipnetUKClockSwitch");
-      // App.register_component(_ha_clock_pause);
+      App.register_component(_ha_clock_pause);
 
       // _ha_clock_speed = new template_::TemplateNumber();
       // _ha_clock_speed->set_update_interval(60000);
@@ -119,12 +118,6 @@ namespace esphome
         _epoch_millis += (millis() - _pause_millis);
         _paused = false;
       }
-    }
-
-    void RipnetUkClockSwitch::write_state(bool state)
-    {
-      //this->parent_->write_binary(state);
-      this->publish_state(state);
     }
   } // namespace ripnetuk_clock
 } // namespace esphome
