@@ -24,7 +24,6 @@ namespace esphome
       ripnetuk_ui::RipnetUkNumberComponent *_ha_clock_speed_number = new ripnetuk_ui::RipnetUkNumberComponent("Clock Speed", number::NUMBER_MODE_BOX, 0, 4, 0.05, [this](float state)
                                                                                                               { this->_speed = state; });
       int _epoch_millis;
-      int _last_log_millis;
       int _pause_millis;
 
       float _speed;
@@ -38,7 +37,6 @@ namespace esphome
       void setPaused(bool is_paused);
 
       void setup() override;
-      void loop() override;
       float get_setup_priority() const override;
       void update() override;
     };

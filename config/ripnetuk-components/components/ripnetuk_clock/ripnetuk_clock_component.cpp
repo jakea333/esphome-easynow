@@ -10,29 +10,16 @@ namespace esphome
 
     static const char *TAG = "ripnetuk_clock";
 
-RipnetUkClockComponent::RipnetUkClockComponent()
-{
-  this->set_name("Clock Time");
-}
+    RipnetUkClockComponent::RipnetUkClockComponent()
+    {
+      // this->set_name("Clock Time");
+    }
 
     void RipnetUkClockComponent::setup()
     {
       reset();
-      _last_log_millis = millis();
-      ESP_LOGD(TAG, "setup");
       this->_ha_clock_speed_number->set(1);
       this->_ha_clock_pause_switch->set(false);
-    }
-
-    void RipnetUkClockComponent::loop()
-    {
-      // Want to log a tick every LOG_INTERVAL ms
-      if (millis() - _last_log_millis >= LOG_INTERVAL)
-      {
-        int currentTime = time();
-        ESP_LOGD(TAG, "............................................................................(%d)", currentTime);
-        _last_log_millis = millis();
-      }
     }
 
     float RipnetUkClockComponent::get_setup_priority() const
@@ -42,7 +29,6 @@ RipnetUkClockComponent::RipnetUkClockComponent()
 
     void RipnetUkClockComponent::reset()
     {
-      ESP_LOGD(TAG, "RESET");
       _epoch_millis = millis();
       if (_paused)
       {

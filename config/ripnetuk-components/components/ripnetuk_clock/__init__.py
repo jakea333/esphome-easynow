@@ -6,22 +6,19 @@ DEPENDENCIES = ['logger']
 AUTO_LOAD = ['ripnetuk_ui', 'sensor']
 
 debug_ns = cg.esphome_ns.namespace('ripnetuk_clock')
+
+
 RipnetUkNeopixelComponent = debug_ns.class_(
     'RipnetUkClockComponent', sensor.Sensor, cg.PollingComponent)
-CONFIG_SCHEMA = cv.Schema({
-    cv.GenerateID(): cv.declare_id(RipnetUkNeopixelComponent),
-}).extend(cv.polling_component_schema('1s'))
 
-# from .types import (  # noqa
-#     light_ns
-# )
+CONFIG_SCHEMA = (
+    sensor.sensor_schema(RipnetUkNeopixelComponent)
+    .extend(cv.COMPONENT_SCHEMA)
+    .extend(cv.polling_component_schema('1s'))
+)
 
-#light_ns = cg.esphome_ns.namespace("light")
-
-
-def to_code(config):
-    # cg.add_define("USE_LIGHT")
-    # cg.add_global(light_ns.using)
+async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    sensor.register_sensor(var, config)
-    yield cg.register_component(var, config)
+    await cg.register_component(var, config)
+    await sensor.register_sensor(var, config)
+    
