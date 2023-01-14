@@ -13,8 +13,9 @@ namespace esphome
     {
     }
 
-    RipnetUkButtonComponent::RipnetUkButtonComponent(const std::string &name)
+    RipnetUkButtonComponent::RipnetUkButtonComponent(const std::string &name, std::function<void()> on_click)
     {
+      this->_on_click = on_click;
       this->set_name(name);
       this->set_component_source("RipnetUKButton");
       App.register_button(this);
@@ -23,13 +24,15 @@ namespace esphome
 
     void RipnetUkButtonComponent::press_action()
     {
-       ESP_LOGD(TAG, "PRESS BUTTON");
+      if (this->_on_click)
+      {
+        this->_on_click();
+      }
     }
 
     float RipnetUkButtonComponent::get_setup_priority() const
     {
       return setup_priority::HARDWARE;
     }
-
   } // namespace template_
 } // namespace esphome

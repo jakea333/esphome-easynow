@@ -83,5 +83,11 @@ namespace esphome
         _paused = false;
       }
     }
+
+    void RipnetUkClockComponent::haEvent()
+    {
+      ESP_LOGD(TAG, "HA EVENT");
+    }
+
   } // namespace ripnetuk_clock
 } // namespace esphome
