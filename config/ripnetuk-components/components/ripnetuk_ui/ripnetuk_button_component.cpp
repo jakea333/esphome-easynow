@@ -29,10 +29,5 @@ namespace esphome
         this->_on_click();
       }
     }
-
-    float RipnetUkButtonComponent::get_setup_priority() const
-    {
-      return setup_priority::HARDWARE;
-    }
   } // namespace template_
 } // namespace esphome

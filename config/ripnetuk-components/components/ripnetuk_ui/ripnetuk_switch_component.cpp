@@ -40,11 +40,6 @@ namespace esphome
       return false; // Dont show on AND off, since the state is known and not assumed.
     }
 
-    float RipnetUkSwitchComponent::get_setup_priority() const
-    {
-      return setup_priority::HARDWARE;
-    }
-
     void RipnetUkSwitchComponent::setup()
     {
       write_state(_deviceSideState);

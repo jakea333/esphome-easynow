@@ -14,7 +14,7 @@ namespace esphome
     {
       reset();
       _last_log_millis = millis();
-      ESP_LOGD(TAG, "CONSTRUCTOR");
+      ESP_LOGD(TAG, "setup");
     }
 
     void RipnetUkClockComponent::loop()

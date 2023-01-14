@@ -15,6 +15,7 @@ namespace esphome
 
     RipnetUkNumberComponent::RipnetUkNumberComponent(const std::string &name, float initial_state, number::NumberMode mode, float min_value, float max_value, float step, std::function<void(float state)> on_change)
     {
+        ESP_LOGD(TAG, "...............................................................INITIAL .............(%f)", initial_state);
       this->set_name(name);
       this->_deviceSideState = initial_state;
       this->traits.set_mode(mode);
@@ -37,11 +38,6 @@ namespace esphome
         _deviceSideState = state;
       }
       this->publish_state(state);
-    }
-
-    float RipnetUkNumberComponent::get_setup_priority() const
-    {
-      return setup_priority::HARDWARE;
     }
 
     void RipnetUkNumberComponent::setup()

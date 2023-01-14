@@ -14,8 +14,6 @@ namespace esphome
     public:
       RipnetUkButtonComponent(); // Neeed as it seems to construct one in main.cpp if we AUTO_LOAD this which we seem to have to... <------ G is a noob!
       RipnetUkButtonComponent(const std::string &name, std::function<void()> on_click);
-      // void setup() override;
-      float get_setup_priority() const override;
 
     private:
        std::function<void()> _on_click;
