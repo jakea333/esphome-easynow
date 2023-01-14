@@ -82,5 +82,10 @@ namespace esphome
         _paused = false;
       }
     }
+
+    void RipnetUkClockComponent::update()
+    {
+      this->publish_state(time());
+    }
   } // namespace ripnetuk_clock
 } // namespace esphome

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "esphome/components/switch/switch.h"
+#include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
 #include "../ripnetuk_ui/ripnetuk_switch_component.h"
 #include "../ripnetuk_ui/ripnetuk_button_component.h"
@@ -14,7 +14,7 @@ namespace esphome
   {
     class RipnetUkClockSwitch;
 
-    class RipnetUkClockComponent : public Component
+    class RipnetUkClockComponent : public sensor::Sensor, public PollingComponent
     {
     private:
       ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause_switch = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", [this](bool state)
@@ -39,6 +39,7 @@ namespace esphome
       void setup() override;
       void loop() override;
       float get_setup_priority() const override;
+      void update() override;
     };
   } // namespace debug
 } // namespace esphome
