@@ -10,56 +10,20 @@ namespace esphome
 
     static const char *TAG = "ripnetuk_clock";
 
-    RipnetUkClockComponent::RipnetUkClockComponent()
+    void RipnetUkClockComponent::setup()
     {
-      // _ha_clock_reset = new template_::TemplateSwitch();
-      // App.register_switch(_ha_clock_reset);
-      // _ha_clock_reset->set_name("Clock Reset");
-      // _ha_clock_reset->set_disabled_by_default(false);
-      // _ha_clock_reset->set_restore_mode(switch_::SWITCH_RESTORE_DEFAULT_OFF);
-      // _ha_clock_reset->set_component_source("template.switch");
-      // App.register_component(_ha_clock_reset);
-      // _ha_clock_reset->set_optimistic(true);
-      // _ha_clock_reset->set_assumed_state(false);
-      // _ha_clock_reset->set_restore_state(false);
-
-      _ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause yyyyyyyyyyyyyyyyyyyy");
-      // App.register_switch(_ha_clock_pause);
-      // _ha_clock_pause->set_name("Clock Pause");
-      //_ha_clock_pause->set_disabled_by_default(false);
-      //_ha_clock_pause->set_component_source("RipnetUKClockSwitch");
-      // App.register_component(_ha_clock_pause);
-
-      // _ha_clock_speed = new template_::TemplateNumber();
-      // _ha_clock_speed->set_update_interval(60000);
-      // _ha_clock_speed->set_component_source("template.number");
-      // App.register_component(_ha_clock_speed);
-      // App.register_number(_ha_clock_speed);
-      // _ha_clock_speed->set_name("Clock Speed");
-      // _ha_clock_speed->set_disabled_by_default(false);
-      // _ha_clock_speed->traits.set_min_value(0.0f);
-      // _ha_clock_speed->traits.set_max_value(2.0f);
-      // _ha_clock_speed->traits.set_step(0.1f);
-      // _ha_clock_speed->traits.set_mode(number::NUMBER_MODE_AUTO);
-      // _ha_clock_speed->set_optimistic(true);
-      // _ha_clock_speed->set_initial_value(1.0f);
-
       speed = 1;
       reset();
       _last_log_millis = millis();
       ESP_LOGD(TAG, "CONSTRUCTOR");
     }
 
-    void RipnetUkClockComponent::setup()
-    {
-    }
-
     void RipnetUkClockComponent::loop()
     {
-      // if (_ha_clock_reset->state)
-      // {
-      //   reset();
-      // }
+      if (_ha_clock_reset->state)
+      {
+        reset();
+      }
       setPaused(_ha_clock_pause->state);
 
       // Want to log a tick every LOG_INTERVAL ms
