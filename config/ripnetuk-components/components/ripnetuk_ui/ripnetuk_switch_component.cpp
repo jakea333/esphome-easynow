@@ -1,5 +1,6 @@
 #include "ripnetuk_switch_component.h"
 #include "esphome/core/log.h"
+#include "esphome/core/application.h"
 
 namespace esphome
 {
@@ -16,6 +17,8 @@ namespace esphome
     {
       this->set_name(name);
       this->set_component_source("RipnetUKSwitch");
+      App.register_switch(this);
+      App.register_component(this);
     }
 
     void RipnetUkSwitchComponent::write_state(bool state)
