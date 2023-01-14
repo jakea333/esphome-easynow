@@ -12,7 +12,6 @@ namespace esphome
 
     void RipnetUkClockComponent::setup()
     {
-      speed = 1;
       reset();
       _last_log_millis = millis();
       ESP_LOGD(TAG, "CONSTRUCTOR");
@@ -58,7 +57,7 @@ namespace esphome
       // Adust for epoch
       virtual_millis -= _epoch_millis;
 
-      return virtual_millis * speed;
+      return virtual_millis * _speed;
     }
 
     void RipnetUkClockComponent::setPaused(bool is_paused)
