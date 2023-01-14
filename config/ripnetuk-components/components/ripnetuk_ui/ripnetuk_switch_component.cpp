@@ -30,10 +30,9 @@ namespace esphome
       if (state != _deviceSideState)
       {
         this->_on_change(state);
+        _deviceSideState = state;
+        this->publish_state(state);
       }
-
-      _deviceSideState = state;
-      this->publish_state(state);
     }
 
     bool RipnetUkSwitchComponent::assumed_state()

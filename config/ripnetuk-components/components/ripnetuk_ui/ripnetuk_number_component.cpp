@@ -13,11 +13,17 @@ namespace esphome
     {
     }
 
-    RipnetUkNumberComponent::RipnetUkNumberComponent(const std::string &name, std::function<void(float state)> on_change)
+    RipnetUkNumberComponent::RipnetUkNumberComponent(const std::string &name, float initial_state, float min_value, float max_value, float step, std::function<void(float state)> on_change)
     {
-      this->_on_change = on_change;
       this->set_name(name);
+      this->_deviceSideState = initial_state;
+      this->traits.set_min_value(0.0f);
+      this->traits.set_max_value(2.0f);
+      this->traits.set_step(0.1f);
+      this->_on_change = on_change;
+
       this->set_component_source("RipnetUKNumber");
+
       App.register_number(this);
       App.register_component(this);
     }
@@ -27,10 +33,9 @@ namespace esphome
       if (state != _deviceSideState)
       {
         this->_on_change(state);
+        _deviceSideState = state;
+        this->publish_state(state);
       }
-
-      _deviceSideState = state;
-      this->publish_state(state);
     }
 
     float RipnetUkNumberComponent::get_setup_priority() const

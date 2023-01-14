@@ -13,7 +13,7 @@ namespace esphome
     {
     public:
       RipnetUkNumberComponent(); // Neeed as it seems to construct one in main.cpp if we AUTO_LOAD this which we seem to have to... <------ G is a noob!
-      RipnetUkNumberComponent(const std::string &name, std::function<void(float state)> on_change);
+      RipnetUkNumberComponent(const std::string &name, float initial_state, float min_value, float max_value, float step, std::function<void(float state)> on_change);
       void setup() override;
       float get_setup_priority() const override;
     protected:
