@@ -3,8 +3,7 @@ import esphome.codegen as cg
 from esphome.const import CONF_ID
 
 DEPENDENCIES = ['logger']
-#AUTO_LOAD = ['template_switch', 'sensor', 'text_sensor']
-AUTO_LOAD = ['switch']
+AUTO_LOAD = ['ripnetuk_ui']
 
 debug_ns = cg.esphome_ns.namespace('ripnetuk_clock')
 RipnetUkNeopixelComponent = debug_ns.class_(

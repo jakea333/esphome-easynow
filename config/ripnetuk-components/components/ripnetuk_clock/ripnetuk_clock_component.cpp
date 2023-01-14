@@ -23,10 +23,10 @@ namespace esphome
       // _ha_clock_reset->set_assumed_state(false);
       // _ha_clock_reset->set_restore_state(false);
 
-      _ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent();
+      _ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause x");
       App.register_switch(_ha_clock_pause);
-      _ha_clock_pause->set_name("Clock Pause");
-      _ha_clock_pause->set_disabled_by_default(false);
+      // _ha_clock_pause->set_name("Clock Pause");
+      //_ha_clock_pause->set_disabled_by_default(false);
       _ha_clock_pause->set_component_source("RipnetUKClockSwitch");
       App.register_component(_ha_clock_pause);
 
@@ -60,15 +60,15 @@ namespace esphome
       // {
       //   reset();
       // }
-      // setPaused(_ha_clock_pause->state);
+      setPaused(_ha_clock_pause->state);
 
-      // // Want to log a tick every LOG_INTERVAL ms
-      // if (millis() - _last_log_millis >= LOG_INTERVAL)
-      // {
-      //   int currentTime = time();
-      //   ESP_LOGD(TAG, "............................................................................(%d)", currentTime);
-      //   _last_log_millis = millis();
-      // }
+      // Want to log a tick every LOG_INTERVAL ms
+      if (millis() - _last_log_millis >= LOG_INTERVAL)
+      {
+        int currentTime = time();
+        ESP_LOGD(TAG, "............................................................................(%d)", currentTime);
+        _last_log_millis = millis();
+      }
     }
 
     float RipnetUkClockComponent::get_setup_priority() const
