@@ -17,7 +17,7 @@ namespace esphome
     {
       this->set_name(name);
       this->set_component_source("RipnetUKButton");
-      // App.register_button(this);
+      App.register_button(this);
       App.register_component(this);
     }
 
