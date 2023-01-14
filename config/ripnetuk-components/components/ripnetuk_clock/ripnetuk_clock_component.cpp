@@ -20,12 +20,6 @@ namespace esphome
 
     void RipnetUkClockComponent::loop()
     {
-      if (_ha_clock_reset->state)
-      {
-        reset();
-      }
-      setPaused(_ha_clock_pause->state);
-
       // Want to log a tick every LOG_INTERVAL ms
       if (millis() - _last_log_millis >= LOG_INTERVAL)
       {
@@ -44,6 +38,10 @@ namespace esphome
     {
       ESP_LOGD(TAG, "RESET");
       _epoch_millis = millis();
+      if (_paused)
+      {
+        _pause_millis = _epoch_millis;
+      }
     }
 
     int RipnetUkClockComponent::time()
@@ -83,11 +81,5 @@ namespace esphome
         _paused = false;
       }
     }
-
-    void RipnetUkClockComponent::haEvent()
-    {
-      ESP_LOGD(TAG, "HA EVENT");
-    }
-
   } // namespace ripnetuk_clock
 } // namespace esphome

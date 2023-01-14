@@ -13,13 +13,14 @@ namespace esphome
     {
     public:
       RipnetUkSwitchComponent(); // Neeed as it seems to construct one in main.cpp if we AUTO_LOAD this which we seem to have to... <------ G is a noob!
-      RipnetUkSwitchComponent(const std::string &name);
+      RipnetUkSwitchComponent(const std::string &name, std::function<void(bool state)> on_change);
       void setup() override;
       float get_setup_priority() const override;
     protected:
       bool assumed_state() override;
       void write_state(bool state) override;
     private:
+      std::function<void(bool state)> _on_change;
       bool _deviceSideState;
     };
   } // namespace ripnetuk_ui

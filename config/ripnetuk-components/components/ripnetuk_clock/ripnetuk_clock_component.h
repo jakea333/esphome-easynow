@@ -17,16 +17,15 @@ namespace esphome
     {
     private:
       float speed;
-      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_reset = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Reset");
-      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause");
-      ripnetuk_ui::RipnetUkButtonComponent *_ha_test_button = new ripnetuk_ui::RipnetUkButtonComponent("Test Button", [this]
-                                                                                                       { this->haEvent(); });
+      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", [this](bool state)
+                                                                                                       { this->setPaused(state); });
+      ripnetuk_ui::RipnetUkButtonComponent *_ha_test_button = new ripnetuk_ui::RipnetUkButtonComponent("Clock Reset", [this]
+                                                                                                       { this->reset(); });
       // template_::Number *_ha_clock_speed;
       int _epoch_millis;
       int _last_log_millis;
       int _pause_millis;
       bool _paused;
-      void haEvent();
 
     public:
       int time();
