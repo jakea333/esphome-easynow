@@ -4,6 +4,7 @@
 #include "esphome/core/component.h"
 #include "../ripnetuk_ui/ripnetuk_switch_component.h"
 #include "../ripnetuk_ui/ripnetuk_button_component.h"
+#include "../ripnetuk_ui/ripnetuk_number_component.h"
 
 #define LOG_INTERVAL 1000
 
@@ -17,10 +18,12 @@ namespace esphome
     {
     private:
       float speed;
-      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", false, [this](bool state)
-                                                                                                       { this->setPaused(state); });
-      ripnetuk_ui::RipnetUkButtonComponent *_ha_test_button = new ripnetuk_ui::RipnetUkButtonComponent("Clock Reset", [this]
-                                                                                                       { this->reset(); });
+      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause_switch = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", true, [this](bool state)
+                                                                                                              { this->setPaused(state); });
+      ripnetuk_ui::RipnetUkButtonComponent *_ha_clock_reset_button = new ripnetuk_ui::RipnetUkButtonComponent("Clock Reset", [this]
+                                                                                                              { this->reset(); });
+      ripnetuk_ui::RipnetUkNumberComponent *_ha_clock_speed_number = new ripnetuk_ui::RipnetUkNumberComponent("Clock Speed", 1, number::NUMBER_MODE_BOX, 0, 4, 0.05, [this](float state)
+                                                                                                              { this->speed = state; });
       // template_::Number *_ha_clock_speed;
       int _epoch_millis;
       int _last_log_millis;

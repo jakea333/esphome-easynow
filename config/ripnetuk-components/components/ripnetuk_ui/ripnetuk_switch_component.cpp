@@ -31,13 +31,13 @@ namespace esphome
       {
         this->_on_change(state);
         _deviceSideState = state;
-        this->publish_state(state);
       }
+      this->publish_state(state);
     }
 
     bool RipnetUkSwitchComponent::assumed_state()
     {
-      return this->_deviceSideState;
+      return false; // Dont show on AND off, since the state is known and not assumed.
     }
 
     float RipnetUkSwitchComponent::get_setup_priority() const
@@ -47,7 +47,7 @@ namespace esphome
 
     void RipnetUkSwitchComponent::setup()
     {
-      _deviceSideState = false;
+      write_state(_deviceSideState);
     }
   } // namespace template_
 } // namespace esphome
