@@ -17,7 +17,7 @@ namespace esphome
     {
     private:
       float speed;
-      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", [this](bool state)
+      ripnetuk_ui::RipnetUkSwitchComponent *_ha_clock_pause = new ripnetuk_ui::RipnetUkSwitchComponent("Clock Pause", false, [this](bool state)
                                                                                                        { this->setPaused(state); });
       ripnetuk_ui::RipnetUkButtonComponent *_ha_test_button = new ripnetuk_ui::RipnetUkButtonComponent("Clock Reset", [this]
                                                                                                        { this->reset(); });
