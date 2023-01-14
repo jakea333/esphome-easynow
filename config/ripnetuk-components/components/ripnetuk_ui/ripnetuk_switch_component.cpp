@@ -13,10 +13,9 @@ namespace esphome
     {
     }
 
-    RipnetUkSwitchComponent::RipnetUkSwitchComponent(const std::string &name, bool initial_state, std::function<void(bool state)> on_change)
+    RipnetUkSwitchComponent::RipnetUkSwitchComponent(const std::string &name, std::function<void(bool state)> on_change)
     {
       this->set_name(name);
-      this->_deviceSideState = initial_state;
       this->_on_change = on_change;
 
       this->set_component_source("RipnetUKSwitch");
@@ -27,11 +26,8 @@ namespace esphome
 
     void RipnetUkSwitchComponent::write_state(bool state)
     {
-      if (state != _deviceSideState)
-      {
-        this->_on_change(state);
-        _deviceSideState = state;
-      }
+      this->_on_change(state);
+      _deviceSideState = state;
       this->publish_state(state);
     }
 
@@ -43,6 +39,11 @@ namespace esphome
     void RipnetUkSwitchComponent::setup()
     {
       write_state(_deviceSideState);
+    }
+
+    void RipnetUkSwitchComponent::set(bool state)
+    {
+      this->write_state(state);
     }
   } // namespace template_
 } // namespace esphome

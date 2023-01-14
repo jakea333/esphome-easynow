@@ -15,6 +15,8 @@ namespace esphome
       reset();
       _last_log_millis = millis();
       ESP_LOGD(TAG, "setup");
+      this->_ha_clock_speed_number->set(1);
+      this->_ha_clock_pause_switch->set(false);
     }
 
     void RipnetUkClockComponent::loop()

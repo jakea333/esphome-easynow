@@ -13,11 +13,9 @@ namespace esphome
     {
     }
 
-    RipnetUkNumberComponent::RipnetUkNumberComponent(const std::string &name, float initial_state, number::NumberMode mode, float min_value, float max_value, float step, std::function<void(float state)> on_change)
+    RipnetUkNumberComponent::RipnetUkNumberComponent(const std::string &name, number::NumberMode mode, float min_value, float max_value, float step, std::function<void(float state)> on_change)
     {
-        ESP_LOGD(TAG, "...............................................................INITIAL .............(%f)", initial_state);
       this->set_name(name);
-      this->_deviceSideState = initial_state;
       this->traits.set_mode(mode);
       this->traits.set_min_value(min_value);
       this->traits.set_max_value(max_value);
@@ -32,11 +30,9 @@ namespace esphome
 
     void RipnetUkNumberComponent::control(float state)
     {
-      if (state != _deviceSideState)
-      {
-        this->_on_change(state);
-        _deviceSideState = state;
-      }
+       ESP_LOGD(TAG, "...control.........................................................................(%f)", state);
+      this->_on_change(state);
+      _deviceSideState = state;
       this->publish_state(state);
     }
 
@@ -44,18 +40,10 @@ namespace esphome
     {
       control(_deviceSideState);
     }
+
+    void RipnetUkNumberComponent::set(float state)
+    {
+      this->control(state);
+    }
   } // namespace template_
 } // namespace esphome
-
-//  _ha_clock_speed->set_update_interval(60000);
-//       _ha_clock_speed->set_component_source("template.number");
-//       App.register_component(_ha_clock_speed);
-//       App.register_number(_ha_clock_speed);
-//       _ha_clock_speed->set_name("Clock Speed");
-//       _ha_clock_speed->set_disabled_by_default(false);
-//       _ha_clock_speed->traits.set_min_value(0.0f);
-//       _ha_clock_speed->traits.set_max_value(2.0f);
-//       _ha_clock_speed->traits.set_step(0.1f);
-//       _ha_clock_speed->traits.set_mode(number::NUMBER_MODE_AUTO);
-//       _ha_clock_speed->set_optimistic(true);
-//       _ha_clock_speed->set_initial_value(1.0f);
