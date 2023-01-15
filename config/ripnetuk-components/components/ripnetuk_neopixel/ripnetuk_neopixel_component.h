@@ -26,3 +26,38 @@ namespace esphome
 
   } // namespace debug
 } // namespace esphome
+
+
+
+// namespace esphome
+// {
+//     namespace neopixel_lightshow_component
+//     {
+//         class NeoPixelLightShowComponent : public Component
+//         {
+//         private:
+//             template_::TemplateSwitch *_ha_use_fake_power;
+//             template_::TemplateNumber *_ha_brightness;
+//             template_::TemplateNumber *_ha_fake_power;
+//             NeoPixelLightShowConfig *_config;
+//             Adafruit_NeoPixel *_neoPixel;
+//             RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...
+//             int _lastUpdateMillis = 0;
+//             float _currentDisplayPower = 0;
+//             LedClock *_clock;
+
+//             int scaleToByte(double value, double brightness);
+//             void draw();
+//             void drawHoldingPattern();
+//             void drawPower(float power);
+//             void drawOutOfRange(RGB rgb);
+//             void showPixels();
+//             void animateColors();
+
+//         public:
+//             NeoPixelLightShowComponent(NeoPixelLightShowConfig *config);
+//             void setup() override;
+//             void loop() override;
+//         };
+//     }
+// }
