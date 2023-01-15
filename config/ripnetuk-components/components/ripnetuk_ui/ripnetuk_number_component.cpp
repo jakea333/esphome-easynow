@@ -30,8 +30,11 @@ namespace esphome
 
     void RipnetUkNumberComponent::control(float state)
     {
-       ESP_LOGD(TAG, "...control.........................................................................(%f)", state);
-      this->_on_change(state);
+      ESP_LOGD(TAG, "...control.........................................................................(%f)", state);
+      if (this->_on_change)
+      {
+        this->_on_change(state);
+      }
       _deviceSideState = state;
       this->publish_state(state);
     }

@@ -13,7 +13,7 @@ namespace esphome
     {
     public:
       RipnetUkSwitchComponent(); // Neeed as it seems to construct one in main.cpp if we AUTO_LOAD this which we seem to have to... <------ G is a noob!
-      RipnetUkSwitchComponent(const std::string &name, std::function<void(bool state)> on_change);
+      RipnetUkSwitchComponent(const std::string &name, std::function<void(bool state)> on_change = nullptr);
       void setup() override;
       void set(bool state);
 

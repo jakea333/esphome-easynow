@@ -26,7 +26,10 @@ namespace esphome
 
     void RipnetUkSwitchComponent::write_state(bool state)
     {
-      this->_on_change(state);
+      if (this->_on_change)
+      {
+        this->_on_change(state);
+      }
       _deviceSideState = state;
       this->publish_state(state);
     }

@@ -7,9 +7,15 @@ namespace esphome
   {
     static const char *TAG = "ripnetuk_neopixel";
 
+    void RipnetUkNeopixelComponent::setup()
+    {
+      _ha_use_fake_power->set(false);
+      // ESP_LOGD(TAG, "neopixel Heap Size: %u bytes", free_heap);
+    }
+
     void RipnetUkNeopixelComponent::loop()
     {
-     // ESP_LOGD(TAG, "neopixel Heap Size: %u bytes", free_heap);
+      // ESP_LOGD(TAG, "neopixel Heap Size: %u bytes", free_heap);
     }
 
     float RipnetUkNeopixelComponent::get_setup_priority() const
@@ -19,7 +25,6 @@ namespace esphome
 
   } // namespace debug
 } // namespace esphome
-
 
 // #include "NeoPixelLightShowComponent.h"
 // #include "RGB.h"
