@@ -201,7 +201,7 @@ namespace esphome
     }
 
     int flashPeriod = 16000;
-    float flareMaxStrength = 0.5;
+    float flareMaxStrength = 2;
 
     void RipnetUkNeopixelComponent::animateColors()
     {
@@ -234,9 +234,9 @@ namespace esphome
       {
         if ((_pixels[i].r == 0) && (_pixels[i].g == 0) && (_pixels[i].b == 0))
           continue; // Dont mess with black as its obvious and anoying
-        _pixels[i].r += flareRGB.r;
-        _pixels[i].g += flareRGB.g;
-        _pixels[i].b += flareRGB.b;
+        _pixels[i].r = (_pixels[i].r + flareRGB.r) / 2;
+        _pixels[i].g += (_pixels[i].g + flareRGB.g) / 2;
+        _pixels[i].b += (_pixels[i].b + flareRGB.b) / 2;
       }
     }
   }
