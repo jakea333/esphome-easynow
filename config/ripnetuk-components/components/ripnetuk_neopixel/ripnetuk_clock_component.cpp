@@ -1,22 +1,27 @@
 #include "ripnetuk_clock_component.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
-// #include "esphome/core/application.h"
+#include "esphome/core/application.h"
+#include "esphome/components/sensor/sensor.h"
 
 namespace esphome
 {
-  namespace ripnetuk_clock
+  namespace ripnetuk_neopixel
   {
 
     static const char *TAG = "ripnetuk_clock";
 
-    RipnetUkClockComponent::RipnetUkClockComponent()
+    RipnetUkClockComponent::RipnetUkClockComponent(const std::string &name)
     {
-      // this->set_name("Clock Time");
+      this->set_name(name);
+
+      App.register_sensor(this);
+      App.register_component(this);
     }
 
     void RipnetUkClockComponent::setup()
     {
+      set_update_interval(50000);
       reset();
       this->_ha_clock_speed_number->set(1);
       this->_ha_clock_pause_switch->set(false);

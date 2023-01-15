@@ -5,12 +5,12 @@
 #include "esphome/core/hal.h"
 #include "../ripnetuk_ui/ripnetuk_switch_component.h"
 #include "../ripnetuk_ui/ripnetuk_number_component.h"
+#include "ripnetuk_clock_component.h"
 
 namespace esphome
 {
   namespace ripnetuk_neopixel
   {
-
     class RipnetUkNeopixelComponent : public Component
     {
     public:
@@ -26,6 +26,7 @@ namespace esphome
       int _pixel_count;
       sensor::Sensor *_power_sensor;
 
+      RipnetUkClockComponent *_clock = new RipnetUkClockComponent("Clock");
       ripnetuk_ui::RipnetUkSwitchComponent *_ha_use_fake_power = new ripnetuk_ui::RipnetUkSwitchComponent("Use Fake Power");
 
       // ripnetuk_ui::RipnetUkNumberComponent *_ha_clock_speed_number = new ripnetuk_ui::RipnetUkNumberComponent("Clock Speed", number::NUMBER_MODE_BOX, 0, 4, 0.05, [this](float state)

@@ -10,10 +10,8 @@
 
 namespace esphome
 {
-  namespace ripnetuk_clock
+  namespace ripnetuk_neopixel
   {
-    class RipnetUkClockSwitch;
-
     class RipnetUkClockComponent : public sensor::Sensor, public PollingComponent
     {
     private:
@@ -30,7 +28,7 @@ namespace esphome
       bool _paused;
 
     public:
-      RipnetUkClockComponent();
+      RipnetUkClockComponent(const std::string &name);
 
       int time();
       void reset();
