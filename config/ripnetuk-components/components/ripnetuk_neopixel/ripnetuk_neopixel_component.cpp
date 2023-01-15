@@ -14,6 +14,7 @@ namespace esphome
     {
       _ha_use_fake_power->set(false);
       _ha_fake_power->set(500);
+      _ha_brightness->set(0.01);
       // FIX ME
       _neoPixel = new Adafruit_NeoPixel(_pixel_count, D3, NEO_GRB + NEO_KHZ800);
 
