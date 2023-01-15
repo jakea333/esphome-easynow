@@ -4,7 +4,7 @@
 
 namespace esphome
 {
-    namespace ripnetuk_clock
+    namespace ripnetuk_neopixel
     {
         struct RGB
         {
