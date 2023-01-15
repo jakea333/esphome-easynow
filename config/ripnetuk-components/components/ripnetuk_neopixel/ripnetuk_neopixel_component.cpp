@@ -201,7 +201,7 @@ namespace esphome
     }
 
     int flashPeriod = 16000;
-    float flareMaxStrength = 0.12;
+    float flareMaxStrength = 0.5;
 
     void RipnetUkNeopixelComponent::animateColors()
     {
