@@ -21,7 +21,7 @@ namespace esphome
 
     void RipnetUkClockComponent::setup()
     {
-      set_update_interval(50000);
+      set_update_interval(2000);
       reset();
       this->_ha_clock_speed_number->set(1);
       this->_ha_clock_pause_switch->set(false);
