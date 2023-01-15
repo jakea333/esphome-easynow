@@ -14,7 +14,7 @@ RipnetUkNeopixelComponent = debug_ns.class_(
 CONFIG_SCHEMA = (
     sensor.sensor_schema(RipnetUkNeopixelComponent)
     .extend(cv.COMPONENT_SCHEMA)
-    .extend(cv.polling_component_schema('1s'))
+    .extend(cv.polling_component_schema('5s'))
 )
 
 async def to_code(config):
