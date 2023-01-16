@@ -6,13 +6,14 @@
 #include <Adafruit_NeoPixel.h>
 #include "../ripnetuk_lightshow_core/RGB.h"
 #include "../ripnetuk_lightshow_core/ripnetuk_lightshow_core_component.h"
+#include "../ripnetuk_lightshow_core/base_ripnetuk_lightshow_output_component.h"
 #include "esphome/core/hal.h"
 
 namespace esphome
 {
   namespace ripnetuk_lightshow_output_neopixel
   {
-    class RipnetUkLightshowOutputNeopixelComponent : public Component
+    class RipnetUkLightshowOutputNeopixelComponent : public ripnetuk_lightshow_core::BaseRipnetUkLightshowOutputComponent
     {
     public:
       void setup() override;

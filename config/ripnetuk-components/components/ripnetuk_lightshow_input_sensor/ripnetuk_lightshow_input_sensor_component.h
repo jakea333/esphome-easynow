@@ -7,12 +7,13 @@
 #include "../ripnetuk_ui/ripnetuk_number_component.h"
 #include "../ripnetuk_lightshow_core/RGB.h"
 #include "../ripnetuk_lightshow_core/ripnetuk_lightshow_core_component.h"
+#include "../ripnetuk_lightshow_core/base_ripnetuk_lightshow_input_component.h"
 
 namespace esphome
 {
   namespace ripnetuk_lightshow_input_sensor
   {
-    class RipnetUkLightshowInputSensorComponent : public Component
+    class RipnetUkLightshowInputSensorComponent : public ripnetuk_lightshow_core::BaseRipnetUkLightshowInputComponent
     {
     public:
       void set_sensor(sensor::Sensor *sensor) { _sensor = sensor; }
