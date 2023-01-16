@@ -15,7 +15,7 @@ namespace esphome
     {
       _ha_brightness->set(0.01);
       // FIX ME D3
-      _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), BR_TLS_DH_RSA_WITH_AES_256_GCM_SHA384, NEO_GRB + NEO_KHZ800);
+      _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
 
       _neoPixel->begin();
     }
@@ -60,7 +60,7 @@ namespace esphome
         int b = scaleToByte(pxl.b, overallBrightness);
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
-        ESP_LOGD(TAG, "%d %d %d", r, g, b);
+        //ESP_LOGD(TAG, "%d %d %d", r, g, b);
       }
       _neoPixel->show();
     }
