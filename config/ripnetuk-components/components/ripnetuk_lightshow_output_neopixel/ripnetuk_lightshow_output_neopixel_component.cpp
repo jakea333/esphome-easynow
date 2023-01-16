@@ -52,7 +52,7 @@ namespace esphome
 
       for (int i = 0; i < _core->get_pixel_count(); i++)
       {
-        ripnetuk_lightshow_core::RGB pxl = {1, 0, 0, 0.5};
+        ripnetuk_lightshow_core::RGB pxl = _core->_pixels[i];
         float overallBrightness = pxl.brightness * masterBrightness;
 
         int r = scaleToByte(pxl.r, overallBrightness);

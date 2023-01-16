@@ -19,10 +19,10 @@ namespace esphome
             void set_clock(ripnetuk_clock::RipnetUkClockComponent *clock) { _clock = clock; }
             void set_pixel_count(int pixel_count) { _pixel_count = pixel_count; }
             int get_pixel_count() { return _pixel_count; }
+            RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...            
         private:
             int _pixel_count;
             ripnetuk_clock::RipnetUkClockComponent *_clock;
-            RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...
         };
     } // namespace debug
 } // namespace esphome
