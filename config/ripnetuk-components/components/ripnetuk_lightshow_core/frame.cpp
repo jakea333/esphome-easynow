@@ -31,5 +31,15 @@ namespace esphome
       Pixels->clear();
       delete (Pixels);
     }
+
+    void Frame::set_all(RGB *rgb)
+    {
+      for (int i = 0; i < Pixels->size(); i++)
+      {
+        Pixels->at(i)->r = rgb->r;
+        Pixels->at(i)->g = rgb->g;
+        Pixels->at(i)->b = rgb->b;
+      }
+    }
   }
 }

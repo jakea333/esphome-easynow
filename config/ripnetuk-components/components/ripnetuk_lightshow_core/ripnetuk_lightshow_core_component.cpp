@@ -17,6 +17,9 @@ namespace esphome
         void RipnetUkLightshowCoreComponent::loop()
         {
             Frame *frame = new Frame(_pixel_count);
+            RGB rgb = RGB{1, 0, 0, 1};
+            frame->set_all(&rgb);
+
             for (int i = 0; i < _outputs->size(); i++)
             {
                 _outputs->at(i)->output_frame(frame);

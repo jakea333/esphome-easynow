@@ -27,7 +27,7 @@ namespace esphome
 
       ripnetuk_ui::RipnetUkNumberComponent *_ha_brightness = new ripnetuk_ui::RipnetUkNumberComponent("Brightness", number::NUMBER_MODE_BOX, 0, 1, 0.001);
 
-      Adafruit_NeoPixel *_neoPixel;
+      Adafruit_NeoPixel *_neoPixel {nullptr};
       int scaleToByte(double value, double brightness);
       void showPixels();
     };
