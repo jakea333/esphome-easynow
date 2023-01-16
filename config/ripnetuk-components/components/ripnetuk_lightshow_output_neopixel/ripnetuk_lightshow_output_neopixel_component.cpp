@@ -55,7 +55,7 @@ namespace esphome
         int b = scaleToByte(pxl->b, overallBrightness);
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
-        ESP_LOGD(TAG, "%d %d %d", r, g, b);
+        // ESP_LOGD(TAG, "%d %d %d", r, g, b);
       }
       _neoPixel->show();
     }
