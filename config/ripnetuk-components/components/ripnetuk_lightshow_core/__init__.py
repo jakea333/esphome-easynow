@@ -8,7 +8,8 @@ from esphome.components import sensor
 DEPENDENCIES = ['logger', 'sensor']
 
 clockns = cg.esphome_ns.namespace('ripnetuk_clock')
-RipnetUkClockComponent = clockns.class_('RipnetUkClockComponent',sensor.Sensor, cg.Component)
+RipnetUkClockComponent = clockns.class_(
+    'RipnetUkClockComponent', sensor.Sensor, cg.Component)
 
 ns = cg.esphome_ns.namespace('ripnetuk_lightshow_core')
 
@@ -60,3 +61,11 @@ def to_code(config):
 
     clock = yield cg.get_variable(config[CONF_CLOCK])
     cg.add(var.set_clock(clock))
+
+    for outputConf in config.get(CONF_INPUTS, []):
+        input = yield cg.get_variable(outputConf[CONF_INPUT])
+        cg.add(var.add_input(input))
+
+    for outputConf in config.get(CONF_OUTPUTS, []):
+        output = yield cg.get_variable(outputConf[CONF_OUTPUT])
+        cg.add(var.add_output(output))

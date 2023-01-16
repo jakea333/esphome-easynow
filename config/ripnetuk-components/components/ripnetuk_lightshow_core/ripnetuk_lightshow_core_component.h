@@ -2,9 +2,13 @@
 
 #include "esphome/core/component.h"
 #include "esphome/core/hal.h"
+#include <vector>
 #include "../ripnetuk_ui/ripnetuk_switch_component.h"
 #include "../ripnetuk_ui/ripnetuk_number_component.h"
 #include "../ripnetuk_clock/ripnetuk_clock_component.h"
+#include "base_ripnetuk_lightshow_input_component.h"
+#include "base_ripnetuk_lightshow_output_component.h"
+
 #include <Adafruit_NeoPixel.h>
 #include "RGB.h"
 
@@ -21,8 +25,13 @@ namespace esphome
             int get_pixel_count() { return _pixel_count; }
             ripnetuk_clock::RipnetUkClockComponent *get_clock() { return _clock; }
             RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...
+            void add_input(BaseRipnetUkLightshowInputComponent *input) { _inputs->push_back(input); }
+            void add_output(BaseRipnetUkLightshowOutputComponent *output) { _outputs->push_back(output); }
+
         private:
             int _pixel_count;
+            std::vector<BaseRipnetUkLightshowOutputComponent *> *_outputs = new std::vector<BaseRipnetUkLightshowOutputComponent *>();
+            std::vector<BaseRipnetUkLightshowInputComponent *> *_inputs = new std::vector<BaseRipnetUkLightshowInputComponent *>();
             ripnetuk_clock::RipnetUkClockComponent *_clock;
         };
     } // namespace debug

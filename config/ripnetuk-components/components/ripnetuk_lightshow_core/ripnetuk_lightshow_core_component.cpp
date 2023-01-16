@@ -12,6 +12,5 @@ namespace esphome
         {
             return setup_priority::LATE;
         }
-
     }
 }
