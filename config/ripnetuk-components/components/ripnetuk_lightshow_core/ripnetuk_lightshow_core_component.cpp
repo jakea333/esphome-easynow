@@ -11,7 +11,7 @@ namespace esphome
 
         float RipnetUkLightshowCoreComponent::get_setup_priority() const
         {
-            return setup_priority::LATE;
+            return setup_priority::HARDWARE;
         }
 
         void RipnetUkLightshowCoreComponent::loop()

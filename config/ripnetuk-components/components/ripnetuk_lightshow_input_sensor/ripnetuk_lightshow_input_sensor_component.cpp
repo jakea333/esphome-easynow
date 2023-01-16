@@ -17,11 +17,6 @@ namespace esphome
             _ha_fake_state->set(500);
         }
 
-        float RipnetUkLightshowInputSensorComponent::get_setup_priority() const
-        {
-            return setup_priority::LATE;
-        }
-
         void RipnetUkLightshowInputSensorComponent::loop()
         {
             draw();

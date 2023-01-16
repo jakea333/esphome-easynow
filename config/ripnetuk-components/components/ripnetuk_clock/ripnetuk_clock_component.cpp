@@ -28,7 +28,7 @@ namespace esphome
 
     float RipnetUkClockComponent::get_setup_priority() const
     {
-      return setup_priority::LATE;
+      return setup_priority::HARDWARE;
     }
 
     void RipnetUkClockComponent::reset()

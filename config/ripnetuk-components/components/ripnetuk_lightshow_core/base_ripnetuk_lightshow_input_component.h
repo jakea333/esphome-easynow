@@ -9,6 +9,7 @@ namespace esphome
     class BaseRipnetUkLightshowInputComponent : public Component
     {
     public:
+      float get_setup_priority() const override;
 
     private:
     };

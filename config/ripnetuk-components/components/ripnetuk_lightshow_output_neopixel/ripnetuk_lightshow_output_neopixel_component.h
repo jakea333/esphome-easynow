@@ -17,7 +17,6 @@ namespace esphome
     {
     public:
       void setup() override;
-      float get_setup_priority() const override;
       // void set_lightshow_core(ripnetuk_lightshow_core::RipnetUkLightshowCoreComponent *core) { _core = core; }
       void set_pin(GPIOPin *pin) { _pin = pin; }
       void output_frame(ripnetuk_lightshow_core::Frame *frame);

@@ -12,17 +12,12 @@ namespace esphome
 
     void RipnetUkLightshowOutputNeopixelComponent::setup()
     {
-      _ha_brightness->set(0.01);
-    }
-
-    float RipnetUkLightshowOutputNeopixelComponent::get_setup_priority() const
-    {
-      return setup_priority::LATE;
+      _ha_brightness->set(0.1);
     }
 
     int RipnetUkLightshowOutputNeopixelComponent::scaleToByte(double value, double brightness)
     {
-      float scaled = value * brightness * 255;
+      float scaled = value * brightness * 255.0;
       int asInt = scaled;
       if (asInt < 0)
       {
@@ -60,7 +55,7 @@ namespace esphome
         int b = scaleToByte(pxl->b, overallBrightness);
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
-        // ESP_LOGD(TAG, "%d %d %d", r, g, b);
+        ESP_LOGD(TAG, "%d %d %d", r, g, b);
       }
       _neoPixel->show();
     }
