@@ -13,7 +13,7 @@ namespace esphome
     public:
       Frame(int pixel_count);
       ~Frame();
-      std::vector<RGB*> *Pixels;
+      std::vector<RGB*> *pixels;
       void set_all(RGB* rgb);
     private:
     };

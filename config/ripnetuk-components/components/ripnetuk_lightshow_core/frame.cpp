@@ -10,7 +10,7 @@ namespace esphome
 
     Frame::Frame(int pixel_count)
     {
-      Pixels = new std::vector<RGB *>();
+      pixels = new std::vector<RGB *>();
 
       for (int i = 0; i < pixel_count; i++)
       {
@@ -18,27 +18,27 @@ namespace esphome
         rgb->r = i * 10;
         rgb->g = i * 2;
         rgb->g = i;
-        Pixels->push_back(rgb);
+        pixels->push_back(rgb);
       }
     }
 
     Frame::~Frame()
     {
-      for (int i = 0; i < Pixels->size(); i++)
+      for (int i = 0; i < pixels->size(); i++)
       {
-        delete (Pixels->at(i));
+        delete (pixels->at(i));
       }
-      Pixels->clear();
-      delete (Pixels);
+      pixels->clear();
+      delete (pixels);
     }
 
     void Frame::set_all(RGB *rgb)
     {
-      for (int i = 0; i < Pixels->size(); i++)
+      for (int i = 0; i < pixels->size(); i++)
       {
-        Pixels->at(i)->r = rgb->r;
-        Pixels->at(i)->g = rgb->g;
-        Pixels->at(i)->b = rgb->b;
+        pixels->at(i)->r = rgb->r;
+        pixels->at(i)->g = rgb->g;
+        pixels->at(i)->b = rgb->b;
       }
     }
   }

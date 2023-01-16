@@ -65,7 +65,7 @@ namespace esphome
       {
         // FIX ME D3
         // _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
-        _neoPixel = new Adafruit_NeoPixel(frame->Pixels->size(), D3, NEO_GRB + NEO_KHZ800);
+        _neoPixel = new Adafruit_NeoPixel(frame->pixels->size(), D3, NEO_GRB + NEO_KHZ800);
 
         _neoPixel->begin();
       }
@@ -73,9 +73,9 @@ namespace esphome
       float masterBrightness = _ha_brightness->state;
 
       // for (int i = 0; i < _core->get_pixel_count(); i++)
-      for (int i = 0; i < frame->Pixels->size(); i++)
+      for (int i = 0; i < frame->pixels->size(); i++)
       {
-        ripnetuk_lightshow_core::RGB *pxl = frame->Pixels->at(i);
+        ripnetuk_lightshow_core::RGB *pxl = frame->pixels->at(i);
         float overallBrightness = pxl->brightness * masterBrightness;
 
         int r = scaleToByte(pxl->r, overallBrightness);
