@@ -11,17 +11,16 @@ namespace esphome
 
     static const char *TAG = "ripnetuk_clock";
 
-    RipnetUkClockComponent::RipnetUkClockComponent(const std::string &name)
-    {
-      this->set_name(name);
+    // RipnetUkClockComponent::RipnetUkClockComponent(const std::string &name)
+    // {
+    //   this->set_name(name);
 
-      App.register_sensor(this);
-      App.register_component(this);
-    }
+    //   App.register_sensor(this);
+    //   App.register_component(this);
+    // }
 
     void RipnetUkClockComponent::setup()
     {
-      set_update_interval(2000);
       reset();
       this->_ha_clock_speed_number->set(1);
       this->_ha_clock_pause_switch->set(false);

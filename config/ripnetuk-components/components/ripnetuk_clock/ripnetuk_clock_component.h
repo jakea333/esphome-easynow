@@ -28,7 +28,7 @@ namespace esphome
       bool _paused;
 
     public:
-      RipnetUkClockComponent(const std::string &name);
+      // RipnetUkClockComponent(const std::string &name);
 
       int time();
       void reset();
