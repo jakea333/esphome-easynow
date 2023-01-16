@@ -69,5 +69,9 @@ namespace esphome
       }
       _neoPixel->show();
     }
+
+    void RipnetUkLightshowOutputNeopixelComponent::output_frame(ripnetuk_lightshow_core::Frame *frame)
+    {
+    }
   }
 }
