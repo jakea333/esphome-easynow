@@ -1,6 +1,8 @@
 #pragma once
 
 #include "esphome/core/component.h"
+#include <vector>
+#include "RGB.h"
 
 namespace esphome
 {
@@ -9,6 +11,9 @@ namespace esphome
     class Frame
     {
     public:
+      Frame(int pixel_count);
+      ~Frame();
+      std::vector<RGB*> *Pixels;
 
     private:
     };

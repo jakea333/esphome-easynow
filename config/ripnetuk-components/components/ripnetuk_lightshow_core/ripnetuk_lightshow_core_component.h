@@ -27,7 +27,7 @@ namespace esphome
             RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...
             void add_input(BaseRipnetUkLightshowInputComponent *input) { _inputs->push_back(input); }
             void add_output(BaseRipnetUkLightshowOutputComponent *output) { _outputs->push_back(output); }
-
+            void loop() override;
         private:
             int _pixel_count;
             std::vector<BaseRipnetUkLightshowOutputComponent *> *_outputs = new std::vector<BaseRipnetUkLightshowOutputComponent *>();
