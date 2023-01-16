@@ -14,8 +14,8 @@ namespace esphome
     void RipnetUkLightshowOutputNeopixelComponent::setup()
     {
       _ha_brightness->set(0.01);
-      // FIX ME
-      _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
+      // FIX ME D3
+      _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), 25, NEO_GRB + NEO_KHZ800);
 
       _neoPixel->begin();
     }
