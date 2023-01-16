@@ -13,7 +13,7 @@ AUTO_LOAD = ['sensor', 'ripnetuk_ui']
 ns = cg.esphome_ns.namespace('ripnetuk_clock')
 
 RipnetUkClockComponent = ns.class_(
-    'RipnetUkClockComponent', cg.PollingComponent)
+    'RipnetUkClockComponent', sensor.Sensor, cg.PollingComponent)
 
 
 CONFIG_SCHEMA = cv.All(
@@ -25,6 +25,7 @@ CONFIG_SCHEMA = cv.All(
     )
     .extend(cv.polling_component_schema("1s")),
 )
+
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])

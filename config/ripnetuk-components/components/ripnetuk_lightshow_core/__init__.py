@@ -7,6 +7,11 @@ from esphome.components import sensor
 
 DEPENDENCIES = ['logger']
 
+clockns = cg.esphome_ns.namespace('ripnetuk_clock')
+clockclass = clockns.class_('RipnetUkClockComponent',sensor.Sensor, cg.Component)
+
+# Sensor = sensor_ns.class_("Sensor", cg.EntityBase)
+
 ns = cg.esphome_ns.namespace('ripnetuk_lightshow_core')
 
 RipnetUkLightshowCoreComponent = ns.class_(
@@ -20,7 +25,7 @@ CONFIG_SCHEMA = (
         {
             cv.GenerateID(): cv.declare_id(RipnetUkLightshowCoreComponent),
             cv.Required(CONF_PIXEL_COUNT): cv.int_,
-            cv.Required(CONF_CLOCK): cv.use_id(sensor.Sensor),
+            cv.Required(CONF_CLOCK): cv.use_id(clockclass),
         }
     )
     .extend(cv.COMPONENT_SCHEMA)
