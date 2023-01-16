@@ -18,7 +18,7 @@ namespace esphome
             float get_setup_priority() const override;
             void set_clock(ripnetuk_clock::RipnetUkClockComponent *clock) { _clock = clock; }
             void set_pixel_count(int pixel_count) { _pixel_count = pixel_count; }
-
+            int get_pixel_count() { return _pixel_count; }
         private:
             int _pixel_count;
             ripnetuk_clock::RipnetUkClockComponent *_clock;

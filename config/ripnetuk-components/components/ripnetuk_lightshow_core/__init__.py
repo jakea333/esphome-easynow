@@ -5,7 +5,7 @@ from esphome.const import CONF_PIN
 from esphome import pins
 from esphome.components import sensor
 
-DEPENDENCIES = ['logger']
+DEPENDENCIES = ['logger', 'sensor']
 
 clockns = cg.esphome_ns.namespace('ripnetuk_clock')
 clockclass = clockns.class_('RipnetUkClockComponent',sensor.Sensor, cg.Component)
