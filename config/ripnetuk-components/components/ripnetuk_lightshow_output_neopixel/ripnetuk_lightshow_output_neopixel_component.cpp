@@ -2,8 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome.h"
 #include "../ripnetuk_lightshow_core/RGB.h"
-
-#define RANGESIZE 1500
+#include "esphome/core/hal.h"
 
 namespace esphome
 {
@@ -14,21 +13,11 @@ namespace esphome
     void RipnetUkLightshowOutputNeopixelComponent::setup()
     {
       _ha_brightness->set(0.01);
-      // FIX ME D3
-      // _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
-      _neoPixel = new Adafruit_NeoPixel(8, D3, NEO_GRB + NEO_KHZ800);
-
-      _neoPixel->begin();
     }
 
     float RipnetUkLightshowOutputNeopixelComponent::get_setup_priority() const
     {
       return setup_priority::LATE;
-    }
-
-    void RipnetUkLightshowOutputNeopixelComponent::loop()
-    {
-      showPixels();
     }
 
     int RipnetUkLightshowOutputNeopixelComponent::scaleToByte(double value, double brightness)
@@ -72,6 +61,17 @@ namespace esphome
 
     void RipnetUkLightshowOutputNeopixelComponent::output_frame(ripnetuk_lightshow_core::Frame *frame)
     {
+      if (!_neoPixel)
+      {
+        // FIX ME D3
+        // _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
+        _neoPixel = new Adafruit_NeoPixel(8, D3, NEO_GRB + NEO_KHZ800);
+
+        _neoPixel->begin();
+      }
+
+
+
     }
   }
 }
