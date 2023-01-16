@@ -52,7 +52,7 @@ namespace esphome
 
       for (int i = 0; i < _core->get_pixel_count(); i++)
       {
-        ripnetuk_lightshow_core::RGB pxl = {1, 0, 0};
+        ripnetuk_lightshow_core::RGB pxl = {1, 0, 0, 0.5};
         float overallBrightness = pxl.brightness * masterBrightness;
 
         int r = scaleToByte(pxl.r, overallBrightness);
@@ -60,6 +60,7 @@ namespace esphome
         int b = scaleToByte(pxl.b, overallBrightness);
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
+        ESP_LOGD(TAG, "%d %d %d", r, g, b);
       }
       _neoPixel->show();
     }
