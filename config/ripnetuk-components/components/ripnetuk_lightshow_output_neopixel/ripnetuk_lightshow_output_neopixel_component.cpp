@@ -15,7 +15,8 @@ namespace esphome
     {
       _ha_brightness->set(0.01);
       // FIX ME D3
-      _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
+      // _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
+      _neoPixel = new Adafruit_NeoPixel(8, D3, NEO_GRB + NEO_KHZ800);
 
       _neoPixel->begin();
     }
@@ -50,17 +51,21 @@ namespace esphome
     {
       float masterBrightness = _ha_brightness->state;
 
-      for (int i = 0; i < _core->get_pixel_count(); i++)
+      // for (int i = 0; i < _core->get_pixel_count(); i++)
+      for (int i = 0; i < 8; i++)
       {
-        ripnetuk_lightshow_core::RGB pxl = _core->_pixels[i];
-        float overallBrightness = pxl.brightness * masterBrightness;
+        // ripnetuk_lightshow_core::RGB pxl = _core->_pixels[i];
+        // float overallBrightness = pxl.brightness * masterBrightness;
 
-        int r = scaleToByte(pxl.r, overallBrightness);
-        int g = scaleToByte(pxl.g, overallBrightness);
-        int b = scaleToByte(pxl.b, overallBrightness);
+        // int r = scaleToByte(pxl.r, overallBrightness);
+        // int g = scaleToByte(pxl.g, overallBrightness);
+        // int b = scaleToByte(pxl.b, overallBrightness);
+        int r = 255;
+        int g = 255;
+        int b = 20;
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
-        //ESP_LOGD(TAG, "%d %d %d", r, g, b);
+        // ESP_LOGD(TAG, "%d %d %d", r, g, b);
       }
       _neoPixel->show();
     }
