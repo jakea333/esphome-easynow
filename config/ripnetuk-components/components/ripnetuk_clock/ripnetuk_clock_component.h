@@ -10,7 +10,7 @@
 
 namespace esphome
 {
-  namespace ripnetuk_neopixel
+  namespace ripnetuk_clock
   {
     class RipnetUkClockComponent : public sensor::Sensor, public PollingComponent
     {

@@ -6,7 +6,7 @@
 
 namespace esphome
 {
-  namespace ripnetuk_neopixel
+  namespace ripnetuk_clock
   {
 
     static const char *TAG = "ripnetuk_clock";
