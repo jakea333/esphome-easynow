@@ -36,29 +36,6 @@ namespace esphome
       return asInt;
     }
 
-    void RipnetUkLightshowOutputNeopixelComponent::showPixels()
-    {
-      float masterBrightness = _ha_brightness->state;
-
-      // for (int i = 0; i < _core->get_pixel_count(); i++)
-      for (int i = 0; i < 8; i++)
-      {
-        // ripnetuk_lightshow_core::RGB pxl = _core->_pixels[i];
-        // float overallBrightness = pxl.brightness * masterBrightness;
-
-        // int r = scaleToByte(pxl.r, overallBrightness);
-        // int g = scaleToByte(pxl.g, overallBrightness);
-        // int b = scaleToByte(pxl.b, overallBrightness);
-        int r = 255;
-        int g = 255;
-        int b = 20;
-
-        _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
-        // ESP_LOGD(TAG, "%d %d %d", r, g, b);
-      }
-      _neoPixel->show();
-    }
-
     void RipnetUkLightshowOutputNeopixelComponent::output_frame(ripnetuk_lightshow_core::Frame *frame)
     {
       if (!_neoPixel)

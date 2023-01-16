@@ -36,9 +36,7 @@ namespace esphome
     {
       for (int i = 0; i < pixels->size(); i++)
       {
-        pixels->at(i)->r = rgb->r;
-        pixels->at(i)->g = rgb->g;
-        pixels->at(i)->b = rgb->b;
+        pixels->at(i)->set(rgb);
       }
     }
   }

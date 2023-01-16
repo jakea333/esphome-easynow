@@ -29,7 +29,6 @@ namespace esphome
 
       Adafruit_NeoPixel *_neoPixel {nullptr};
       int scaleToByte(double value, double brightness);
-      void showPixels();
     };
 
   } // namespace debug

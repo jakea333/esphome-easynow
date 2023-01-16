@@ -6,13 +6,14 @@ namespace esphome
 {
     namespace ripnetuk_lightshow_core
     {
-        struct RGB
+        class RGB
         {
+        public:
             float r;
             float g;
             float b;
             float brightness;
-            float frame_period;
+            void set(RGB* rgb);
         };
 
         const RGB OFF_PIXEL = {0, 0, 0, 1};
