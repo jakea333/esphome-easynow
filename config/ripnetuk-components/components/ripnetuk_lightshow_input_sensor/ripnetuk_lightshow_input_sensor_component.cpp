@@ -17,12 +17,7 @@ namespace esphome
             _ha_fake_state->set(500);
         }
 
-        void RipnetUkLightshowInputSensorComponent::loop()
-        {
-            draw();
-        }
-
-        void RipnetUkLightshowInputSensorComponent::draw()
+        void RipnetUkLightshowInputSensorComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
         {
             float realPower = _sensor->state;
             float fakePower = _ha_fake_state->state;
@@ -30,7 +25,7 @@ namespace esphome
 
             if (isnan(realPower))
             {
-                drawHoldingPattern();
+                drawHoldingPattern(frame);
             }
             else
             {
@@ -38,7 +33,7 @@ namespace esphome
 
                 float deltaNeeded = measuredPower - _currentDisplayState;
                 // Limit change speed to get an animation
-                float maxDelta = RANGESIZE / _core->get_pixel_count() * 2; // 4 led per cycle
+                float maxDelta = RANGESIZE / frame->pixels->size() * 2; // 4 led per cycle
 
                 float deltaToApply = deltaNeeded;
                 if (deltaToApply > maxDelta)
@@ -50,15 +45,15 @@ namespace esphome
                     deltaToApply = 0 - maxDelta;
                 }
                 _currentDisplayState += deltaToApply;
-                drawPower(_currentDisplayState);
+                drawPower(frame, _currentDisplayState);
             }
         }
 
-        void RipnetUkLightshowInputSensorComponent::drawHoldingPattern()
+        void RipnetUkLightshowInputSensorComponent::drawHoldingPattern(ripnetuk_lightshow_core::Frame *frame)
         {
-            int activeLed = (_core->get_clock()->time() / 200) % _core->get_pixel_count();
+            int activeLed = (frame->time / 200) % frame->pixels->size();
 
-            for (int i = 0; i < _core->get_pixel_count(); i++)
+            for (int i = 0; i < frame->pixels->size(); i++)
             {
                 ripnetuk_lightshow_core::RGB pxl = ripnetuk_lightshow_core::OFF_PIXEL;
 
@@ -75,20 +70,19 @@ namespace esphome
                 {
                     pxl.g = (i == activeLed) ? 1 : 0;
                 }
-                _core->_pixels[i] = pxl;
+                frame->pixels->at(i)->set(&pxl);
             }
         }
 
-        void RipnetUkLightshowInputSensorComponent::drawOutOfRange(ripnetuk_lightshow_core::RGB rgb)
+        void RipnetUkLightshowInputSensorComponent::drawOutOfRange(ripnetuk_lightshow_core::Frame *frame, ripnetuk_lightshow_core::RGB *rgb)
         {
-            bool isOn = ((_core->get_clock()->time() / 500) % 2) != 0;
-            for (int i = 0; i < _core->get_pixel_count(); i++)
-            {
-                _core->_pixels[i] = isOn ? rgb : ripnetuk_lightshow_core::OFF_PIXEL;
-            }
+            bool isOn = ((frame->time / 500) % 2) != 0;
+
+            ripnetuk_lightshow_core::RGB color = isOn ? *rgb : ripnetuk_lightshow_core::OFF_PIXEL;
+            frame->set_all(&color);
         }
 
-        void RipnetUkLightshowInputSensorComponent::drawPower(float power)
+        void RipnetUkLightshowInputSensorComponent::drawPower(ripnetuk_lightshow_core::Frame *frame, float power)
         {
             int rangeRGBCount = sizeof(ripnetuk_lightshow_core::rangeRGBs) / sizeof(ripnetuk_lightshow_core::rangeRGBs[0]);
 
@@ -98,12 +92,14 @@ namespace esphome
             //  Check we are in range...
             if (power < 0)
             {
-                drawOutOfRange({1, 0, 0, 1});
+                ripnetuk_lightshow_core::RGB rgb = {1, 0, 0, 1};
+                drawOutOfRange(frame, &rgb);
                 return;
             }
             if (rangeIndex >= rangeRGBCount)
             {
-                drawOutOfRange({1, 1, 1, 1});
+                ripnetuk_lightshow_core::RGB rgb = {1, 10, 1, 1};
+                drawOutOfRange(frame, &rgb);
                 return;
             }
 
@@ -113,7 +109,7 @@ namespace esphome
 
             // We reseerve 1 LED so we can anlways tell what range is
 
-            float lengthPerLED = RANGESIZE / (_core->get_pixel_count() - 1);
+            float lengthPerLED = RANGESIZE / (frame->pixels->size() - 1);
 
             int ledsToLight = positionInRange / lengthPerLED;
             float remainder = positionInRange - (ledsToLight * lengthPerLED);
@@ -122,9 +118,9 @@ namespace esphome
 
             // ESP_LOGD(TAG, "Measured Power %f - PositionInRange %f - rangeLength %f - lengthPerLED %f - remainder %f -- LEDS to Light %d remainderBrightness %f", power, positionInRange, rangeLength, lengthPerLED, remainder, ledsToLight, remainderBrightness);
 
-            auto rangeRGB = ripnetuk_lightshow_core::rangeRGBs[rangeIndex];
+            ripnetuk_lightshow_core::RGB rangeRGB = ripnetuk_lightshow_core::rangeRGBs[rangeIndex];
 
-            for (int i = 0; i < _core->get_pixel_count(); i++)
+            for (int i = 0; i < frame->pixels->size(); i++)
             {
                 ripnetuk_lightshow_core::RGB pxl = ripnetuk_lightshow_core::OFF_PIXEL;
                 // Always light first one
@@ -143,7 +139,7 @@ namespace esphome
                     pxl = rangeRGB;
                     pxl.brightness = remainder / lengthPerLED;
                 }
-                _core->_pixels[i] = pxl;
+                frame->pixels->at(i)->set(&pxl);
             }
         }
     }

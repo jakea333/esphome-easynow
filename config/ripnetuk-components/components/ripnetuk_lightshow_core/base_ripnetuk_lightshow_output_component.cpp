@@ -12,9 +12,5 @@ namespace esphome
     {
       return setup_priority::HARDWARE;
     }
-    
-    void BaseRipnetUkLightshowOutputComponent::output_frame(ripnetuk_lightshow_core::Frame *frame)
-    {
-    }
   }
 }

@@ -13,7 +13,7 @@ namespace esphome
             float g;
             float b;
             float brightness;
-            void set(RGB* rgb);
+            void set(RGB *rgb);
         };
 
         const RGB OFF_PIXEL = {0, 0, 0, 1};
