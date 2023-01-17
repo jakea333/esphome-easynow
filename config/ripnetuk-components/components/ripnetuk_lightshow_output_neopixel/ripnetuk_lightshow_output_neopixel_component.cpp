@@ -37,7 +37,7 @@ namespace esphome
       {
         // FIX ME D3
         // _neoPixel = new Adafruit_NeoPixel(_core->get_pixel_count(), D3, NEO_GRB + NEO_KHZ800);
-        _neoPixel = new Adafruit_NeoPixel(frame->pixels->size(), D3, NEO_GRB + NEO_KHZ800);
+        _neoPixel = new Adafruit_NeoPixel(frame->pixels->size(), 23, NEO_GRB + NEO_KHZ800);
 
         _neoPixel->begin();
       }
