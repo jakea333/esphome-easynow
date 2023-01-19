@@ -11,7 +11,7 @@
 #define TFT_MOSI 23
 #define TFT_CLK 19
 #define TFT_RST 18
-#define TFT_MISO 25
+#define TFT_MISO 13
 
 // Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 //  If using the breakout, change pins as desired
@@ -33,9 +33,9 @@ namespace esphome
     {
       if (_ha_test->state)
       {
-        // ESP_LOGD(TAG, "Frame start %d", frame->time);
+        ESP_LOGD(TAG, "Frame start %d", frame->time);
         run_test();
-        // ESP_LOGD(TAG, "....Frame End %d", frame->time);
+        ESP_LOGD(TAG, "....Frame End %d", frame->time);
       }
     }
 
@@ -45,3 +45,16 @@ namespace esphome
     }
   }
 }
+
+
+// # spi: 
+// #   clk_pin: 19
+// #   mosi_pin: 23
+// #   miso_pin: 25 /// NOW 13
+
+// i2c:
+//   sda: 26
+//   scl: 25
+//   #   cs_pin: 22
+//   #   dc_pin: 21
+//   #   reset_pin: 18
