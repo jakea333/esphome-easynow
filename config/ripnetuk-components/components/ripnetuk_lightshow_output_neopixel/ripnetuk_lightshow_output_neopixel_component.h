@@ -18,10 +18,10 @@ namespace esphome
     public:
       void setup() override;
       // void set_lightshow_core(ripnetuk_lightshow_core::RipnetUkLightshowCoreComponent *core) { _core = core; }
-      void set_pin(GPIOPin *pin) { _pin = pin; }
+      void set_pin(int pin) { _pin = pin; }
       void output_frame(ripnetuk_lightshow_core::Frame *frame);
     private:
-      GPIOPin *_pin;
+      int _pin;
       // ripnetuk_lightshow_core::RipnetUkLightshowCoreComponent *_core;
 
       ripnetuk_ui::RipnetUkNumberComponent *_ha_brightness = new ripnetuk_ui::RipnetUkNumberComponent("Brightness", number::NUMBER_MODE_BOX, 0, 1, 0.001);
