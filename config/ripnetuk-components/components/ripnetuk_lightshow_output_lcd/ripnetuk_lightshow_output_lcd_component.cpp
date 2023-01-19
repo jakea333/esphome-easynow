@@ -13,9 +13,8 @@
 #define TFT_RST 18
 #define TFT_MISO 25
 
-
-//Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-// If using the breakout, change pins as desired
+// Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+//  If using the breakout, change pins as desired
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
 namespace esphome
@@ -27,11 +26,22 @@ namespace esphome
     void RipnetUkLightshowOutputLcdComponent::setup()
     {
       tft.begin();
+      _ha_test->set(false);
     }
 
     void RipnetUkLightshowOutputLcdComponent::output_frame(ripnetuk_lightshow_core::Frame *frame)
     {
-      tft.fillScreen(frame->time % 0xFFFF);
+      if (_ha_test->state)
+      {
+        // ESP_LOGD(TAG, "Frame start %d", frame->time);
+        run_test();
+        // ESP_LOGD(TAG, "....Frame End %d", frame->time);
+      }
+    }
+
+    void  RipnetUkLightshowOutputLcdComponent::run_test()
+    {
+        tft.fillScreen(millis() % 0xFFFF);
     }
   }
 }
