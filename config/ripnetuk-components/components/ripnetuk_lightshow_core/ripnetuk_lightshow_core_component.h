@@ -9,7 +9,6 @@
 #include "base_ripnetuk_lightshow_input_component.h"
 #include "base_ripnetuk_lightshow_output_component.h"
 
-#include <Adafruit_NeoPixel.h>
 #include "RGB.h"
 
 namespace esphome
