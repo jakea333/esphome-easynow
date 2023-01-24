@@ -10,7 +10,10 @@ namespace esphome
     namespace ripnetuk_lightshow_input_sensor
     {
         static const char *TAG = "ripnetuk_lightshow_input_sensor";
-
+        float RipnetUkLightshowInputSensorComponent::get_setup_priority() const
+        {
+            return setup_priority::HARDWARE;
+        }
         void RipnetUkLightshowInputSensorComponent::setup()
         {
             _ha_use_fake_state->set(false);

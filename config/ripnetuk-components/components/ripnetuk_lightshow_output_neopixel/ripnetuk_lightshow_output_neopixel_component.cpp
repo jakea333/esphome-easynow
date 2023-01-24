@@ -9,6 +9,11 @@ namespace esphome
   namespace ripnetuk_lightshow_output_neopixel
   {
     static const char *TAG = "ripnetuk_lightshow_output_neopixel";
+    
+    float RipnetUkLightshowOutputNeopixelComponent::get_setup_priority() const
+    {
+      return setup_priority::HARDWARE;
+    }
 
     void RipnetUkLightshowOutputNeopixelComponent::setup()
     {

@@ -14,12 +14,13 @@ namespace esphome
 {
   namespace ripnetuk_lightshow_input_sensor
   {
-    class RipnetUkLightshowInputSensorComponent : public ripnetuk_lightshow_core::BaseRipnetUkLightshowInputComponent
+    class RipnetUkLightshowInputSensorComponent : public Component, public ripnetuk_lightshow_core::BaseRipnetUkLightshowInputComponent
     {
     public:
       void set_sensor(sensor::Sensor *sensor) { _sensor = sensor; }
       void setup() override;
       void input_frame(ripnetuk_lightshow_core::Frame *frame);
+      float get_setup_priority() const override;
 
     private:
       sensor::Sensor *_sensor;

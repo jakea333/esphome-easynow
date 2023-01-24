@@ -8,9 +8,9 @@ namespace esphome
   {
     static const char *TAG = "base_ripnetuk_lightshow_output";
 
-    float BaseRipnetUkLightshowOutputComponent::get_setup_priority() const
-    {
-      return setup_priority::HARDWARE;
-    }
+    // float BaseRipnetUkLightshowOutputComponent::get_setup_priority() const
+    // {
+    //   return setup_priority::HARDWARE;
+    // }
   }
 }
