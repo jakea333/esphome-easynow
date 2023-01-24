@@ -1,7 +1,6 @@
 #include "ripnetuk_lightshow_output_lcd_component.h"
 #include "esphome/core/log.h"
 #include "esphome.h"
-
 // #include "SPI.h"
 // #include <Adafruit_GFX.h>
 // #include <Adafruit_ILI9341.h>
@@ -30,6 +29,8 @@ namespace esphome
 
     void RipnetUkLightshowOutputLcdComponent::setup()
     {
+      set_buffer_color_mode(ili9341::BITS_8);
+      ILI9341TFT24:setup();
       // tft.begin();
       _ha_test->set(false);
     }
