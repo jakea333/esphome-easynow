@@ -3,8 +3,8 @@
 #include "esphome/core/component.h"
 #include "esphome/components/spi/spi.h"
 #include "esphome/components/display/display_buffer.h"
-#include "ili9341_defines.h"
-#include "ili9341_init.h"
+#include "lcd_defines.h"
+#include "lcd_init.h"
 #include "esphome/core/log.h"
 
 namespace esphome

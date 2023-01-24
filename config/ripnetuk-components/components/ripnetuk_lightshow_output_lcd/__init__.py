@@ -4,7 +4,7 @@ from esphome.const import CONF_ID
 from esphome import pins
 from esphome.components import sensor
 
-DEPENDENCIES = ['logger', 'ripnetuk_lightshow_core', 'ripnetuk_ui']
+DEPENDENCIES = ['logger', 'ripnetuk_lightshow_core', 'ripnetuk_ui', 'spi']
 AUTO_LOAD = ['ripnetuk_ui']
 
 corens = cg.esphome_ns.namespace('ripnetuk_lightshow_core')
