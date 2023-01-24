@@ -23,6 +23,11 @@ namespace esphome
   {
     static const char *TAG = "ripnetuk_lightshow_output_lcd";
 
+    float RipnetUkLightshowOutputLcdComponent::get_setup_priority() const
+    {
+      return setup_priority::HARDWARE;
+    }
+
     void RipnetUkLightshowOutputLcdComponent::setup()
     {
       // tft.begin();
@@ -39,15 +44,14 @@ namespace esphome
       }
     }
 
-    void  RipnetUkLightshowOutputLcdComponent::run_test()
+    void RipnetUkLightshowOutputLcdComponent::run_test()
     {
-        // tft.fillScreen(millis() % 0xFFFF);
+      // tft.fillScreen(millis() % 0xFFFF);
     }
   }
 }
 
-
-// # spi: 
+// # spi:
 // #   clk_pin: 19
 // #   mosi_pin: 23
 // #   miso_pin: 25 /// NOW 13
