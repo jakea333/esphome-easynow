@@ -30,7 +30,7 @@ namespace esphome
     void RipnetUkLightshowOutputLcdComponent::setup()
     {
       set_buffer_color_mode(ili9341::BITS_8);
-      ILI9341TFT24:setup();
+      ILI9341TFT24::setup();
       // tft.begin();
       _ha_test->set(false);
     }
