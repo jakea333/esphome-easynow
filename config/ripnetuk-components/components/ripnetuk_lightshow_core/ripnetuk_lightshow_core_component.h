@@ -32,6 +32,8 @@ namespace esphome
             std::vector<BaseRipnetUkLightshowOutputComponent *> *_outputs = new std::vector<BaseRipnetUkLightshowOutputComponent *>();
             std::vector<BaseRipnetUkLightshowInputComponent *> *_inputs = new std::vector<BaseRipnetUkLightshowInputComponent *>();
             ripnetuk_clock::RipnetUkClockComponent *_clock;
+            float merge_channel(float target, float to_merge);
+            void merge_frame(Frame *target, Frame *to_merge);
         };
     } // namespace debug
 } // namespace esphome

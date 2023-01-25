@@ -74,7 +74,7 @@ namespace esphome
                 {
                     pxl.g = (i == activeLed) ? 1 : 0;
                 }
-                frame->pixels->at(i)->mix(&pxl);
+                frame->pixels->at(i)->set(&pxl);
             }
         }
 
@@ -83,7 +83,7 @@ namespace esphome
             bool isOn = ((frame->time / 500) % 2) != 0;
 
             ripnetuk_lightshow_core::RGB color = isOn ? *rgb : ripnetuk_lightshow_core::OFF_PIXEL;
-            frame->mix_all(&color);
+            frame->set_all(&color);
         }
 
         void RipnetUkLightshowInputSensorComponent::drawPower(ripnetuk_lightshow_core::Frame *frame, float power)
@@ -143,7 +143,7 @@ namespace esphome
                     pxl = rangeRGB;
                     pxl.scale(remainderBrightness);
                 }
-                frame->pixels->at(i)->mix(&pxl);
+                frame->pixels->at(i)->set(&pxl);
             }
         }
     }

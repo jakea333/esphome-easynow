@@ -40,13 +40,13 @@ namespace esphome
       }
     }
     
-    void Frame::mix_all(RGB *rgb)
-    {
-      for (int i = 0; i < pixels->size(); i++)
-      {
-        pixels->at(i)->mix(rgb);
-      }
-    }
+    // void Frame::mix_all(RGB *rgb)
+    // {
+    //   for (int i = 0; i < pixels->size(); i++)
+    //   {
+    //     pixels->at(i)->mix(rgb);
+    //   }
+    // }
 
   }
 }

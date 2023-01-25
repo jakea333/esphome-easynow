@@ -14,15 +14,15 @@ namespace esphome
             b = rgb->b;
         }
 
-        void RGB::mix(RGB *rgb)
-        {
-            if (rgb->r > r)
-                r = rgb->r;
-            if (rgb->g > g)
-                g = rgb->g;
-            if (rgb->b > b)
-                b = rgb->b;
-        }
+        // void RGB::mix(RGB *rgb)
+        // {
+        //     if (rgb->r > r)
+        //         r = rgb->r;
+        //     if (rgb->g > g)
+        //         g = rgb->g;
+        //     if (rgb->b > b)
+        //         b = rgb->b;
+        // }
 
         void RGB::scale(float multiplier)
         {
