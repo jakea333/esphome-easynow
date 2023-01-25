@@ -23,6 +23,8 @@ namespace esphome
 
     private:
       ripnetuk_ui::RipnetUkNumberComponent *_ha_effect = new ripnetuk_ui::RipnetUkNumberComponent("Effect", number::NUMBER_MODE_BOX, 0, 30, 1);
+       ripnetuk_ui::RipnetUkNumberComponent *_ha_s = new ripnetuk_ui::RipnetUkNumberComponent("Effect S", number::NUMBER_MODE_BOX, 0, 1, 0.1);
+        ripnetuk_ui::RipnetUkNumberComponent *_ha_v = new ripnetuk_ui::RipnetUkNumberComponent("Effect V", number::NUMBER_MODE_BOX, 0, 1, 0.1);
     };
 
   } // namespace 

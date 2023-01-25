@@ -19,6 +19,8 @@ namespace esphome
         void RipnetUkLightshowInputEffectComponent::setup()
         {
             _ha_effect->set(3);
+            _ha_s->set(0.7);
+            _ha_v->set(0.2);
         }
 
         void RipnetUkLightshowInputEffectComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
@@ -48,8 +50,8 @@ namespace esphome
                 {
                     int index = i + start_index;
                     float h = index % 360;
-                    float s = 0.7;
-                    float v = 0.2;
+                    float s = _ha_s->state;
+                    float v = _ha_v->state;
                     col.set_from_hsv(h, s, v);
                 }
 
@@ -57,8 +59,8 @@ namespace esphome
                 {
                     int index = start_index - i + 720;
                     float h = index % 360;
-                    float s = 0.7;
-                    float v = 0.2;
+                    float s = _ha_s->state;
+                    float v = _ha_v->state;
                     col.set_from_hsv(h, s, v);
                 }
 
