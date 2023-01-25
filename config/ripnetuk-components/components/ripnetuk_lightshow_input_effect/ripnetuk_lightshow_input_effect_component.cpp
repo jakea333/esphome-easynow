@@ -15,43 +15,33 @@ namespace esphome
         {
             return setup_priority::HARDWARE;
         }
-        
+
         void RipnetUkLightshowInputEffectComponent::setup()
         {
-            // _ha_use_fake_state->set(false);
-            // _ha_fake_state->set(500);
+            _ha_effect->set(1);
         }
 
         void RipnetUkLightshowInputEffectComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
         {
-            // float realPower = _sensor->state;
-            // float fakePower = _ha_fake_state->state;
-            // bool useFakePower = _ha_use_fake_state->state;
+            int effect = _ha_effect->state;
 
-            // if (isnan(realPower))
-            // {
-            //     drawHoldingPattern(frame);
-            // }
-            // else
-            // {
-            //     float measuredPower = useFakePower ? fakePower : realPower;
+            for (int i = 0; i < frame->pixels->size(); i++)
+            {
+                int index = (frame->time / 500) + i;
+                ESP_LOGD(TAG, "index %d", index);
+                if (effect == 1)
+                {
+                    ripnetuk_lightshow_core::RGB col = {0, 0, 0};
 
-            //     float deltaNeeded = measuredPower - _currentDisplayState;
-            //     // Limit change speed to get an animation
-            //     float maxDelta = RANGESIZE / frame->pixels->size() * 2; // 4 led per cycle
+                    col.r = (index % 100) / 100.0;
+                    col.g = (index % 200) / 200.0;
+                    col.b = (index % 400) / 400.0;
 
-            //     float deltaToApply = deltaNeeded;
-            //     if (deltaToApply > maxDelta)
-            //     {
-            //         deltaToApply = maxDelta;
-            //     }
-            //     if (deltaToApply < (0 - maxDelta))
-            //     {
-            //         deltaToApply = 0 - maxDelta;
-            //     }
-            //     _currentDisplayState += deltaToApply;
-            //     drawPower(frame, _currentDisplayState);
-            // }
+                    col.dump_to_log();
+
+                    frame->pixels->at(i)->mix(&col);
+                }
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ namespace esphome
       int time;
       std::vector<RGB*> *pixels;
       void set_all(RGB* rgb);
+      void mix_all(RGB* rgb);
     private:
     };
 

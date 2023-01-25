@@ -39,5 +39,14 @@ namespace esphome
         pixels->at(i)->set(rgb);
       }
     }
+    
+    void Frame::mix_all(RGB *rgb)
+    {
+      for (int i = 0; i < pixels->size(); i++)
+      {
+        pixels->at(i)->mix(rgb);
+      }
+    }
+
   }
 }

@@ -22,8 +22,7 @@ namespace esphome
       float get_setup_priority() const override;
 
     private:
-      // ripnetuk_ui::RipnetUkSwitchComponent *_ha_use_fake_state = new ripnetuk_ui::RipnetUkSwitchComponent("Use Fake State");
-      // ripnetuk_ui::RipnetUkNumberComponent *_ha_fake_state = new ripnetuk_ui::RipnetUkNumberComponent("Fake State", number::NUMBER_MODE_BOX, 0, 30000, 100);
+      ripnetuk_ui::RipnetUkNumberComponent *_ha_effect = new ripnetuk_ui::RipnetUkNumberComponent("Effect", number::NUMBER_MODE_BOX, 0, 30, 1);
     };
 
   } // namespace 

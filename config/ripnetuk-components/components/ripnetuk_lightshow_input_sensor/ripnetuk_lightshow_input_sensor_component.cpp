@@ -65,7 +65,6 @@ namespace esphome
                 pxl.r = 0;
                 pxl.g = 0;
                 pxl.b = 0;
-                pxl.brightness = 1;
 
                 if (WiFi.status() != WL_CONNECTED)
                 {
@@ -75,7 +74,7 @@ namespace esphome
                 {
                     pxl.g = (i == activeLed) ? 1 : 0;
                 }
-                frame->pixels->at(i)->set(&pxl);
+                frame->pixels->at(i)->mix(&pxl);
             }
         }
 
@@ -84,7 +83,7 @@ namespace esphome
             bool isOn = ((frame->time / 500) % 2) != 0;
 
             ripnetuk_lightshow_core::RGB color = isOn ? *rgb : ripnetuk_lightshow_core::OFF_PIXEL;
-            frame->set_all(&color);
+            frame->mix_all(&color);
         }
 
         void RipnetUkLightshowInputSensorComponent::drawPower(ripnetuk_lightshow_core::Frame *frame, float power)
@@ -97,13 +96,13 @@ namespace esphome
             //  Check we are in range...
             if (power < 0)
             {
-                ripnetuk_lightshow_core::RGB rgb = {1, 0, 0, 1};
+                ripnetuk_lightshow_core::RGB rgb = {1, 0, 0};
                 drawOutOfRange(frame, &rgb);
                 return;
             }
             if (rangeIndex >= rangeRGBCount)
             {
-                ripnetuk_lightshow_core::RGB rgb = {1, 10, 1, 1};
+                ripnetuk_lightshow_core::RGB rgb = {1, 10, 1};
                 drawOutOfRange(frame, &rgb);
                 return;
             }
@@ -142,9 +141,9 @@ namespace esphome
                 if (i == ledsToLight + 1)
                 {
                     pxl = rangeRGB;
-                    pxl.brightness = remainder / lengthPerLED;
+                    pxl.scale(remainderBrightness);
                 }
-                frame->pixels->at(i)->set(&pxl);
+                frame->pixels->at(i)->mix(&pxl);
             }
         }
     }

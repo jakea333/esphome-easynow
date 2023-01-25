@@ -54,11 +54,10 @@ namespace esphome
       for (int i = 0; i < frame->pixels->size(); i++)
       {
         ripnetuk_lightshow_core::RGB *pxl = frame->pixels->at(i);
-        float overallBrightness = pxl->brightness * masterBrightness;
 
-        int r = scaleToByte(pxl->r, overallBrightness);
-        int g = scaleToByte(pxl->g, overallBrightness);
-        int b = scaleToByte(pxl->b, overallBrightness);
+        int r = scaleToByte(pxl->r, masterBrightness);
+        int g = scaleToByte(pxl->g, masterBrightness);
+        int b = scaleToByte(pxl->b, masterBrightness);
 
         _neoPixel->setPixelColor(i, _neoPixel->Color(r, g, b));
         // ESP_LOGD(TAG, "%d %d %d", r, g, b);
