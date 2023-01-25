@@ -27,17 +27,17 @@ namespace esphome
 
             for (int i = 0; i < frame->pixels->size(); i++)
             {
-                int index = (frame->time / 500) + i;
-                ESP_LOGD(TAG, "index %d", index);
+                int index = (frame->time / 10) + i + 80000;
+                //ESP_LOGD(TAG, "index %d", index);
                 if (effect == 1)
                 {
                     ripnetuk_lightshow_core::RGB col = {0, 0, 0};
 
-                    col.r = (index % 100) / 100.0;
-                    col.g = (index % 200) / 200.0;
-                    col.b = (index % 400) / 400.0;
+                    col.r = (index % 100) / 200.0;
+                    col.g = (index % 200) / 400.0;
+                    col.b = (index % 400) / 800.0;
 
-                    col.dump_to_log();
+                    //col.dump_to_log();
 
                     frame->pixels->at(i)->mix(&col);
                 }
