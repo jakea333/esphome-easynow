@@ -33,9 +33,9 @@ namespace esphome
                 {
                     ripnetuk_lightshow_core::RGB col = {0, 0, 0};
 
-                    col.r = (index % 100) / 200.0;
-                    col.g = (index % 200) / 400.0;
-                    col.b = (index % 400) / 800.0;
+                    col.r = (index % 100) / 400.0;
+                    col.g = (index % 200) / 800.0;
+                    col.b = (index % 400) / 1600.0;
 
                     //col.dump_to_log();
 
