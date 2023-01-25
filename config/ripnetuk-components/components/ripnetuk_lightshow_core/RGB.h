@@ -13,6 +13,7 @@ namespace esphome
             float g;
             float b;
             void set(RGB *rgb);
+            void set_from_hsv(float h, float s, float v);
             void scale(float multiplier);
             void dump_to_log();
         };

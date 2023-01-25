@@ -18,29 +18,51 @@ namespace esphome
 
         void RipnetUkLightshowInputEffectComponent::setup()
         {
-            _ha_effect->set(1);
+            _ha_effect->set(3);
         }
 
         void RipnetUkLightshowInputEffectComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
         {
             int effect = _ha_effect->state;
+            float time_for_entire_length = 3000;
+            float time_per_pixel = time_for_entire_length / frame->pixels->size();
+
+            int start_index = frame->time / time_per_pixel;
+
+            start_index += 12883; // start somewhere interesting
 
             for (int i = 0; i < frame->pixels->size(); i++)
             {
-                int index = (frame->time / 10) + i + 80000;
-                //ESP_LOGD(TAG, "index %d", index);
+
+                ripnetuk_lightshow_core::RGB col = {0, 0, 0};
+
                 if (effect == 1)
                 {
-                    ripnetuk_lightshow_core::RGB col = {0, 0, 0};
-
+                    int index = i + start_index;
                     col.r = (index % 100) / 200.0;
                     col.g = (index % 200) / 400.0;
                     col.b = (index % 400) / 800.0;
-
-                    //col.dump_to_log();
-
-                    frame->pixels->at(i)->set(&col);
                 }
+
+                if (effect == 2)
+                {
+                    int index = i + start_index;
+                    float h = index % 360;
+                    float s = 0.7;
+                    float v = 0.2;
+                    col.set_from_hsv(h, s, v);
+                }
+
+                if (effect == 3)
+                {
+                    int index = start_index - i + 720;
+                    float h = index % 360;
+                    float s = 0.7;
+                    float v = 0.2;
+                    col.set_from_hsv(h, s, v);
+                }
+
+                frame->pixels->at(i)->set(&col);
             }
         }
     }

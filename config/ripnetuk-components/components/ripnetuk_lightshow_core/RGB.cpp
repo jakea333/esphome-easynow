@@ -35,6 +35,65 @@ namespace esphome
         {
             ESP_LOGD(TAG, "%f %f %f", r, g, b);
         }
+
+        void RGB::set_from_hsv(float h, float s, float v)
+        {
+            double hh, p, q, t, ff;
+            long i;
+
+            if (s <= 0.0)
+            { // < is bogus, just shuts up warnings
+                r = v;
+                g = v;
+                b = v;
+                return;
+            }
+            hh = h;
+            if (hh >= 360.0)
+                hh = 0.0;
+            hh /= 60.0;
+            i = (long)hh;
+            ff = hh - i;
+            p = v * (1.0 - s);
+            q = v * (1.0 - (s * ff));
+            t = v * (1.0 - (s * (1.0 - ff)));
+
+            switch (i)
+            {
+            case 0:
+                r = v;
+                g = t;
+                b = p;
+                break;
+            case 1:
+                r = q;
+                g = v;
+                b = p;
+                break;
+            case 2:
+                r = p;
+                g = v;
+                b = t;
+                break;
+
+            case 3:
+                r = p;
+                g = q;
+                b = v;
+                break;
+            case 4:
+                r = t;
+                g = p;
+                b = v;
+                break;
+            case 5:
+            default:
+                r = v;
+                g = p;
+                b = q;
+                break;
+            }
+        }
     }
 }
 
@@ -77,7 +136,7 @@ namespace esphome
 //     if( max > 0.0 ) { // NOTE: if Max is == 0, this divide would cause a crash
 //         out.s = (delta / max);                  // s
 //     } else {
-//         // if max is 0, then r = g = b = 0              
+//         // if max is 0, then r = g = b = 0
 //         // s = 0, h is undefined
 //         out.s = 0.0;
 //         out.h = NAN;                            // its now undefined
@@ -99,61 +158,60 @@ namespace esphome
 //     return out;
 // }
 
-
 // rgb hsv2rgb(hsv in)
 // {
-//     double      hh, p, q, t, ff;
-//     long        i;
-//     rgb         out;
+// double      hh, p, q, t, ff;
+// long        i;
+// rgb         out;
 
-//     if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
-//         out.r = in.v;
-//         out.g = in.v;
-//         out.b = in.v;
-//         return out;
-//     }
-//     hh = in.h;
-//     if(hh >= 360.0) hh = 0.0;
-//     hh /= 60.0;
-//     i = (long)hh;
-//     ff = hh - i;
-//     p = in.v * (1.0 - in.s);
-//     q = in.v * (1.0 - (in.s * ff));
-//     t = in.v * (1.0 - (in.s * (1.0 - ff)));
+// if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
+//     out.r = in.v;
+//     out.g = in.v;
+//     out.b = in.v;
+//     return out;
+// }
+// hh = in.h;
+// if(hh >= 360.0) hh = 0.0;
+// hh /= 60.0;
+// i = (long)hh;
+// ff = hh - i;
+// p = in.v * (1.0 - in.s);
+// q = in.v * (1.0 - (in.s * ff));
+// t = in.v * (1.0 - (in.s * (1.0 - ff)));
 
-//     switch(i) {
-//     case 0:
-//         out.r = in.v;
-//         out.g = t;
-//         out.b = p;
-//         break;
-//     case 1:
-//         out.r = q;
-//         out.g = in.v;
-//         out.b = p;
-//         break;
-//     case 2:
-//         out.r = p;
-//         out.g = in.v;
-//         out.b = t;
-//         break;
+// switch(i) {
+// case 0:
+//     out.r = in.v;
+//     out.g = t;
+//     out.b = p;
+//     break;
+// case 1:
+//     out.r = q;
+//     out.g = in.v;
+//     out.b = p;
+//     break;
+// case 2:
+//     out.r = p;
+//     out.g = in.v;
+//     out.b = t;
+//     break;
 
-//     case 3:
-//         out.r = p;
-//         out.g = q;
-//         out.b = in.v;
-//         break;
-//     case 4:
-//         out.r = t;
-//         out.g = p;
-//         out.b = in.v;
-//         break;
-//     case 5:
-//     default:
-//         out.r = in.v;
-//         out.g = p;
-//         out.b = q;
-//         break;
-//     }
-//     return out;     
+// case 3:
+//     out.r = p;
+//     out.g = q;
+//     out.b = in.v;
+//     break;
+// case 4:
+//     out.r = t;
+//     out.g = p;
+//     out.b = in.v;
+//     break;
+// case 5:
+// default:
+//     out.r = in.v;
+//     out.g = p;
+//     out.b = q;
+//     break;
+// }
+// return out;
 // }
