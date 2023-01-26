@@ -15,7 +15,7 @@ namespace esphome
         {
             return setup_priority::HARDWARE;
         }
-        
+
         void RipnetUkLightshowInputSensorComponent::setup()
         {
             _ha_use_fake_state->set(false);
@@ -124,6 +124,10 @@ namespace esphome
 
             ripnetuk_lightshow_core::RGB rangeRGB = ripnetuk_lightshow_core::rangeRGBs[rangeIndex];
 
+            int gap_after = 2;
+            if (frame->pixels->size() < 20)
+                gap_after = 1;
+
             for (int i = 0; i < frame->pixels->size(); i++)
             {
                 ripnetuk_lightshow_core::RGB pxl = ripnetuk_lightshow_core::OFF_PIXEL;
@@ -143,7 +147,7 @@ namespace esphome
                     pxl = rangeRGB;
                     pxl.scale(remainderBrightness);
                 }
-                if ((i > (ledsToLight+1)) && ( i < (ledsToLight+4)))
+                if ((i > (ledsToLight + 1)) && (i <= (ledsToLight + 1 + gap_after)))
                 {
                     // Gap after sensor so as not to interfere with effect
                     pxl.r = 0.001;
