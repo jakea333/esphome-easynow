@@ -23,7 +23,7 @@ namespace esphome
             _ha_v->set(0.2);
         }
 
-        void RipnetUkLightshowInputEffectComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
+        void RipnetUkLightshowInputEffectComponent::input_frame(ripnetuk_lightshow_core::Frame *frame, ripnetuk_lightshow_core::Frame *output_frame_so_far)
         {
             int effect = _ha_effect->state;
             float time_for_entire_length = 3000;
@@ -35,6 +35,12 @@ namespace esphome
 
             for (int i = 0; i < frame->pixels->size(); i++)
             {
+                if (!output_frame_so_far->pixels->at(i)->is_black())
+                {
+                    ripnetuk_lightshow_core::RGB black = ripnetuk_lightshow_core::RGB {0,0,0};
+                    frame->pixels->at(i)->set(&black);
+                    continue;
+                }
 
                 ripnetuk_lightshow_core::RGB col = {0, 0, 0};
 

@@ -48,7 +48,7 @@ namespace esphome
             {
                 Frame *input_frame = new Frame(_pixel_count);
                 input_frame->time = frame->time;
-                _inputs->at(i)->input_frame(input_frame);
+                _inputs->at(i)->input_frame(input_frame, frame);
                 merge_frame(frame, input_frame);
                 delete (input_frame);
             }

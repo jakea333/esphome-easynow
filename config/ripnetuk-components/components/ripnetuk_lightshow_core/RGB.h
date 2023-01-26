@@ -16,6 +16,7 @@ namespace esphome
             void set_from_hsv(float h, float s, float v);
             void scale(float multiplier);
             void dump_to_log();
+            bool is_black();
         };
 
         const RGB OFF_PIXEL = {0, 0, 0};

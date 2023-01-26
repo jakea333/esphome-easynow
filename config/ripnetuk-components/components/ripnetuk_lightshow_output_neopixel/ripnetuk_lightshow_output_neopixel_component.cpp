@@ -17,7 +17,7 @@ namespace esphome
 
     void RipnetUkLightshowOutputNeopixelComponent::setup()
     {
-      _ha_brightness->set(0.01);
+      _ha_brightness->set(0.1);
     }
 
     int RipnetUkLightshowOutputNeopixelComponent::scaleToByte(double value, double brightness)

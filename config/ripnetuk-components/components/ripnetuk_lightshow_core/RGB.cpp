@@ -36,6 +36,11 @@ namespace esphome
             ESP_LOGD(TAG, "%f %f %f", r, g, b);
         }
 
+        bool RGB::is_black()
+        {
+            return (r == 0) && (g == 0) && (b == 0);
+        }
+
         void RGB::set_from_hsv(float h, float s, float v)
         {
             double hh, p, q, t, ff;

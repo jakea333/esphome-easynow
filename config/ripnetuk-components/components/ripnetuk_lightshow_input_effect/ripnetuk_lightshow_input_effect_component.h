@@ -18,7 +18,7 @@ namespace esphome
     {
     public:
       void setup() override;
-      void input_frame(ripnetuk_lightshow_core::Frame *frame);
+      void input_frame(ripnetuk_lightshow_core::Frame *frame, ripnetuk_lightshow_core::Frame *output_frame_so_far);
       float get_setup_priority() const override;
 
     private:

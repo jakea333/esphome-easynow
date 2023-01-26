@@ -22,7 +22,7 @@ namespace esphome
             _ha_fake_state->set(500);
         }
 
-        void RipnetUkLightshowInputSensorComponent::input_frame(ripnetuk_lightshow_core::Frame *frame)
+        void RipnetUkLightshowInputSensorComponent::input_frame(ripnetuk_lightshow_core::Frame *frame, ripnetuk_lightshow_core::Frame *output_frame_so_far)
         {
             float realPower = _sensor->state;
             float fakePower = _ha_fake_state->state;
