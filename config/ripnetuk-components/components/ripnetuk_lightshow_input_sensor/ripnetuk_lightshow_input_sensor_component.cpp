@@ -38,7 +38,7 @@ namespace esphome
 
                 float deltaNeeded = measuredPower - _currentDisplayState;
                 // Limit change speed to get an animation
-                float maxDelta = RANGESIZE / frame->pixels->size() * 2; // 4 led per cycle
+                float maxDelta = RANGESIZE / frame->pixels->size() * 4;
 
                 float deltaToApply = deltaNeeded;
                 if (deltaToApply > maxDelta)
