@@ -23,7 +23,7 @@ namespace esphome
             void set_pixel_count(int pixel_count) { _pixel_count = pixel_count; }
             int get_pixel_count() { return _pixel_count; }
             ripnetuk_clock::RipnetUkClockComponent *get_clock() { return _clock; }
-            RGB _pixels[200]; // TODO: MAKE THIS NICER but for now I only have 144 max...
+            RGB _pixels[144*4]; // TODO: MAKE THIS NICER but for now I only have 288 max...
             void add_input(BaseRipnetUkLightshowInputComponent *input) { _inputs->push_back(input); }
             void add_output(BaseRipnetUkLightshowOutputComponent *output) { _outputs->push_back(output); }
             void loop() override;
