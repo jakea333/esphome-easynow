@@ -143,6 +143,13 @@ namespace esphome
                     pxl = rangeRGB;
                     pxl.scale(remainderBrightness);
                 }
+                if ((i > (ledsToLight+1)) && ( i < (ledsToLight+4)))
+                {
+                    // Gap after sensor so as not to interfere with effect
+                    pxl.r = 0.001;
+                    pxl.g = 0.001;
+                    pxl.b = 0.001;
+                }
                 frame->pixels->at(i)->set(&pxl);
             }
         }
