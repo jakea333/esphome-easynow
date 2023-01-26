@@ -124,7 +124,7 @@ namespace esphome
 
             ripnetuk_lightshow_core::RGB rangeRGB = ripnetuk_lightshow_core::rangeRGBs[rangeIndex];
 
-            int gap_after = 2;
+            int gap_after = 4;
             if (frame->pixels->size() < 20)
                 gap_after = 1;
 
