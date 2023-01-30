@@ -1,6 +1,7 @@
 #include "proxy_transmitter.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
+#include "../proxy_base/proxy_payload.h"
 
 namespace esphome
 {
@@ -10,7 +11,8 @@ namespace esphome
 
     void ProxyTransmitterComponent::loop()
     {
-      ESP_LOGD(TAG, "Transmitter Time %d", millis());
+      proxy_base::ProxyPayload pl;
+      ESP_LOGD(TAG, "Time %d magic %d", millis(), pl.get_magic_number());
     }
 
     float ProxyTransmitterComponent::get_setup_priority() const
