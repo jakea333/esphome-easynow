@@ -11,7 +11,7 @@ namespace esphome
     class ProxyReceiverComponent : public proxy_base::ProxyBaseComponent
     {
     protected:
-      void handle_received_proxy_message(proxy_base::proxy_message *message) override;
+      void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:
       void loop() override;

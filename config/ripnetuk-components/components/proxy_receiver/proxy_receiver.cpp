@@ -14,7 +14,8 @@ namespace esphome
 
     void ProxyReceiverComponent::setup()
     {
-      setup_espnow(11, peer_address);
+      setup_espnow(11);
+      add_espnow_peer(peer_address);
     }
 
     void ProxyReceiverComponent::loop()
@@ -22,7 +23,7 @@ namespace esphome
       proxy_base::ProxyBaseComponent::loop();
     }
 
-    void ProxyReceiverComponent::handle_received_proxy_message(proxy_base::proxy_message *message)
+    void ProxyReceiverComponent::handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message)
     {
       ESP_LOGD(TAG, "HANDLE RECEIVED MESSAGE");
     }

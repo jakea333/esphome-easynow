@@ -17,7 +17,7 @@ namespace esphome
       esp_now_peer_info_t peerInfo;
       static std::vector<ProxyBaseComponent *> *callback_component_list_;
       static void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
-      static void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len);
+      static void OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
 
     public:
       ProxyBaseComponent();
@@ -26,9 +26,10 @@ namespace esphome
 
     protected:
       bool espnow_is_setup_{false};
-      bool setup_espnow(int channel, uint8_t receiverAddress[]);
+      bool setup_espnow(int channel);
+      bool add_espnow_peer(uint8_t peer_mac_address[]);
       bool send_proxy_message(proxy_message *message);
-      virtual void handle_received_proxy_message(proxy_message *message) = 0;
+      virtual void handle_received_proxy_message(const uint8_t *mac_addr, proxy_message *message) = 0;
     };
 
   } // namespace proxy_base

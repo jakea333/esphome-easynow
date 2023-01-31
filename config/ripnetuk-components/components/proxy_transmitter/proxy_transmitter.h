@@ -14,7 +14,7 @@ namespace esphome
       int last_testmessage_millis{0};
 
     protected:
-      void handle_received_proxy_message(proxy_base::proxy_message *message) override;
+      void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:
       void loop() override;

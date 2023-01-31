@@ -24,14 +24,14 @@ namespace esphome
       ESP_LOGD(TAG, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
     }
 
-    void ProxyBaseComponent::OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
+    void ProxyBaseComponent::OnDataRecv(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     {
       proxy_message message;
       memcpy(&message, incomingData, sizeof(message));
       ESP_LOGD(TAG, "Bytes received: %d messge_type %d", len, message.message_type);
       for (int i = 0; i < callback_component_list_->size(); i++)
       {
-        callback_component_list_->at(i)->handle_received_proxy_message(&message);
+        callback_component_list_->at(i)->handle_received_proxy_message(mac_addr, &message);
       }
     }
 
@@ -49,7 +49,7 @@ namespace esphome
       return setup_priority::LATE;
     }
 
-    bool ProxyBaseComponent::setup_espnow(int channel, uint8_t peer_address[])
+    bool ProxyBaseComponent::setup_espnow(int channel)
     {
       espnow_is_setup_ = false;
 
@@ -66,6 +66,13 @@ namespace esphome
       esp_now_register_send_cb(OnDataSent);
       esp_now_register_recv_cb(OnDataRecv);
 
+      espnow_is_setup_ = true;
+      
+      return true;
+    }
+
+    bool ProxyBaseComponent::add_espnow_peer(uint8_t peer_address[])
+    {
       memcpy(peerInfo.peer_addr, peer_address, 6);
       peerInfo.channel = 11;
       peerInfo.encrypt = false;
@@ -76,7 +83,7 @@ namespace esphome
         return false;
         ESP_LOGD(TAG, "Peer Added");
       }
-      espnow_is_setup_ = true;
+
       return true;
     }
 
