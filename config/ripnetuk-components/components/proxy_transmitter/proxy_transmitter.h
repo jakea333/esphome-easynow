@@ -1,18 +1,16 @@
 #pragma once
 
 #include "esphome/core/component.h"
-
+#include "../proxy_base/proxy_base.h"
 
 namespace esphome
 {
   namespace proxy_transmitter
   {
 
-    class ProxyTransmitterComponent : public Component
+    class ProxyTransmitterComponent : public proxy_base::ProxyBaseComponent
     {
     public:
-      float get_setup_priority() const override;
-      void loop() override;
     };
 
   } // namespace proxy_transmitter
