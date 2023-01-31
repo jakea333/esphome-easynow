@@ -13,6 +13,9 @@ namespace esphome
     private:
       int last_testmessage_millis{0};
 
+    protected:
+      void handle_received_proxy_message(proxy_base::proxy_message *message) override;
+
     public:
       void loop() override;
       void setup() override;

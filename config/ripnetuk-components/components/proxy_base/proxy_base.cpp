@@ -11,17 +11,28 @@ namespace esphome
   {
     static const char *TAG = "proxy_base";
 
-    void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+    std::vector<ProxyBaseComponent *> *ProxyBaseComponent::callback_component_list_ = new std::vector<ProxyBaseComponent *>();
+
+    ProxyBaseComponent::ProxyBaseComponent()
+    {
+      callback_component_list_->push_back(this);
+    }
+
+    void ProxyBaseComponent::ProxyBaseComponent::OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
     {
       ESP_LOGD(TAG, "Last Packet Send Status:");
       ESP_LOGD(TAG, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
     }
 
-    void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
+    void ProxyBaseComponent::OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len)
     {
       proxy_message message;
       memcpy(&message, incomingData, sizeof(message));
       ESP_LOGD(TAG, "Bytes received: %d messge_type %d", len, message.message_type);
+      for (int i = 0; i < callback_component_list_->size(); i++)
+      {
+        callback_component_list_->at(i)->handle_received_proxy_message(&message);
+      }
     }
 
     void ProxyBaseComponent::loop()
@@ -54,7 +65,7 @@ namespace esphome
 
       esp_now_register_send_cb(OnDataSent);
       esp_now_register_recv_cb(OnDataRecv);
-      
+
       memcpy(peerInfo.peer_addr, peer_address, 6);
       peerInfo.channel = 11;
       peerInfo.encrypt = false;

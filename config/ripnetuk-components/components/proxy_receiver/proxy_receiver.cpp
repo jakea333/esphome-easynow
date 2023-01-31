@@ -21,5 +21,10 @@ namespace esphome
     {
       proxy_base::ProxyBaseComponent::loop();
     }
+
+    void ProxyReceiverComponent::handle_received_proxy_message(proxy_base::proxy_message *message)
+    {
+      ESP_LOGD(TAG, "HANDLE RECEIVED MESSAGE");
+    }
   } // namespace proxy_receiver
 } // namespace esphome

@@ -34,5 +34,10 @@ namespace esphome
         send_proxy_message(&msg);
       }
     }
+
+    void ProxyTransmitterComponent::handle_received_proxy_message(proxy_base::proxy_message *message)
+    {
+      ESP_LOGD(TAG, "HANDLE RECEIVED MESSAGE");
+    }
   } // namespace proxy_transmitter
 } // namespace esphome
