@@ -1,4 +1,4 @@
-#include "transmitter_info.h"
+#include "receiver_info.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
 #include <WiFi.h>
@@ -7,9 +7,9 @@
 
 namespace esphome
 {
-  namespace proxy_receiver
+  namespace proxy_transmitter
   {
 
-    static const char *TAG = "TransmitterInfo";
+    static const char *TAG = "ReceiverInfo";
   } // namespace proxy_receiver
 } // namespace esphome

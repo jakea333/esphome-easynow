@@ -17,7 +17,7 @@ namespace esphome
     void ProxyTransmitterComponent::setup()
     {
       setup_espnow(11);
-      add_espnow_peer(receiver_mac_address_);
+      add_espnow_peer(receiver_->mac_address);
     }
 
     void ProxyTransmitterComponent::loop()

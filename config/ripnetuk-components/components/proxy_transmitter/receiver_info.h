@@ -3,9 +3,9 @@
 
 namespace esphome
 {
-  namespace proxy_receiver
+  namespace proxy_transmitter
   {
-    class TransmitterInfo : public proxy_base::PeerInfoBase
+    class ReceiverInfo : public proxy_base::PeerInfoBase
     {
     };
 
