@@ -3,6 +3,8 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 
+#define PROXY_LOG_PERIOD 2000
+
 namespace esphome
 {
   namespace proxy_base
@@ -11,7 +13,11 @@ namespace esphome
 
     void ProxyBaseComponent::loop()
     {
-      ESP_LOGD(TAG, "%s Time %d ", WiFi.macAddress().c_str(), millis());
+      if ((millis() - last_log_millis_) > PROXY_LOG_PERIOD)
+      {
+        last_log_millis_ = millis();
+        ESP_LOGD(TAG, "%s Time %d ", WiFi.macAddress().c_str(), millis());
+      }
     }
 
     float ProxyBaseComponent::get_setup_priority() const
