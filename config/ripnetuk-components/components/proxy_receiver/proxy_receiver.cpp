@@ -12,6 +12,10 @@ namespace esphome
 
     static const char *TAG = "proxy_receiver";
 
+    void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, int testinput)
+    {
+    }
+    
     void ProxyReceiverComponent::setup()
     {
       setup_espnow(11);
