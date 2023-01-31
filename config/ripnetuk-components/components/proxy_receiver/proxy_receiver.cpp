@@ -22,8 +22,10 @@ namespace esphome
     void ProxyReceiverComponent::setup()
     {
       setup_espnow(11);
+      ESP_LOGD(TAG, "Adding peers...");
       for (int i = 0; i < transmitters_->size(); i++)
       {
+        // ESP_LOGD(TAG, "Adding 1 peer...");
         add_espnow_peer(transmitters_->at(i)->mac_address);
       }
     }

@@ -3,7 +3,7 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 
-#define PROXY_LOG_PERIOD 2000
+#define PROXY_LOG_PERIOD 60000
 
 namespace esphome
 {
@@ -82,7 +82,7 @@ namespace esphome
       }
       // memcpy(peerInfo.peer_addr, peer_mac_address, 6);
 
-      ESP_LOGD(TAG, "Add peer %d:%d:%d:%d:%d:%d", peerInfo.peer_addr[0], peerInfo.peer_addr[1], peerInfo.peer_addr[2], peerInfo.peer_addr[3], peerInfo.peer_addr[4], peerInfo.peer_addr[5]);
+      ESP_LOGD(TAG, "Add peer %02X:%02X:%02X:%02X:%02X:%02X", peerInfo.peer_addr[0], peerInfo.peer_addr[1], peerInfo.peer_addr[2], peerInfo.peer_addr[3], peerInfo.peer_addr[4], peerInfo.peer_addr[5]);
       peerInfo.channel = 11;
       peerInfo.encrypt = false;
 
