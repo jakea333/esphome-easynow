@@ -11,6 +11,8 @@ namespace esphome
     class ProxyReceiverComponent : public proxy_base::ProxyBaseComponent
     {
     public:
+      void loop() override;
+      void setup() override;
     };
 
   } // namespace proxy_receiver
