@@ -6,18 +6,18 @@
 
 #define TEST_MESSAGE_PERIOD 5000
 
-uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFD, 0x84, 0x58};
+// uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFD, 0x84, 0x58};
 
 namespace esphome
 {
   namespace proxy_transmitter
   {
-    static const char *TAG = "proxy_transmitter";
+    static const char *TAG = "ProxyTransmitterComponent";
 
     void ProxyTransmitterComponent::setup()
     {
       setup_espnow(11);
-      add_espnow_peer(peer_address);
+      add_espnow_peer(receiver_mac_address_);
     }
 
     void ProxyTransmitterComponent::loop()

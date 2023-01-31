@@ -9,7 +9,7 @@ namespace esphome
 {
   namespace proxy_base
   {
-    static const char *TAG = "proxy_base";
+    static const char *TAG = "ProxyBaseComponent";
 
     std::vector<ProxyBaseComponent *> *ProxyBaseComponent::callback_component_list_ = new std::vector<ProxyBaseComponent *>();
 
@@ -67,13 +67,22 @@ namespace esphome
       esp_now_register_recv_cb(OnDataRecv);
 
       espnow_is_setup_ = true;
-      
+
       return true;
     }
 
-    bool ProxyBaseComponent::add_espnow_peer(uint8_t peer_address[])
+    bool ProxyBaseComponent::add_espnow_peer(uint64_t peer_mac_address)
     {
-      memcpy(peerInfo.peer_addr, peer_address, 6);
+      const uint8_t *peer_mac_address_bytes = reinterpret_cast<const uint8_t *>(&peer_mac_address);
+
+      // Its little endian on our ESPs so cant just use as is..
+      for (int i = 0; i < 6; i++)
+      {
+        peerInfo.peer_addr[i] = peer_mac_address_bytes[5 - i];
+      }
+      // memcpy(peerInfo.peer_addr, peer_mac_address, 6);
+
+      ESP_LOGD(TAG, "Add peer %d:%d:%d:%d:%d:%d", peerInfo.peer_addr[0], peerInfo.peer_addr[1], peerInfo.peer_addr[2], peerInfo.peer_addr[3], peerInfo.peer_addr[4], peerInfo.peer_addr[5]);
       peerInfo.channel = 11;
       peerInfo.encrypt = false;
 

@@ -27,7 +27,7 @@ namespace esphome
     protected:
       bool espnow_is_setup_{false};
       bool setup_espnow(int channel);
-      bool add_espnow_peer(uint8_t peer_mac_address[]);
+      bool add_espnow_peer(uint64_t peer_mac_address);
       bool send_proxy_message(proxy_message *message);
       virtual void handle_received_proxy_message(const uint8_t *mac_addr, proxy_message *message) = 0;
     };

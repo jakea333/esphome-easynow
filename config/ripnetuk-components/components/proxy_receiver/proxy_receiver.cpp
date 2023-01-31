@@ -3,23 +3,29 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 
-uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFC, 0x5E, 0xE0};
+// uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFC, 0x5E, 0xE0};
 
 namespace esphome
 {
   namespace proxy_receiver
   {
 
-    static const char *TAG = "proxy_receiver";
+    static const char *TAG = "ProxyReceiverComponent";
 
     void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, int testinput)
     {
+      TransmitterInfo *transmitter_info = new TransmitterInfo();
+      transmitter_info->mac_address = mac_address;
+      transmitters_->push_back(transmitter_info);
     }
-    
+
     void ProxyReceiverComponent::setup()
     {
       setup_espnow(11);
-      add_espnow_peer(peer_address);
+      for (int i = 0; i < transmitters_->size(); i++)
+      {
+        add_espnow_peer(transmitters_->at(i)->mac_address);
+      }
     }
 
     void ProxyReceiverComponent::loop()
