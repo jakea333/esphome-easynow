@@ -1,11 +1,11 @@
 #pragma once
-#include "../proxy_base/peer_info_base.h"
+#include "../proxy_base/peer_base.h"
 
 namespace esphome
 {
   namespace proxy_receiver
   {
-    class TransmitterInfo : public proxy_base::PeerInfoBase
+    class PeerTransmitter : public proxy_base::PeerBase
     {
     };
 

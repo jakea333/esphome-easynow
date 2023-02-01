@@ -6,7 +6,7 @@ namespace esphome
 {
   namespace proxy_base
   {
-    class PeerInfoBase
+    class PeerBase
     {
     private:
     public:

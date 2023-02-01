@@ -2,7 +2,7 @@
 
 #include "esphome/core/component.h"
 #include "../proxy_base/proxy_base.h"
-#include "transmitter_info.h"
+#include "peer_transmitter.h"
 #include <vector>
 
 namespace esphome
@@ -12,7 +12,7 @@ namespace esphome
     class ProxyReceiverComponent : public proxy_base::ProxyBaseComponent
     {
     private:
-      std::vector<TransmitterInfo *> *transmitters_ = new std::vector<TransmitterInfo *>();
+      std::vector<PeerTransmitter *> *peer_transmitters_ = new std::vector<PeerTransmitter *>();
 
     protected:
       int espnow_channel_;

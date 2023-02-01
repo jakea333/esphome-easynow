@@ -13,18 +13,18 @@ namespace esphome
 
     void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, int testinput)
     {
-      TransmitterInfo *transmitter_info = new TransmitterInfo();
-      transmitter_info->mac_address = mac_address;
-      transmitters_->push_back(transmitter_info);
+      PeerTransmitter *peer_transmitter = new PeerTransmitter();
+      peer_transmitter->mac_address = mac_address;
+      peer_transmitters_->push_back(peer_transmitter);
     }
 
     void ProxyReceiverComponent::setup()
     {
       setup_espnow(11);
       ESP_LOGD(TAG->get_tag(), "Adding peers...");
-      for (int i = 0; i < transmitters_->size(); i++)
+      for (int i = 0; i < peer_transmitters_->size(); i++)
       {
-        add_espnow_peer(transmitters_->at(i)->mac_address);
+        add_espnow_peer(peer_transmitters_->at(i)->mac_address);
       }
     }
 
