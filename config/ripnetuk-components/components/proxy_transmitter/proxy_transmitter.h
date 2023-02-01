@@ -15,8 +15,7 @@ namespace esphome
       int last_testmessage_millis{0};
 
     protected:
-      int espnow_channel_;
-      PeerReceiver * peer_receiver_ = new PeerReceiver();
+      PeerReceiver *peer_receiver_ = new PeerReceiver();
       void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:

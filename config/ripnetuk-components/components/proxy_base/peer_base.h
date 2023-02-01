@@ -1,6 +1,8 @@
 #pragma once
 
 #include "esphome/core/hal.h"
+#include <esp_now.h>
+#include "proxy_messages.h"
 
 namespace esphome
 {
@@ -9,9 +11,12 @@ namespace esphome
     class PeerBase
     {
     private:
+      esp_now_peer_info_t peerInfo;
+
     public:
       uint64_t mac_address;
-
+      bool add_espnow_peer(int espnow_channel);
+      bool send_proxy_message(proxy_message *message);
     protected:
     };
   } // namespace proxy_base

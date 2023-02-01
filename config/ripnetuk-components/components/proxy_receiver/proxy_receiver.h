@@ -15,7 +15,6 @@ namespace esphome
       std::vector<PeerTransmitter *> *peer_transmitters_ = new std::vector<PeerTransmitter *>();
 
     protected:
-      int espnow_channel_;
       void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:

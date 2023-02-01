@@ -15,13 +15,12 @@ namespace esphome
 
     void ProxyTransmitterComponent::setup()
     {
-      setup_espnow(11);
-      add_espnow_peer(receiver_->mac_address);
+      setup_espnow(espnow_channel_);
+      peer_receiver_->add_espnow_peer(espnow_channel_);
     }
 
     void ProxyTransmitterComponent::loop()
     {
-
       proxy_base::ProxyBaseComponent::loop();
       if ((millis() - last_testmessage_millis) > TEST_MESSAGE_PERIOD)
       {
@@ -31,7 +30,7 @@ namespace esphome
         msg.message_type = proxy_base::PING;
         msg.time_stamp = millis();
 
-        send_proxy_message(&msg);
+        peer_receiver_->send_proxy_message(&msg);
       }
     }
 
