@@ -19,7 +19,7 @@ namespace esphome
       static std::vector<PeerBase *> *global_peer_list_;
       void on_data_send_callback(esp_now_send_status_t status);
       void on_data_recv_callback(const uint8_t *incomingData, int len);
-      static PeerBase *find_peer_in_global_peer_list(const uint8_t *mac_addr);
+      static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
 
     public:
       PeerMacAddress mac_address;
