@@ -3,16 +3,15 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 #include "../proxy_base/proxy_messages.h"
+#include "../proxy_base/log_tag.h"
 
 #define TEST_MESSAGE_PERIOD 5000
-
-// uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFD, 0x84, 0x58};
 
 namespace esphome
 {
   namespace proxy_transmitter
   {
-    static const char *TAG = "ProxyTransmitterComponent";
+    proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyTransmitterComponent");
 
     void ProxyTransmitterComponent::setup()
     {
@@ -38,7 +37,7 @@ namespace esphome
 
     void ProxyTransmitterComponent::handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message)
     {
-      ESP_LOGD(TAG, "HANDLE RECEIVED MESSAGE");
+      ESP_LOGD(TAG->get_tag(), "HANDLE RECEIVED MESSAGE");
     }
   } // namespace proxy_transmitter
 } // namespace esphome
