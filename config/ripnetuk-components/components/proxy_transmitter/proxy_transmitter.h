@@ -23,7 +23,7 @@ namespace esphome
       void loop() override;
       void setup() override;
       void set_espnow_channel(int channel) { espnow_channel_ = channel; }
-      void set_receiver_mac_address(uint64_t mac_address) { peer_receiver_->mac_address = mac_address; };
+      void set_receiver_mac_address(uint64_t mac_address) { peer_receiver_->mac_address.set_from_uint64_t(mac_address); };
     };
 
   } // namespace proxy_transmitter

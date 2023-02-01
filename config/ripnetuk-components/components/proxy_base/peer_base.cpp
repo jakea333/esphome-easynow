@@ -11,21 +11,15 @@ namespace esphome
 
     bool PeerBase::add_espnow_peer(int espnow_channel)
     {
-      const uint8_t *peer_mac_address_bytes = reinterpret_cast<const uint8_t *>(&mac_address);
+      ESP_LOGD(TAG->get_tag(), "Add peer %s", mac_address.as_string);
 
-      // Its little endian on our ESPs so cant just use as is..
-      for (int i = 0; i < 6; i++)
-      {
-        peerInfo.peer_addr[i] = peer_mac_address_bytes[5 - i];
-      }
-      // memcpy(peerInfo.peer_addr, peer_mac_address, 6);
+      memcpy(&peer_info_.peer_addr, &mac_address.as_uint8_t_array, sizeof(peer_info_.peer_addr));
 
-      ESP_LOGD(TAG->get_tag(), "Add peer %02X:%02X:%02X:%02X:%02X:%02X", peerInfo.peer_addr[0], peerInfo.peer_addr[1], peerInfo.peer_addr[2], peerInfo.peer_addr[3], peerInfo.peer_addr[4], peerInfo.peer_addr[5]);
+      // peer_info_.peer_addr = mac_address.as_uint8_t_array;
+      peer_info_.channel = espnow_channel;
+      peer_info_.encrypt = false;
 
-      peerInfo.channel = espnow_channel;
-      peerInfo.encrypt = false;
-
-      if (esp_now_add_peer(&peerInfo) != ESP_OK)
+      if (esp_now_add_peer(&peer_info_) != ESP_OK)
       {
         ESP_LOGD(TAG->get_tag(), "Failed to add peer");
         return false;
@@ -37,7 +31,7 @@ namespace esphome
 
     bool PeerBase::send_proxy_message(proxy_message *message)
     {
-      esp_err_t result = esp_now_send(peerInfo.peer_addr, (uint8_t *)message, sizeof(*message));
+      esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)message, sizeof(*message));
 
       if (result != ESP_OK)
       {
@@ -50,25 +44,15 @@ namespace esphome
 
     PeerBase *PeerBase::find_peer_in_global_peer_list(const uint8_t *mac_addr)
     {
+      PeerMacAddress callback_peer;
+      callback_peer.set_from_uint8_t_array(mac_addr);
 
-      for (int i_peer = 0; i_peer < global_peer_list_->size(); i_peer++)
+      for (int i = 0; i < global_peer_list_->size(); i++)
       {
-        PeerBase *peer = global_peer_list_->at(i_peer);
-        const uint8_t *peer_mac_address_bytes = reinterpret_cast<const uint8_t *>(&peer->mac_address);
-        bool is_match = true;
-        for (int i = 0; i < 6; i++)
-        {
-          if (mac_addr[i] != peer_mac_address_bytes[5 - i])
-          {
-            is_match = false;
-            break;
-          }
-        }
-        if (is_match)
-        {
-          return peer;
-        }
+        if (global_peer_list_->at(i)->mac_address.mac_address_equals(&callback_peer))
+          return global_peer_list_->at(i);
       }
+
       return NULL;
     }
 
