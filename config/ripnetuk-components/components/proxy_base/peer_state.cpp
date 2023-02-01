@@ -11,9 +11,11 @@ namespace esphome
             case PS_UNSET:
                 output->append("Unset");
                 break;
-            case PS_PEER_ADDED:
-                output->append("Peer Added");
+            case PS_READY:
+                output->append("Ready");
                 break;
+            case PS_T_AWAIT_R_TO_T_CHECKIN_RESP:
+                output->append("(T) Await R to T Check in Response");
             default:
                 output->append("!! UNKONWN PEER STATE TYPE !!");
             }

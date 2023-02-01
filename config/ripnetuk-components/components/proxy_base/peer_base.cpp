@@ -28,7 +28,7 @@ namespace esphome
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
-      set_state(PS_PEER_ADDED);
+      set_state(PS_READY);
 
       return true;
     }
