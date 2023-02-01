@@ -6,12 +6,17 @@
 #include "log_tag.h"
 #include <vector>
 #include "peer_mac_address.h"
-#include "peer_state.h"
 
 namespace esphome
 {
   namespace proxy_base
   {
+    enum peer_state
+    {
+      PS_UNSET = 5,
+      PS_NEW = 10,
+    };
+
     class PeerBase
     {
     private:
@@ -21,6 +26,7 @@ namespace esphome
       void on_data_send_callback(esp_now_send_status_t status);
       void on_data_recv_callback(const uint8_t *incomingData, int len);
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
+      void describe_state(std::string *output);
 
     public:
       PeerMacAddress mac_address;
@@ -31,8 +37,10 @@ namespace esphome
       static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
 
     protected:
-      PeerState *state = new PeerState();
       LogTag *TAG = new LogTag("PeerBase");
+      peer_state state_ = PS_UNSET;
+      int last_state_change_millis_;
+      void set_state(peer_state state);
     };
   } // namespace proxy_base
 } // namespace esphome
