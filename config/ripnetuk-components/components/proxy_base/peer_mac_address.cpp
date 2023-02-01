@@ -36,12 +36,13 @@ namespace esphome
 
     void PeerMacAddress::update_as_string()
     {
-      if (as_string != NULL)
+      for (int i = 0; i < ESP_NOW_ETH_ALEN; i++)
       {
-        free(as_string);
+        if (i < (ESP_NOW_ETH_ALEN - 1))
+          sprintf(&as_string[i * 3], "%02X:", as_uint8_t_array[i]);
+        else
+          sprintf(&as_string[i * 3], "%02X", as_uint8_t_array[i]);
       }
-      as_string = (char *)malloc(3 * ESP_NOW_ETH_ALEN);
-      sprintf(as_string, "%02X:%02X:%02X:%02X:%02X:%02X", as_uint8_t_array[0], as_uint8_t_array[1], as_uint8_t_array[2], as_uint8_t_array[3], as_uint8_t_array[4], as_uint8_t_array[5]);
     }
 
   } // namespace proxy_base

@@ -72,7 +72,9 @@ namespace esphome
 
     void PeerBase::call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     {
+
       PeerMacAddress callback_peer;
+      
       callback_peer.set_from_uint8_t_array(mac_addr);
 
       PeerBase *peer = find_peer_in_global_peer_list(&callback_peer);
