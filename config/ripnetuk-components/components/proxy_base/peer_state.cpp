@@ -16,6 +16,7 @@ namespace esphome
                 break;
             case PS_T_AWAIT_R_TO_T_CHECKIN_RESP:
                 output->append("(T) Await R to T Check in Response");
+                break;
             default:
                 output->append("!! UNKONWN PEER STATE TYPE !!");
             }

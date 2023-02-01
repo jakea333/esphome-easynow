@@ -38,6 +38,7 @@ namespace esphome
       int last_state_change_millis_;
       void set_state(peer_state state);
       peer_state get_state();
+      void reset_state(const char *reason);
       bool send_proxy_message(proxy_message *message);
       virtual void handle_received_proxy_message(proxy_message *message) = 0;
     };

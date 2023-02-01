@@ -28,7 +28,7 @@ namespace esphome
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
-      set_state(PS_READY);
+      reset_state("ESP Now Peer Added");
 
       return true;
     }
@@ -106,6 +106,8 @@ namespace esphome
       describe_proxy_message(&desc, &message);
 
       ESP_LOGD(TAG->get_tag(), "< Data Recv from %s (%s)", mac_address.as_string, desc.c_str());
+
+      handle_received_proxy_message(&message);
     }
 
     peer_state PeerBase::get_state()
@@ -126,6 +128,12 @@ namespace esphome
       ESP_LOGD(TAG->get_tag(), "State change on %s from %s to %s after %f3s", mac_address.as_string, old_desc.c_str(), new_desc.c_str(), (millis() - last_state_change_millis_) / 1000.0);
 
       last_state_change_millis_ = millis();
+    }
+
+    void PeerBase::reset_state(const char *reason)
+    {
+      ESP_LOGD(TAG->get_tag(), "*** Resetting state - %s", reason);
+      set_state(PS_READY);
     }
   } // namespace proxy_base
 } // namespace esphome

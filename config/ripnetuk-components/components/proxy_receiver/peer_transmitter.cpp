@@ -20,6 +20,13 @@ namespace esphome
 
     void PeerTransmitter::loop()
     {
+      if (get_state() == proxy_base::PS_READY)
+      {
+        // Just waiting for incoming messages.
+        return;
+      }
+
+      ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
   } // namespace proxy_receiver
 } // namespace esphome

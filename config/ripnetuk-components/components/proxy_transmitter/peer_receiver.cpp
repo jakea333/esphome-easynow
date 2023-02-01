@@ -3,6 +3,8 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 
+#define RESPONSE_TIMEOUT 5000
+
 namespace esphome
 {
   namespace proxy_transmitter
@@ -23,7 +25,8 @@ namespace esphome
 
     void PeerReceiver::loop()
     {
-      ESP_LOGD(TAG->get_tag(), "LOOP");
+      int time_since_last_state_change_ms = millis() - last_state_change_millis_;
+
       if (get_state() == proxy_base::PS_READY)
       {
         // Want to send a checkin
@@ -32,9 +35,19 @@ namespace esphome
         send_proxy_message(&msg);
         // Set state to awaiting R_TO_T_CHECKIN_RESP
         set_state(proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP);
-      }
-      return;
 
+        return;
+      }
+
+      if (get_state() == proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP)
+      {
+        if (time_since_last_state_change_ms > RESPONSE_TIMEOUT)
+        {
+          reset_state("Timeout waiting for R to T Check in respponse");  
+        }
+        return;
+      }
+      
       ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
   } // namespace proxy_receiver
