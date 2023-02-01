@@ -23,6 +23,7 @@ namespace esphome
       float get_setup_priority() const override;
 
     protected:
+      LogTag *TAG = new LogTag("ProxyBaseComponent");
       int espnow_channel_;
       bool espnow_is_setup_{false};
       bool setup_espnow(int channel);

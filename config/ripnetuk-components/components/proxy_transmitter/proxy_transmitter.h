@@ -3,6 +3,7 @@
 #include "esphome/core/component.h"
 #include "../proxy_base/proxy_base.h"
 #include "peer_receiver.h"
+#include "../proxy_base/log_tag.h"
 
 namespace esphome
 {

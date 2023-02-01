@@ -4,6 +4,7 @@
 #include "../proxy_base/proxy_base.h"
 #include "peer_transmitter.h"
 #include <vector>
+#include "../proxy_base/log_tag.h"
 
 namespace esphome
 {
@@ -15,6 +16,7 @@ namespace esphome
       std::vector<PeerTransmitter *> *peer_transmitters_ = new std::vector<PeerTransmitter *>();
 
     protected:
+      proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyReceiverComponent");
       void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:

@@ -1,13 +1,10 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
-#include "log_tag.h"
 
 namespace esphome
 {
   namespace proxy_base
   {
-    LogTag *TAG = new LogTag("PeerBase");
-
     bool PeerBase::add_espnow_peer(int espnow_channel)
     {
       const uint8_t *peer_mac_address_bytes = reinterpret_cast<const uint8_t *>(&mac_address);

@@ -3,7 +3,6 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 #include "../proxy_base/proxy_messages.h"
-#include "../proxy_base/log_tag.h"
 
 #define TEST_MESSAGE_PERIOD 5000
 
