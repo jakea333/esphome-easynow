@@ -28,7 +28,7 @@ namespace esphome
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
-      set_state(PS_NEW);
+      set_state(PS_PEER_ADDED);
 
       return true;
     }
@@ -126,10 +126,10 @@ namespace esphome
       switch (state_)
       {
       case PS_UNSET:
-        output->append("UNSET");
+        output->append("Unset");
         break;
-      case PS_NEW:
-        output->append("NEW");
+      case PS_PEER_ADDED:
+        output->append("Peer Added");
         break;
       default:
         output->append("!! UNKONWN PEER STATE TYPE !!");

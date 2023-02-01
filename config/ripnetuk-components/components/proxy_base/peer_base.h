@@ -14,7 +14,7 @@ namespace esphome
     enum peer_state
     {
       PS_UNSET = 5,
-      PS_NEW = 10,
+      PS_PEER_ADDED = 10,
     };
 
     class PeerBase
