@@ -20,22 +20,7 @@ namespace esphome
 
     void ProxyTransmitterComponent::loop()
     {
-      proxy_base::ProxyBaseComponent::loop();
-      if ((millis() - last_testmessage_millis) > TEST_MESSAGE_PERIOD)
-      {
-        last_testmessage_millis = millis();
-
-        // proxy_base::proxy_message msg;
-        // msg.message_type = proxy_base::PING;
-        // msg.time_stamp = millis();
-
-        // peer_receiver_->send_proxy_message(&msg);
-      }
-    }
-
-    void ProxyTransmitterComponent::handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message)
-    {
-      ESP_LOGD(TAG->get_tag(), "HANDLE RECEIVED MESSAGE");
+      peer_receiver_->loop();
     }
   } // namespace proxy_transmitter
 } // namespace esphome

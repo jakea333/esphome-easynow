@@ -9,10 +9,21 @@ namespace esphome
   {
     void PeerReceiver::handle_received_proxy_message(proxy_base::proxy_message *message)
     {
+      if (get_state() == proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP)
+      {
+        if (message->message_type == proxy_base::R_TO_T_CHECKIN_RESP)
+        {
+          set_state(proxy_base::PS_READY);
+        }
+        return;
+      }
+
+      ESP_LOGD(TAG->get_tag(), "Unexpected message type %d when in state %d", message->message_type, get_state());
     }
 
     void PeerReceiver::loop()
     {
+      ESP_LOGD(TAG->get_tag(), "LOOP");
       if (get_state() == proxy_base::PS_READY)
       {
         // Want to send a checkin
@@ -22,7 +33,9 @@ namespace esphome
         // Set state to awaiting R_TO_T_CHECKIN_RESP
         set_state(proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP);
       }
-    }
+      return;
 
+      ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
+    }
   } // namespace proxy_receiver
 } // namespace esphome

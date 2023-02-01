@@ -10,10 +10,12 @@ namespace esphome
   {
     class PeerReceiver : public proxy_base::PeerBase
     {
+    public:
+      void loop();
+
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
       void handle_received_proxy_message(proxy_base::proxy_message *message);
-      void loop();
     };
 
   } // namespace proxy_receiver

@@ -8,8 +8,6 @@ namespace esphome
   namespace proxy_receiver
   {
 
-
-
     void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, int testinput)
     {
       PeerTransmitter *peer_transmitter = new PeerTransmitter();
@@ -29,12 +27,11 @@ namespace esphome
 
     void ProxyReceiverComponent::loop()
     {
-      proxy_base::ProxyBaseComponent::loop();
+      for (int i = 0; i < peer_transmitters_->size(); i++)
+      {
+        peer_transmitters_->at(i)->loop();
+      }
     }
 
-    void ProxyReceiverComponent::handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message)
-    {
-      ESP_LOGD(TAG->get_tag(), "HANDLE RECEIVED MESSAGE");
-    }
   } // namespace proxy_receiver
 } // namespace esphome

@@ -17,7 +17,6 @@ namespace esphome
 
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyReceiverComponent");
-      void handle_received_proxy_message(const uint8_t *mac_addr, proxy_base::proxy_message *message) override;
 
     public:
       void loop() override;

@@ -13,7 +13,6 @@ namespace esphome
   namespace proxy_base
   {
 
-
     class PeerBase
     {
     private:
@@ -31,6 +30,7 @@ namespace esphome
       // Callbacks from ESPNow
       static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);
       static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
+      virtual void loop() = 0;
 
     protected:
       LogTag *TAG = new LogTag("PeerBase");
@@ -40,7 +40,6 @@ namespace esphome
       peer_state get_state();
       bool send_proxy_message(proxy_message *message);
       virtual void handle_received_proxy_message(proxy_message *message) = 0;
-      virtual void loop() = 0;
     };
   } // namespace proxy_base
 } // namespace esphome
