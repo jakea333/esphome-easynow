@@ -6,6 +6,7 @@
 #include "log_tag.h"
 #include <vector>
 #include "peer_mac_address.h"
+#include "peer_state.h"
 
 namespace esphome
 {
@@ -30,6 +31,7 @@ namespace esphome
       static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
 
     protected:
+      PeerState *state = new PeerState();
       LogTag *TAG = new LogTag("PeerBase");
     };
   } // namespace proxy_base
