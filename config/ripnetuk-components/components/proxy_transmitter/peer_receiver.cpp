@@ -4,6 +4,7 @@
 #include <WiFi.h>
 
 #define RESPONSE_TIMEOUT 5000
+#define READY_TO_CHECKIN_DELAY 5
 
 namespace esphome
 {
@@ -29,13 +30,15 @@ namespace esphome
 
       if (get_state() == proxy_base::PS_READY)
       {
-        // Want to send a checkin
-        proxy_base::proxy_message msg;
-        msg.message_type = proxy_base::T_TO_R_CHECKIN;
-        send_proxy_message(&msg);
-        // Set state to awaiting R_TO_T_CHECKIN_RESP
-        set_state(proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP);
-
+        if (time_since_last_state_change_ms > READY_TO_CHECKIN_DELAY)
+        {
+          // Want to send a checkin
+          proxy_base::proxy_message msg;
+          msg.message_type = proxy_base::T_TO_R_CHECKIN;
+          send_proxy_message(&msg);
+          // Set state to awaiting R_TO_T_CHECKIN_RESP
+          set_state(proxy_base::PS_T_AWAIT_R_TO_T_CHECKIN_RESP);
+        }
         return;
       }
 
@@ -43,11 +46,11 @@ namespace esphome
       {
         if (time_since_last_state_change_ms > RESPONSE_TIMEOUT)
         {
-          reset_state("Timeout waiting for R to T Check in respponse");  
+          reset_state("Timeout waiting for R to T Check in respponse");
         }
         return;
       }
-      
+
       ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
   } // namespace proxy_receiver
