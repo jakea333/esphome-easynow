@@ -31,14 +31,17 @@ namespace esphome
 
     bool PeerBase::send_proxy_message(proxy_message *message)
     {
+      std::string desc;
+      describe_proxy_message(&desc, message);
+
       esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)message, sizeof(*message));
 
       if (result != ESP_OK)
       {
-        ESP_LOGD(TAG->get_tag(), "> Data Send to %s failed", mac_address.as_string);
+        ESP_LOGD(TAG->get_tag(), "> Data Send to %s failed (%s)", mac_address.as_string, desc.c_str());
         return false;
       }
-      ESP_LOGD(TAG->get_tag(), "> Data Send to %s success", mac_address.as_string);
+      ESP_LOGD(TAG->get_tag(), "> Data Send to %s success (%s)", mac_address.as_string, desc.c_str());
       return true;
     }
 
@@ -90,7 +93,11 @@ namespace esphome
     {
       proxy_message message;
       memcpy(&message, incomingData, sizeof(message));
-      ESP_LOGD(TAG->get_tag(), "< Data Recv from %s", mac_address.as_string);
+
+      std::string desc;
+      describe_proxy_message(&desc, &message);
+
+      ESP_LOGD(TAG->get_tag(), "< Data Recv from %s (%s)", mac_address.as_string, desc.c_str());
     }
 
   } // namespace proxy_base

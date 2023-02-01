@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace esphome
 {
@@ -22,5 +23,7 @@ namespace esphome
                 proxy_message_ping ping;
             };
         } proxy_message_header;
+
+        void describe_proxy_message(std::string *output, proxy_message *message);
     } // namespace proxy_base
 } // namespace esphome
