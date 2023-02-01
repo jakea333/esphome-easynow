@@ -94,7 +94,7 @@ namespace esphome
 
     void PeerBase::on_data_send_callback(esp_now_send_status_t status)
     {
-      ESP_LOGD(TAG->get_tag(), "> Data Send to %s - Status - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+      ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
     }
 
     void PeerBase::on_data_recv_callback(const uint8_t *incomingData, int len)
