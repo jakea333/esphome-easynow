@@ -10,12 +10,15 @@ namespace esphome
     class PeerMacAddress
     {
     private:
+      void update_as_string();
+
     public:
-      char * as_string;
+      char *as_string;
       uint8_t as_uint8_t_array[ESP_NOW_ETH_ALEN];
       void set_from_uint64_t(uint64_t value);
       void set_from_uint8_t_array(const uint8_t *value);
       bool mac_address_equals(PeerMacAddress *other);
+
     protected:
     };
   } // namespace proxy_base
