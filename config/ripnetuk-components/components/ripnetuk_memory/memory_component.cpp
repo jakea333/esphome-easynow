@@ -25,7 +25,8 @@ namespace esphome
       uint32_t free_heap = heap_caps_get_free_size(MALLOC_CAP_INTERNAL);
 #endif
 
-      ESP_LOGD(TAG, "Free Heap Size: %u bytes", free_heap);
+      ESP_LOGD(TAG, "Free Heap Size: %u bytes. Delta is %d", free_heap, free_heap - previous_value_);
+      previous_value_ = free_heap;
     }
 
     float MemoryComponent::get_setup_priority() const

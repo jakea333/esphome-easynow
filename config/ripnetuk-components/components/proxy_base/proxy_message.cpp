@@ -6,7 +6,7 @@ namespace esphome
     {
         void describe_proxy_message(std::string *output, proxy_message *message)
         {
-            output->append("TIMMIE");
+            output->append("TYPE " + std::to_string(message->message_type));
         }
     } // namespace proxy_base
 } // namespace esphome
