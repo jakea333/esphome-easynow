@@ -15,6 +15,7 @@ namespace esphome
     void ProxyTransmitterComponent::setup()
     {
       setup_espnow(espnow_channel_);
+      peer_receiver_->sensors = sensors;
       peer_receiver_->add_espnow_peer(espnow_channel_);
     }
 

@@ -5,6 +5,7 @@
 
 #define RESPONSE_TIMEOUT 5000
 #define READY_TO_CHECKIN_DELAY 5000
+#define READ_SENSORS_TIMEOUT 2000
 
 namespace esphome
 {
@@ -16,7 +17,8 @@ namespace esphome
       {
         if (message->message_type == proxy_base::R_TO_T_CHECKIN_RESP)
         {
-          set_state(proxy_base::PS_READY);
+          start_sensor_reads();
+          set_state(proxy_base::PS_T_READING_SENSORS);
         }
         return;
       }
@@ -51,7 +53,28 @@ namespace esphome
         return;
       }
 
+      if (get_state() == proxy_base::PS_T_READING_SENSORS)
+      {
+        if (time_since_last_state_change_ms > READ_SENSORS_TIMEOUT)
+        {
+          reset_state("Timeout reading sensors");
+        }
+
+        if (outstanding_sensor_reads_ <= 0)
+        {
+          reset_state("Finished");
+        }
+        return;
+      }
+
       ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
+
+    void PeerReceiver::start_sensor_reads()
+    {
+      outstanding_sensor_reads_ = sensors->size();
+      ESP_LOGD(TAG->get_tag(), "Reading %d sensors ", outstanding_sensor_reads_);
+    }
+
   } // namespace proxy_receiver
 } // namespace esphome
