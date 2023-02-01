@@ -35,7 +35,7 @@ namespace esphome
       return true;
     }
 
-    bool PeerBase::send_proxy_message(proxy_message *message) 
+    bool PeerBase::send_proxy_message(proxy_message *message)
     {
       esp_err_t result = esp_now_send(peerInfo.peer_addr, (uint8_t *)message, sizeof(*message));
 
@@ -48,21 +48,63 @@ namespace esphome
       return true;
     }
 
-    void PeerBase::OnDataSentCallback(const uint8_t *mac_addr, esp_now_send_status_t status)
+    PeerBase *PeerBase::find_peer_in_global_peer_list(const uint8_t *mac_addr)
     {
-      // ESP_LOGD(TAG->get_tag(), "%s Last Packet Send Status:", App.get_name().c_str());
-      // ESP_LOGD(TAG->get_tag(), (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+
+      for (int i_peer = 0; i_peer < global_peer_list_->size(); i_peer++)
+      {
+        PeerBase *peer = global_peer_list_->at(i_peer);
+        const uint8_t *peer_mac_address_bytes = reinterpret_cast<const uint8_t *>(&peer->mac_address);
+        bool is_match = true;
+        for (int i = 0; i < 6; i++)
+        {
+          if (mac_addr[i] != peer_mac_address_bytes[5 - i])
+          {
+            is_match = false;
+            break;
+          }
+        }
+        if (is_match)
+        {
+          return peer;
+        }
+      }
+      return NULL;
     }
 
-    void PeerBase::OnDataRecvCallback(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
+    void PeerBase::call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status)
+    {
+      PeerBase *peer = find_peer_in_global_peer_list(mac_addr);
+      if (peer == NULL)
+      {
+        ESP_LOGD("PeerBaseComponent", "Received unexpected DataSent callback from unknown peer -  %02X:%02X:%02X:%02X:%02X:%02X", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+        return;
+      }
+      peer->on_data_send_callback(status);
+    }
+
+    void PeerBase::call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
+    {
+      PeerBase *peer = find_peer_in_global_peer_list(mac_addr);
+      if (peer == NULL)
+      {
+        ESP_LOGD("PeerBaseComponent", "Received unexpected DataRecv callback from unknown peer -  %02X:%02X:%02X:%02X:%02X:%02X", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+        return;
+      }
+      peer->on_data_recv_callback(incomingData, len);
+    }
+
+    void PeerBase::on_data_send_callback(esp_now_send_status_t status)
+    {
+      ESP_LOGD(TAG->get_tag(), "> Data Send - Status - %s", (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+    }
+
+    void PeerBase::on_data_recv_callback(const uint8_t *incomingData, int len)
     {
       proxy_message message;
       memcpy(&message, incomingData, sizeof(message));
-      // ESP_LOGD(TAG->get_tag(), "Bytes received: %d messge_type %d", len, message.message_type);
-      for (int i = 0; i < global_peer_list_->size(); i++)
-      {
-        // callback_component_list_->at(i)->handle_received_proxy_message(mac_addr, &message);
-      }
+      ESP_LOGD(TAG->get_tag(), "< Data Recv");
     }
+
   } // namespace proxy_base
 } // namespace esphome

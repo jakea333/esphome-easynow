@@ -30,8 +30,8 @@ namespace esphome
       }
       ESP_LOGD(TAG->get_tag(), "ESP-NOW Initialized");
 
-      esp_now_register_send_cb(PeerBase::OnDataSentCallback);
-      esp_now_register_recv_cb(PeerBase::OnDataRecvCallback);
+      esp_now_register_send_cb(PeerBase::call_on_data_send_callback);
+      esp_now_register_recv_cb(PeerBase::call_on_data_recv_callback);
 
       espnow_is_setup_ = true;
 

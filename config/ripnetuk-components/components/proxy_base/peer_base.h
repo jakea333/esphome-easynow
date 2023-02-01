@@ -16,15 +16,16 @@ namespace esphome
       esp_now_peer_info_t peerInfo;
       // This is a hack since I cannot find a way of passing a method pointer to the ESPNow callbacks...
       static std::vector<PeerBase *> *global_peer_list_;
-
+      void on_data_send_callback(esp_now_send_status_t status);
+      void on_data_recv_callback(const uint8_t *incomingData, int len);      
     public:
       uint64_t mac_address;
       bool add_espnow_peer(int espnow_channel);
       bool send_proxy_message(proxy_message *message);
       // Callbacks from ESPNow
-      static void OnDataSentCallback(const uint8_t *mac_addr, esp_now_send_status_t status);
-      static void OnDataRecvCallback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
-
+      static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);
+      static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
+      static PeerBase* find_peer_in_global_peer_list(const uint8_t *mac_addr);
     protected:
       LogTag *TAG = new LogTag("PeerBase");
     };
