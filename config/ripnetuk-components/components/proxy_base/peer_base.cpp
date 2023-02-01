@@ -35,6 +35,8 @@ namespace esphome
 
     bool PeerBase::send_proxy_message(proxy_message *message)
     {
+      message->time_stamp = millis();
+
       std::string desc;
       describe_proxy_message(&desc, message);
 
@@ -106,34 +108,24 @@ namespace esphome
       ESP_LOGD(TAG->get_tag(), "< Data Recv from %s (%s)", mac_address.as_string, desc.c_str());
     }
 
+    peer_state PeerBase::get_state()
+    {
+      return state_;
+    }
+
     void PeerBase::set_state(peer_state state)
     {
       std::string old_desc;
-      describe_state(&old_desc);
+      describe_peer_state(&old_desc, state_);
 
       state_ = state;
 
       std::string new_desc;
-      describe_state(&new_desc);
+      describe_peer_state(&new_desc, state_);
 
       ESP_LOGD(TAG->get_tag(), "State change on %s from %s to %s after %f3s", mac_address.as_string, old_desc.c_str(), new_desc.c_str(), (millis() - last_state_change_millis_) / 1000.0);
 
       last_state_change_millis_ = millis();
-    }
-
-    void PeerBase::describe_state(std::string *output)
-    {
-      switch (state_)
-      {
-      case PS_UNSET:
-        output->append("Unset");
-        break;
-      case PS_PEER_ADDED:
-        output->append("Peer Added");
-        break;
-      default:
-        output->append("!! UNKONWN PEER STATE TYPE !!");
-      }
     }
   } // namespace proxy_base
 } // namespace esphome

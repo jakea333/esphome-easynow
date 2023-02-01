@@ -3,14 +3,21 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 
-
-// uint8_t peer_address[] = {0x34, 0x86, 0x5D, 0xFC, 0x5E, 0xE0};
-
 namespace esphome
 {
   namespace proxy_transmitter
   {
+    void PeerReceiver::handle_received_proxy_message(proxy_base::proxy_message *message)
+    {
+    }
 
- 
+    void PeerReceiver::loop()
+    {
+      if (get_state() == proxy_base::PS_PEER_ADDED)
+      {
+        // Want to send a 
+      }
+    }
+
   } // namespace proxy_receiver
 } // namespace esphome

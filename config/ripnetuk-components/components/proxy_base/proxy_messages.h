@@ -8,6 +8,8 @@ namespace esphome
         enum proxy_message_type
         {
             PING = 10,
+            T_TO_R_CHECKIN = 20,
+            R_TO_T_CHECKIN_RESP = 30
         };
 
         typedef struct proxy_message_ping

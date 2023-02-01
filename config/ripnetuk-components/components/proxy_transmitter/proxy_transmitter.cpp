@@ -25,11 +25,11 @@ namespace esphome
       {
         last_testmessage_millis = millis();
 
-        proxy_base::proxy_message msg;
-        msg.message_type = proxy_base::PING;
-        msg.time_stamp = millis();
+        // proxy_base::proxy_message msg;
+        // msg.message_type = proxy_base::PING;
+        // msg.time_stamp = millis();
 
-        peer_receiver_->send_proxy_message(&msg);
+        // peer_receiver_->send_proxy_message(&msg);
       }
     }
 

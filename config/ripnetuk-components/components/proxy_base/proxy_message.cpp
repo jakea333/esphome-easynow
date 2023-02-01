@@ -9,7 +9,13 @@ namespace esphome
             switch (message->message_type)
             {
             case PING:
-                output->append("PING");
+                output->append("Ping");
+                break;
+            case T_TO_R_CHECKIN:
+                output->append("T to R Check in");
+                break;
+            case R_TO_T_CHECKIN_RESP:
+                output->append("R to C Check in response");
                 break;
             default:
                 output->append("!! UNKONWN MESSAGE TYPE !!");
