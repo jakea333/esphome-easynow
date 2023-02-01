@@ -6,7 +6,16 @@ namespace esphome
     {
         void describe_proxy_message(std::string *output, proxy_message *message)
         {
-            output->append("TYPE " + std::to_string(message->message_type));
+            switch (message->message_type)
+            {
+            case PING:
+                output->append("PING");
+                break;
+            default:
+                output->append("!! UNKONWN MESSAGE TYPE !!");
+            }
         }
     } // namespace proxy_base
 } // namespace esphome
+
+// output->append("(PING)" + std::to_string(message->message_type));
