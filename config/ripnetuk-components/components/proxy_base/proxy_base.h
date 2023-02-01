@@ -13,7 +13,6 @@ namespace esphome
     class ProxyBaseComponent : public Component
     {
     private:
-      int last_log_millis_{0};
       esp_now_peer_info_t peerInfo;
       static std::vector<ProxyBaseComponent *> *callback_component_list_;
       static void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
@@ -22,7 +21,6 @@ namespace esphome
     public:
       ProxyBaseComponent();
       float get_setup_priority() const override;
-      void loop() override;
 
     protected:
       bool espnow_is_setup_{false};
