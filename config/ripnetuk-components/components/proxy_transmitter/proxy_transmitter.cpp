@@ -10,11 +10,14 @@ namespace esphome
 {
   namespace proxy_transmitter
   {
-    proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyTransmitterComponent");
-
     void ProxyTransmitterComponent::setup()
     {
       setup_espnow(espnow_channel_);
+      // Give each sensor an index for logging
+      for (int i = 0; i < sensors->size(); i++)
+      {
+        sensors->at(i)->sensor_index = i;
+      }
       peer_receiver_->sensors = sensors;
       peer_receiver_->add_espnow_peer(espnow_channel_);
     }

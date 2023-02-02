@@ -5,6 +5,7 @@
 #include "../proxy_base/proxy_messages.h"
 #include <vector>
 #include "esphome/components/sensor/sensor.h"
+#include "sensor_holder.h"
 
 namespace esphome
 {
@@ -13,11 +14,10 @@ namespace esphome
     class PeerReceiver : public proxy_base::PeerBase
     {
     public:
-      std::vector<sensor::Sensor *> *sensors = new std::vector<sensor::Sensor *>();
+      std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
       void loop();
 
     private:
-      int outstanding_sensor_reads_ {0};
       void start_sensor_reads();
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");

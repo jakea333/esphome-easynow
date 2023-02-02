@@ -60,7 +60,16 @@ namespace esphome
           reset_state("Timeout reading sensors");
         }
 
-        if (outstanding_sensor_reads_ <= 0)
+        bool has_outstanding_reads = false;
+        for (int i = 0; i < sensors->size(); i++)
+        {
+          if (!sensors->at(i)->get_has_state())
+          {
+            has_outstanding_reads = true;
+          }
+        }
+
+        if (!has_outstanding_reads <= 0)
         {
           reset_state("Finished");
         }
@@ -72,8 +81,12 @@ namespace esphome
 
     void PeerReceiver::start_sensor_reads()
     {
-      outstanding_sensor_reads_ = sensors->size();
-      ESP_LOGD(TAG->get_tag(), "Reading %d sensors ", outstanding_sensor_reads_);
+      ESP_LOGD(TAG->get_tag(), "Reading %d sensors ", sensors->size());
+      for (int i = 0; i < sensors->size(); i++)
+      {
+        SensorHolder *sensor = sensors->at(i);
+        sensor->update();
+      }
     }
 
   } // namespace proxy_receiver

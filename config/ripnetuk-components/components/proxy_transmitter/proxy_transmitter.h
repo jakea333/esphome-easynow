@@ -5,7 +5,7 @@
 #include "peer_receiver.h"
 #include "../proxy_base/log_tag.h"
 #include <vector>
-#include "esphome/components/sensor/sensor.h"
+#include "sensor_holder.h"
 
 namespace esphome
 {
@@ -15,15 +15,17 @@ namespace esphome
     {
     private:
     protected:
-      PeerReceiver *peer_receiver_ = new PeerReceiver();;
+      proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
+      PeerReceiver *peer_receiver_ = new PeerReceiver();
+      ;
 
     public:
-      std::vector<sensor::Sensor *> *sensors = new std::vector<sensor::Sensor *>();
+      std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
       void loop() override;
       void setup() override;
       void set_espnow_channel(int channel) { espnow_channel_ = channel; }
       void set_receiver_mac_address(uint64_t mac_address) { peer_receiver_->mac_address.set_from_uint64_t(mac_address); }
-      void add_sensor(sensor::Sensor *sensor) { sensors->push_back(sensor); };
+      void add_sensor(sensor::Sensor *sensor) { sensors->push_back(new SensorHolder(sensor)); };
     };
   } // namespace proxy_transmitter
 } // namespace esphome
