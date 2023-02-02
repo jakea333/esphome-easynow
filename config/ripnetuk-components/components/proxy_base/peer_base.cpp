@@ -44,7 +44,7 @@ namespace esphome
 
       if (result != ESP_OK)
       {
-        ESP_LOGD(TAG->get_tag(), "> *FAILED* -> %s %s", name, desc.c_str());
+        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d)-> %s %s", result, name, desc.c_str());
         return false;
       }
       ESP_LOGD(TAG->get_tag(), "> %s %s", name, desc.c_str());
