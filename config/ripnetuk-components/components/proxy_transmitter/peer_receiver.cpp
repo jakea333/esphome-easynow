@@ -201,8 +201,9 @@ namespace esphome
     void PeerReceiver::enter_ota_mode()
     {
       ESP_LOGD(TAG->get_tag(), "******* Enter OTA Mode set. Rebooting to safe mode...");
-        App.safe_reboot();
-
+      this->ota->set_safe_mode_pending(true);
+      App.safe_reboot();
+      ESP_LOGD(TAG->get_tag(), "******* Reboot commamnd sent...");
     }
 
     void PeerReceiver::go_to_sleep()

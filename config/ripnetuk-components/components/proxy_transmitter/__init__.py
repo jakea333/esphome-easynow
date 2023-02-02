@@ -1,9 +1,10 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_OTA
 from esphome.components import sensor
+from esphome.components.ota import OTAComponent
 
-DEPENDENCIES = ['logger', 'proxy_base']
+DEPENDENCIES = ['logger', 'proxy_base', 'ota']
 AUTO_LOAD = ['proxy_base']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
@@ -35,7 +36,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_ESPNOW_CHANNEL): cv.int_,
     cv.Required(CONF_RECEIVER_MAC_ADDRESS): cv.mac_address,
     cv.Required(CONF_SENSORS): cv.ensure_list(SENSOR_SCHEMA),
-})
+}).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)})
 
 
 def to_code(config):
@@ -45,6 +46,9 @@ def to_code(config):
     cg.add(var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
     cg.add(var.set_receiver(
         config[CONF_RECEIVER_MAC_ADDRESS].as_hex, "receiver"), )
+    
+    ota = yield cg.get_variable(config[CONF_OTA])
+    cg.add(var.set_ota(ota))
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])

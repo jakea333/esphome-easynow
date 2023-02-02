@@ -6,6 +6,7 @@
 #include "../proxy_base/log_tag.h"
 #include <vector>
 #include "sensor_holder.h"
+#include "esphome/components/ota/ota_component.h"
 
 namespace esphome
 {
@@ -28,6 +29,7 @@ namespace esphome
         peer_receiver_->mac_address.set_from_uint64_t(mac_address);
         peer_receiver_->name = name;
       }
+      void set_ota(ota::OTAComponent *ota) { peer_receiver_->ota = ota; }
       void add_sensor(sensor::Sensor *sensor, const char *proxy_id) { sensors->push_back(new SensorHolder(sensor, proxy_id)); };
     };
   } // namespace proxy_transmitter
