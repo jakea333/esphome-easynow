@@ -25,7 +25,7 @@ namespace esphome
       void setup() override;
       void set_espnow_channel(int channel) { espnow_channel_ = channel; }
       void set_receiver_mac_address(uint64_t mac_address) { peer_receiver_->mac_address.set_from_uint64_t(mac_address); }
-      void add_sensor(sensor::Sensor *sensor) { sensors->push_back(new SensorHolder(sensor)); };
+      void add_sensor(sensor::Sensor *sensor, const char *proxy_id) { sensors->push_back(new SensorHolder(sensor, proxy_id)); };
     };
   } // namespace proxy_transmitter
 } // namespace esphome

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#define PROXY_ID_MAX_LENGTH 20
+
 namespace esphome
 {
     namespace proxy_base
@@ -15,6 +17,7 @@ namespace esphome
 
         typedef struct proxy_message_send_sensor_state
         {
+            char proxy_id[PROXY_ID_MAX_LENGTH];
             int sensor_index;
             float state;
         } proxy_message_send_sensor_state;

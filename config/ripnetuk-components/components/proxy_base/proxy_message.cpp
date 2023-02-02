@@ -18,7 +18,7 @@ namespace esphome
             {
                 std::string idx = std::to_string(message->send_sensor_state.sensor_index);
                 std::string state = std::to_string(message->send_sensor_state.state);
-                output->append("T to R Send Sensor[" + idx + "] State - " + state);
+                output->append("T to R Send Sensor[" + idx + "] Proxy ID - " + message->send_sensor_state.proxy_id + " State - " + state);
                 break;
             }
             case R_TO_T_SEND_SENDOR_STATE_REPONSE:

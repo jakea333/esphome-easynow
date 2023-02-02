@@ -11,13 +11,15 @@ namespace esphome
     {
     private:
       sensor::Sensor *sensor_;
+
       void on_state_callback(float state);
 
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("SensorHolder");
 
     public:
-      SensorHolder(sensor::Sensor *sensor);
+      SensorHolder(sensor::Sensor *sensor, const char *proxy_id);
+      const char *proxy_id;
       int sensor_index{0};
       bool is_sent = false;
       bool has_state = false;

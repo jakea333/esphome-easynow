@@ -11,10 +11,17 @@ CONF_RECEIVER_MAC_ADDRESS = "receiver_mac_address"
 CONF_SENSORS = "sensors"
 
 CONF_SENSOR = "sensor"
+CONF_PROXY_ID = "proxy_id"
 
+def validate_proxy_id(value):
+    value = cv.string_strict(value)
+    value = cv.Length(max=255)(value)
+    validate_source_shorthand(value)
+    return value
 
 SENSOR_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSOR): cv.use_id(sensor.Sensor),
+    cv.Required(CONF_PROXY_ID): cv.string,
 })
 
 
@@ -40,4 +47,4 @@ def to_code(config):
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR])
-        cg.add(var.add_sensor(sensor))
+        cg.add(var.add_sensor(sensor, sensor_config[CONF_PROXY_ID]))
