@@ -10,10 +10,10 @@ namespace esphome
     {
         enum proxy_message_type
         {
-            T_TO_R_CHECKIN = 20,
-            R_TO_T_CHECKIN_RESP = 30,
-            T_TO_R_SEND_SENSOR_STATE = 40,
-            R_TO_T_SEND_SENDOR_STATE_REPONSE = 50
+            MT_CHECKIN = 20,
+            MT_ACK_CHECKIN = 30,
+            MT_SEND_SENSOR_STATE = 40,
+            MT_ACK_SEND_SENSOR_STATE = 50
         };
 
         typedef struct proxy_message_checkin_response

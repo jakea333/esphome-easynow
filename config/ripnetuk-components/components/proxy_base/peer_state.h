@@ -9,10 +9,10 @@ namespace esphome
         {
             PS_UNSET = 5,
             PS_READY = 10,
-            PS_T_AWAIT_R_TO_T_CHECKIN_RESP = 20,
-            PS_T_READING_SENSORS = 25,
-            PS_T_SENDING_STATES = 30,
-            PS_T_AWAIT_R_TO_T_SEND_STATE_RESP = 40,
+            PS_WAIT_CHECKIN_ACK = 20,
+            PS_READING_SENSORS = 25,
+            PS_SENDING_STATES = 30,
+            PS_WAIT_SEND_STATE_ACK = 40,
             PS_COMPLETE = 50
         };
 

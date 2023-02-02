@@ -9,25 +9,25 @@ namespace esphome
             switch (state)
             {
             case PS_UNSET:
-                output->append("Unset");
+                output->append("UNSET");
                 break;
             case PS_READY:
-                output->append("Ready");
+                output->append("READY");
                 break;
-            case PS_T_AWAIT_R_TO_T_CHECKIN_RESP:
-                output->append("(T) Await R to T Check in Response");
+            case PS_WAIT_CHECKIN_ACK:
+                output->append("WAIT_CHECKIN_ACK");
                 break;
-            case PS_T_READING_SENSORS:
-                output->append("(T) Reading Sensors");
+            case PS_READING_SENSORS:
+                output->append("READING_SENSORS");
                 break;
-            case PS_T_SENDING_STATES:
-                output->append("(T) Sending States");
+            case PS_SENDING_STATES:
+                output->append("PS_SENDING_STATES");
                 break;
-            case PS_T_AWAIT_R_TO_T_SEND_STATE_RESP:
-                output->append("(T) Await R to T Send State Response");
+            case PS_WAIT_SEND_STATE_ACK:
+                output->append("WAIT_SEND_STATE_ACK");
                 break;
             case PS_COMPLETE:
-                output->append("Complete");
+                output->append("COMPLETE");
                 break;
             default:
                 output->append("!! UNKONWN PEER STATE TYPE !!");
