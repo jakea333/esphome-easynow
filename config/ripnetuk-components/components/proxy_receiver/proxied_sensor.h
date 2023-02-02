@@ -8,13 +8,14 @@ namespace esphome
 {
   namespace proxy_receiver
   {
-    class ProxiedSensorComponent : public sensor::Sensor
+    class ProxiedSensorComponent : public sensor::Sensor, public Component
     {
     private:
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxiedSensorComponent");
 
     public:
+      const char *proxy_id;
     };
 
   } // namespace proxy_receiver

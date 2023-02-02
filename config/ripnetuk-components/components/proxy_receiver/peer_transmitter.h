@@ -3,6 +3,8 @@
 #include "../proxy_base/peer_base.h"
 #include "../proxy_base/log_tag.h"
 #include "../proxy_base/proxy_messages.h"
+#include <vector>
+#include "proxied_sensor.h"
 
 namespace esphome
 {
@@ -10,7 +12,11 @@ namespace esphome
   {
     class PeerTransmitter : public proxy_base::PeerBase
     {
+    private:
+      void update_proxied_sensor(proxy_base::proxy_message *message);
+
     public:
+      std::vector<ProxiedSensorComponent *> *proxied_sensors = new std::vector<ProxiedSensorComponent *>();
       const char *name;
       void loop();
 
