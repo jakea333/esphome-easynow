@@ -14,7 +14,15 @@ namespace esphome
         // Send a response
         proxy_base::proxy_message send_msg;
         send_msg.message_type = proxy_base::R_TO_T_CHECKIN_RESP;
+        send_msg.checkin_response.enter_ota_mode = ota_switch->state;
         send_proxy_message(&send_msg);
+        // Switch off OTA mode switch once message sent... we could wait for an ack, but then
+        // the ack might get lost even though the reboot has happened, and thus it would enter OTA mode
+        // next time it does a full boot. Two generals problem.
+        if (ota_switch->state)
+        {
+          ota_switch->set(false);
+        }
       }
 
       if (message->message_type == proxy_base::T_TO_R_SEND_SENSOR_STATE)
