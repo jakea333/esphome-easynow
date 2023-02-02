@@ -7,14 +7,16 @@ namespace esphome
     {
         enum proxy_message_type
         {
-            PING = 10,
             T_TO_R_CHECKIN = 20,
-            R_TO_T_CHECKIN_RESP = 30
+            R_TO_T_CHECKIN_RESP = 30,
+            T_TO_R_SEND_SENSOR_STATE = 40
         };
 
-        typedef struct proxy_message_ping
+        typedef struct proxy_message_send_sensor_state
         {
-        } proxy_message_ping;
+            int sensor_index;
+            float state;
+        } proxy_message_send_sensor_state;
 
         typedef struct proxy_message
         {
@@ -22,7 +24,7 @@ namespace esphome
             int time_stamp;
             union
             {
-                proxy_message_ping ping;
+                proxy_message_send_sensor_state send_sensor_state;
             };
         } proxy_message_header;
 

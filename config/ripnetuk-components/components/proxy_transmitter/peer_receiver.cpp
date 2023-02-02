@@ -6,6 +6,7 @@
 #define RESPONSE_TIMEOUT 5000
 #define READY_TO_CHECKIN_DELAY 5000
 #define READ_SENSORS_TIMEOUT 2000
+#define SENDING_STATE_TIMEOUT 4000
 
 namespace esphome
 {
@@ -63,7 +64,7 @@ namespace esphome
         bool has_outstanding_reads = false;
         for (int i = 0; i < sensors->size(); i++)
         {
-          if (!sensors->at(i)->get_has_state())
+          if (!sensors->at(i)->has_state)
           {
             has_outstanding_reads = true;
           }
@@ -71,7 +72,48 @@ namespace esphome
 
         if (!has_outstanding_reads <= 0)
         {
-          reset_state("Finished");
+          // Have finished reading, so now move on to sending states to receiver
+          for (int i = 0; i < sensors->size(); i++)
+          {
+            sensors->at(i)->is_sent = false;
+          }
+          set_state(proxy_base::PS_T_SENDING_STATES);
+        }
+        return;
+      }
+
+      if (get_state() == proxy_base::PS_T_SENDING_STATES)
+      {
+        if (time_since_last_state_change_ms > SENDING_STATE_TIMEOUT)
+        {
+          reset_state("Timeout sending states");
+        }
+
+        SensorHolder *first_unsent = get_first_unsent_sensor();
+        if (first_unsent == NULL)
+        {
+          reset_state("In PS_T_SENDING_STATES but nothing left to send.");
+          return;
+        }
+
+        // Want to send a checkin
+        proxy_base::proxy_message msg;
+        msg.message_type = proxy_base::T_TO_R_SEND_SENSOR_STATE;
+        msg.send_sensor_state.sensor_index = first_unsent->sensor_index;
+        msg.send_sensor_state.state = first_unsent->state;
+        send_proxy_message(&msg);
+
+        // Set state to awaiting PS_T_AWAIT_R_TO_T_SEND_STATE_RESP
+        set_state(proxy_base::PS_T_AWAIT_R_TO_T_SEND_STATE_RESP);
+
+        return;
+      }
+
+      if (get_state() == proxy_base::PS_T_AWAIT_R_TO_T_SEND_STATE_RESP)
+      {
+        if (time_since_last_state_change_ms > RESPONSE_TIMEOUT)
+        {
+          reset_state("Timeout waiting for R to T Send State Response");
         }
         return;
       }
@@ -79,13 +121,23 @@ namespace esphome
       ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
 
+    SensorHolder *PeerReceiver::get_first_unsent_sensor()
+    {
+      for (int i = 0; i < sensors->size(); i++)
+      {
+        if (!sensors->at(i)->is_sent)
+          return sensors->at(i);
+      }
+      return NULL;
+    }
+
     void PeerReceiver::start_sensor_reads()
     {
-      ESP_LOGD(TAG->get_tag(), "Reading %d sensors ", sensors->size());
+      ESP_LOGD(TAG->get_tag(), "Waiting for state from %d sensors ", sensors->size());
       for (int i = 0; i < sensors->size(); i++)
       {
         SensorHolder *sensor = sensors->at(i);
-        sensor->update();
+        sensor->has_state = false;
       }
     }
 

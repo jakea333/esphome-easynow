@@ -20,7 +20,9 @@ namespace esphome
             case PS_T_READING_SENSORS:
                 output->append("(T) Reading Sensors");
                 break;
-
+            case PS_T_SENDING_STATES:
+                output->append("(T) Sending States");
+                break;
             default:
                 output->append("!! UNKONWN PEER STATE TYPE !!");
             }

@@ -11,18 +11,17 @@ namespace esphome
     {
     private:
       sensor::Sensor *sensor_;
-      bool has_state_ = false;
-      float state_ = NAN;
       void on_state_callback(float state);
+
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("SensorHolder");
 
     public:
-      int sensor_index {0};
       SensorHolder(sensor::Sensor *sensor);
-      bool get_has_state() { return has_state_; }
-      bool get_state() { return state_; }
-      void update();
+      int sensor_index{0};
+      bool is_sent = false;
+      bool has_state = false;
+      float state = NAN;
     };
   } // namespace proxy_transmitter
 } // namespace esphome
