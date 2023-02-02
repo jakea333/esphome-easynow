@@ -20,7 +20,7 @@ namespace esphome
       std::vector<ProxiedSensorComponent *> *proxied_sensors = new std::vector<ProxiedSensorComponent *>();
       OTASwitchComponent *ota_switch;
 
-      void loop();
+      void peer_workflow_loop();
 
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerTransmitter");

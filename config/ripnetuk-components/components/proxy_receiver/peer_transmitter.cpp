@@ -11,10 +11,10 @@ namespace esphome
     {
       if (message->message_type == proxy_base::MT_CHECKIN)
       {
-          ESP_LOGD(TAG->get_tag(), "");
-          ESP_LOGD(TAG->get_tag(), "------------------------------");
-          ESP_LOGD(TAG->get_tag(), "******* CHECKIN FROM %s", name);
-          ESP_LOGD(TAG->get_tag(), "------------------------------");
+        ESP_LOGD(TAG->get_tag(), "");
+        ESP_LOGD(TAG->get_tag(), "------------------------------");
+        ESP_LOGD(TAG->get_tag(), "******* CHECKIN FROM %s", name);
+        ESP_LOGD(TAG->get_tag(), "------------------------------");
 
         // Send a response
         proxy_base::proxy_message send_msg;
@@ -43,7 +43,7 @@ namespace esphome
       }
     }
 
-    void PeerTransmitter::loop()
+    void PeerTransmitter::peer_workflow_loop()
     {
       if (get_state() == proxy_base::PS_READY)
       {

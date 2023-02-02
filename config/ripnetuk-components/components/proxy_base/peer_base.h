@@ -8,6 +8,7 @@
 #include "peer_mac_address.h"
 #include "peer_state.h"
 #include <string.h>
+#include <queue>
 
 namespace esphome
 {
@@ -25,6 +26,8 @@ namespace esphome
       void on_data_recv_callback(const uint8_t *incomingData, int len);
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
       const char *decode_espnow_error(esp_err_t error);
+      std::queue<proxy_message *> *proxy_message_queue_ = new std::queue<proxy_message *>();
+      void process_proxy_message_queue();
 
     public:
       PeerMacAddress mac_address;
@@ -33,7 +36,7 @@ namespace esphome
       // Callbacks from ESPNow
       static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);
       static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
-      virtual void loop() = 0;
+      void loop();
 
     protected:
       LogTag *TAG = new LogTag("PeerBase");
@@ -44,6 +47,7 @@ namespace esphome
       void reset_state(const char *reason);
       bool send_proxy_message(proxy_message *message);
       virtual void handle_received_proxy_message(proxy_message *message) = 0;
+      virtual void peer_workflow_loop() = 0;
     };
   } // namespace proxy_base
 } // namespace esphome

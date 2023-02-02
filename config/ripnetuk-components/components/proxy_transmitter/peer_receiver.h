@@ -17,7 +17,7 @@ namespace esphome
     public:
       ota::OTAComponent *ota;
       std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
-      void loop();
+      void peer_workflow_loop();
 
     private:
       void start_sensor_reads();

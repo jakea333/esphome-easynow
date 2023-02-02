@@ -58,7 +58,7 @@ namespace esphome
       }
     }
 
-    void PeerReceiver::loop()
+    void PeerReceiver::peer_workflow_loop()
     {
       int time_since_last_state_change_ms = millis() - last_state_change_millis_;
 

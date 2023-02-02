@@ -100,15 +100,35 @@ namespace esphome
 
     void PeerBase::on_data_recv_callback(const uint8_t *incomingData, int len)
     {
-      proxy_message message;
-      memcpy(&message, incomingData, sizeof(message));
+      proxy_message *message = (proxy_message *)malloc(sizeof(proxy_message));
 
-      std::string desc;
-      describe_proxy_message(&desc, &message);
+      memcpy(message, incomingData, sizeof(message));
+      proxy_message_queue_->push(message);
+    }
 
-      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
+    void PeerBase::loop()
+    {
+      process_proxy_message_queue();
+      peer_workflow_loop();
+    }
 
-      handle_received_proxy_message(&message);
+    void PeerBase::process_proxy_message_queue()
+    {
+      while (proxy_message_queue_->size() > 0)
+      {
+        proxy_message *next_message = proxy_message_queue_->front();
+        proxy_message_queue_->pop();
+
+        std::string desc;
+        describe_proxy_message(&desc, next_message);
+
+        ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
+
+        handle_received_proxy_message(next_message);
+
+        // And free it
+        free(next_message);
+      }
     }
 
     peer_state PeerBase::get_state()
