@@ -7,6 +7,7 @@
 #include <vector>
 #include "peer_mac_address.h"
 #include "peer_state.h"
+#include <string.h>
 
 namespace esphome
 {
@@ -23,6 +24,7 @@ namespace esphome
       void on_data_send_callback(esp_now_send_status_t status);
       void on_data_recv_callback(const uint8_t *incomingData, int len);
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
+      const char *decode_espnow_error(esp_err_t error);
 
     public:
       PeerMacAddress mac_address;
