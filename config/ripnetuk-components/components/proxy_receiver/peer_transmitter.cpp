@@ -11,6 +11,11 @@ namespace esphome
     {
       if (message->message_type == proxy_base::MT_CHECKIN)
       {
+          ESP_LOGD(TAG->get_tag(), "");
+          ESP_LOGD(TAG->get_tag(), "------------------------------");
+          ESP_LOGD(TAG->get_tag(), "******* CHECKIN FROM %s", name);
+          ESP_LOGD(TAG->get_tag(), "------------------------------");
+
         // Send a response
         proxy_base::proxy_message send_msg;
         send_msg.message_type = proxy_base::MT_ACK_CHECKIN;
