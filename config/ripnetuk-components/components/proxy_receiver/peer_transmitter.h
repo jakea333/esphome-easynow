@@ -19,7 +19,7 @@ namespace esphome
     public:
       std::vector<ProxiedSensorComponent *> *proxied_sensors = new std::vector<ProxiedSensorComponent *>();
       OTASwitchComponent *ota_switch;
-      const char *name;
+
       void loop();
 
     protected:

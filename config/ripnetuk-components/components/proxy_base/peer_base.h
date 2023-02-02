@@ -26,6 +26,7 @@ namespace esphome
 
     public:
       PeerMacAddress mac_address;
+      const char *name;
       bool add_espnow_peer(int espnow_channel);
       // Callbacks from ESPNow
       static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);

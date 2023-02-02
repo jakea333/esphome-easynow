@@ -21,9 +21,9 @@ namespace esphome
 
       if (esp_now_add_peer(&peer_info_) != ESP_OK)
       {
-        ESP_LOGD(TAG->get_tag(), "Failed to add peer %s", mac_address.as_string);
+        ESP_LOGD(TAG->get_tag(), "Failed to add peer %s %s", name, mac_address.as_string);
         return false;
-        ESP_LOGD(TAG->get_tag(), "Peer Added %s", mac_address.as_string);
+        ESP_LOGD(TAG->get_tag(), "Peer Added %s %s", name, mac_address.as_string);
       }
       global_peer_list_->push_back(this);
 
@@ -44,10 +44,10 @@ namespace esphome
 
       if (result != ESP_OK)
       {
-        ESP_LOGD(TAG->get_tag(), "> Data Send to %s failed (%s)", mac_address.as_string, desc.c_str());
+        ESP_LOGD(TAG->get_tag(), "> *FAILED* -> %s %s", name, desc.c_str());
         return false;
       }
-      ESP_LOGD(TAG->get_tag(), "> Data Send to %s success (%s)", mac_address.as_string, desc.c_str());
+      ESP_LOGD(TAG->get_tag(), "> %s %s", name, desc.c_str());
       return true;
     }
 
@@ -105,7 +105,7 @@ namespace esphome
       std::string desc;
       describe_proxy_message(&desc, &message);
 
-      ESP_LOGD(TAG->get_tag(), "< Data Recv from %s (%s)", mac_address.as_string, desc.c_str());
+      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
 
       handle_received_proxy_message(&message);
     }
@@ -125,7 +125,7 @@ namespace esphome
       std::string new_desc;
       describe_peer_state(&new_desc, state_);
 
-      ESP_LOGD(TAG->get_tag(), "--- State: %s (was %s - peer %s - after %f3s)", new_desc.c_str(), old_desc.c_str(), mac_address.as_string, (millis() - last_state_change_millis_) / 1000.0);
+      ESP_LOGD(TAG->get_tag(), "--- %s -> %s (was %s - after %f3s)", name, new_desc.c_str(), old_desc.c_str(), (millis() - last_state_change_millis_) / 1000.0);
 
       last_state_change_millis_ = millis();
     }

@@ -13,10 +13,12 @@ CONF_SENSORS = "sensors"
 CONF_SENSOR_SENSOR = "sensor"
 CONF_SENDOR_PROXY_ID = "proxy_id"
 
+
 def validate_proxy_id(value):
     value = cv.string_strict(value)
     value = cv.Length(max=20)(value)
     return value
+
 
 SENSOR_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSOR_SENSOR): cv.use_id(sensor.Sensor),
@@ -41,8 +43,8 @@ def to_code(config):
     yield cg.register_component(var, config)
 
     cg.add(var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
-    cg.add(var.set_receiver_mac_address(
-        config[CONF_RECEIVER_MAC_ADDRESS].as_hex))
+    cg.add(var.set_receiver(
+        config[CONF_RECEIVER_MAC_ADDRESS].as_hex, "receiver"), )
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])
