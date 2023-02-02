@@ -23,6 +23,7 @@ namespace esphome
       void setup() override;
       void set_espnow_channel(int channel) { espnow_channel_ = channel; }
       void add_transmitter(uint64_t mac_address, const char *name);
+      void add_proxied_sensor(uint64_t mac_address, const char *proxy_id, const char *name);
     };
 
   } // namespace proxy_receiver

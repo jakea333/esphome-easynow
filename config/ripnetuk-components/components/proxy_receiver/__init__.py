@@ -2,8 +2,8 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.const import CONF_ID
 
-DEPENDENCIES = ['logger', 'proxy_base']
-AUTO_LOAD = ['proxy_base']
+DEPENDENCIES = ['logger', 'proxy_base', 'sensor']
+AUTO_LOAD = ['proxy_base', 'sensor']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
 CONF_TRANSMITTERS = "transmitters"
@@ -44,7 +44,6 @@ CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ProxyReceiverComponent),
     cv.Required(CONF_ESPNOW_CHANNEL): cv.int_,
     cv.Required(CONF_TRANSMITTERS): cv.ensure_list(TRANSMITTER_SCHEMA),
-
 })
 
 
@@ -57,3 +56,9 @@ def to_code(config):
     for outputConf in config.get(CONF_TRANSMITTERS, []):
         cg.add(var.add_transmitter(
             outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex, outputConf[CONF_TRANSMITTER_NAME]))
+        for proxiedSensorConf in outputConf.get(CONF_TRANSMITTER_PROXIED_SENSORS, []):
+            cg.add(var.add_proxied_sensor(
+                outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex,
+                proxiedSensorConf[CONF_PROXIED_SENSOR_PROXY_ID],
+                proxiedSensorConf[CONF_PROXIED_SENSOR_NAME],
+            ))

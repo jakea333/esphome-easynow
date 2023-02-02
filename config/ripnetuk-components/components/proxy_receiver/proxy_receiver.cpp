@@ -2,6 +2,9 @@
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
 #include <WiFi.h>
+#include "../proxy_base/peer_mac_address.h"
+#include "proxied_sensor.h"
+#include "esphome/core/application.h"
 
 namespace esphome
 {
@@ -14,6 +17,34 @@ namespace esphome
       peer_transmitter->name = name;
       peer_transmitter->mac_address.set_from_uint64_t(mac_address);
       peer_transmitters_->push_back(peer_transmitter);
+    }
+
+    void ProxyReceiverComponent::add_proxied_sensor(uint64_t mac_address, const char *proxy_id, const char *name)
+    {
+      // Find peer transmitter with this mac address...
+      PeerTransmitter *peer_transmitter = NULL;
+      proxy_base::PeerMacAddress peer_mac_address;
+      peer_mac_address.set_from_uint64_t(mac_address);
+
+      for (int i = 0; i < peer_transmitters_->size(); i++)
+      {
+        if (peer_transmitters_->at(i)->mac_address.mac_address_equals(&peer_mac_address))
+        {
+          peer_transmitter = peer_transmitters_->at(i);
+        }
+      }
+
+      if (peer_transmitter == NULL)
+      {
+        ESP_LOGD(TAG->get_tag(), "Error - Attempt to add a proxied sensor to transmitter with mac address %s but we dont have such a transmitter", peer_mac_address.as_string);
+        return;
+      }
+
+      ProxiedSensorComponent *new_proxied_sensor = new ProxiedSensorComponent();
+      new_proxied_sensor->set_name(name);
+
+      App.register_sensor(new_proxied_sensor);
+      App.register_component(new_proxied_sensor);
     }
 
     void ProxyReceiverComponent::setup()
