@@ -23,6 +23,10 @@ namespace esphome
             case PS_T_SENDING_STATES:
                 output->append("(T) Sending States");
                 break;
+            case PS_T_AWAIT_R_TO_T_SEND_STATE_RESP:
+                output->append("(T) Await R to T Send State Response");
+                break;
+
             default:
                 output->append("!! UNKONWN PEER STATE TYPE !!");
             }
