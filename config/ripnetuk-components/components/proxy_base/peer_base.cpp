@@ -125,7 +125,7 @@ namespace esphome
       std::string new_desc;
       describe_peer_state(&new_desc, state_);
 
-      ESP_LOGD(TAG->get_tag(), "--- %s -> %s (was %s - after %f3s)", name, new_desc.c_str(), old_desc.c_str(), (millis() - last_state_change_millis_) / 1000.0);
+      ESP_LOGD(TAG->get_tag(), "---> %s (was %s - after %f3s)", new_desc.c_str(), old_desc.c_str(), (millis() - last_state_change_millis_) / 1000.0);
 
       last_state_change_millis_ = millis();
     }
