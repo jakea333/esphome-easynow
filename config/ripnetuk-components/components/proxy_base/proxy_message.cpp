@@ -15,8 +15,18 @@ namespace esphome
                 output->append("R to C Check in response");
                 break;
             case T_TO_R_SEND_SENSOR_STATE:
-                output->append("T to R Send Sensor[%d] State - %f", message->send_sensor_state.sensor_index, message->send_sensor_state.state);
+            {
+                std::string idx = std::to_string(message->send_sensor_state.sensor_index);
+                std::string state = std::to_string(message->send_sensor_state.state);
+                output->append("T to R Send Sensor[" + idx + "] State - " + state);
                 break;
+            }
+            case R_TO_T_SEND_SENDOR_STATE_REPONSE:
+            {
+                std::string idx = std::to_string(message->send_sensor_state.sensor_index);
+                output->append("R to C Send Sensor[" + idx + "] Response");
+                break;
+            }
             default:
                 output->append("!! UNKONWN MESSAGE TYPE !!");
             }
@@ -24,4 +34,4 @@ namespace esphome
     } // namespace proxy_base
 } // namespace esphome
 
-// output->append("(PING)" + std::to_string(message->message_type));
+// output->append("(PING)" );

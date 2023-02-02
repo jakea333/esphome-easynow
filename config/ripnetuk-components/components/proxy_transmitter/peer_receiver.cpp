@@ -24,7 +24,33 @@ namespace esphome
         return;
       }
 
-      ESP_LOGD(TAG->get_tag(), "Unexpected message type %d when in state %d", message->message_type, get_state());
+      if (get_state() == proxy_base::PS_T_AWAIT_R_TO_T_SEND_STATE_RESP)
+      {
+        if (message->message_type == proxy_base::R_TO_T_SEND_SENDOR_STATE_REPONSE)
+        {
+          // Should be first unsend sender...
+          SensorHolder *first_unsent = get_first_unsent_sensor();
+          if (first_unsent == NULL)
+          {
+            reset_state("Got R to T Send State Response but no sensors are unsent");
+            return;
+          }
+          first_unsent->is_sent = true;
+
+          SensorHolder *new_first_unsent = get_first_unsent_sensor();
+          if (new_first_unsent)
+          {
+            set_state(proxy_base::PS_T_SENDING_STATES);
+          }
+          else
+          {
+            set_state(proxy_base::PS_READY);
+          }
+          return;
+        }
+
+        ESP_LOGD(TAG->get_tag(), "Unexpected message type %d when in state %d", message->message_type, get_state());
+      }
     }
 
     void PeerReceiver::loop()

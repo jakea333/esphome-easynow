@@ -16,6 +16,15 @@ namespace esphome
         msg.message_type = proxy_base::R_TO_T_CHECKIN_RESP;
         send_proxy_message(&msg);
       }
+
+      if (message->message_type == proxy_base::T_TO_R_SEND_SENSOR_STATE)
+      {
+        // Send a response
+        proxy_base::proxy_message msg;
+        msg.message_type = proxy_base::R_TO_T_SEND_SENDOR_STATE_REPONSE;
+        msg.send_sensor_state_response.sensor_index = message->send_sensor_state.sensor_index;
+        send_proxy_message(&msg);
+      }
     }
 
     void PeerTransmitter::loop()
