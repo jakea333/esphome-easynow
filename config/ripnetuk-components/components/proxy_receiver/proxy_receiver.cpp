@@ -58,6 +58,7 @@ namespace esphome
       ProxiedSensorComponent *new_proxied_sensor = new ProxiedSensorComponent();
       new_proxied_sensor->set_name(name);
       new_proxied_sensor->proxy_id = proxy_id;
+      new_proxied_sensor->set_accuracy_decimals(4);
 
       App.register_sensor(new_proxied_sensor);
       App.register_component(new_proxied_sensor);
