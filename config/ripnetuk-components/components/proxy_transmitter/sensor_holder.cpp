@@ -15,7 +15,7 @@ namespace esphome
 
     void SensorHolder::on_state_callback(float state)
     {
-      ESP_LOGD(TAG->get_tag(), "Sensor[%d] state callback %f", sensor_index, state);
+      //ESP_LOGD(TAG->get_tag(), "Sensor[%d] state callback %f", sensor_index, state);
       has_state = true;
       this->state = state;
     }

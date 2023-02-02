@@ -125,7 +125,7 @@ namespace esphome
         // Want to send a checkin
         proxy_base::proxy_message msg;
         msg.message_type = proxy_base::T_TO_R_SEND_SENSOR_STATE;
-        msg.send_sensor_state.sensor_index = first_unsent->sensor_index;
+
         // Zero out peoxy_id
         for (int i = 0; i < PROXY_ID_MAX_LENGTH; i++)
         {

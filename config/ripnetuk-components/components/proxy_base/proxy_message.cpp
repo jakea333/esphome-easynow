@@ -16,15 +16,15 @@ namespace esphome
                 break;
             case T_TO_R_SEND_SENSOR_STATE:
             {
-                std::string idx = std::to_string(message->send_sensor_state.sensor_index);
                 std::string state = std::to_string(message->send_sensor_state.state);
-                output->append("T to R Send Sensor[" + idx + "] Proxy ID - " + message->send_sensor_state.proxy_id + " State - " + state);
+                std::string proxy_id = std::string(message->send_sensor_state.proxy_id);
+                output->append("T to R Send Sensor State (" + proxy_id + ") State - " + state);
                 break;
             }
             case R_TO_T_SEND_SENDOR_STATE_REPONSE:
             {
-                std::string idx = std::to_string(message->send_sensor_state.sensor_index);
-                output->append("R to C Send Sensor[" + idx + "] Response");
+                std::string proxy_id = std::string(message->send_sensor_state.proxy_id);
+                output->append("R to C Send Sensor State Response [" + proxy_id + ")");
                 break;
             }
             default:

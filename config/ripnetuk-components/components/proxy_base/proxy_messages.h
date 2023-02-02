@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 
-#define PROXY_ID_MAX_LENGTH 20
+// Allow an extra byte for the null terminator
+#define PROXY_ID_MAX_LENGTH 21
 
 namespace esphome
 {
@@ -18,13 +19,12 @@ namespace esphome
         typedef struct proxy_message_send_sensor_state
         {
             char proxy_id[PROXY_ID_MAX_LENGTH];
-            int sensor_index;
             float state;
         } proxy_message_send_sensor_state;
 
         typedef struct proxy_message_send_sensor_state_response
         {
-            int sensor_index;
+            char proxy_id[PROXY_ID_MAX_LENGTH];
         } proxy_message_send_sensor_state_response;
 
         typedef struct proxy_message

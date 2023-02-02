@@ -15,13 +15,12 @@ CONF_PROXY_ID = "proxy_id"
 
 def validate_proxy_id(value):
     value = cv.string_strict(value)
-    value = cv.Length(max=255)(value)
-    validate_source_shorthand(value)
+    value = cv.Length(max=20)(value)
     return value
 
 SENSOR_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSOR): cv.use_id(sensor.Sensor),
-    cv.Required(CONF_PROXY_ID): cv.string,
+    cv.Required(CONF_PROXY_ID): validate_proxy_id,
 })
 
 
