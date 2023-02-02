@@ -12,7 +12,8 @@ namespace esphome
             PS_T_AWAIT_R_TO_T_CHECKIN_RESP = 20,
             PS_T_READING_SENSORS = 25,
             PS_T_SENDING_STATES = 30,
-            PS_T_AWAIT_R_TO_T_SEND_STATE_RESP = 40
+            PS_T_AWAIT_R_TO_T_SEND_STATE_RESP = 40,
+            PS_COMPLETE = 50
         };
 
         void describe_peer_state(std::string *output, peer_state state);

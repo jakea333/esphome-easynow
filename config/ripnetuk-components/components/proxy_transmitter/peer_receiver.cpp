@@ -18,6 +18,10 @@ namespace esphome
       {
         if (message->message_type == proxy_base::R_TO_T_CHECKIN_RESP)
         {
+          if (message->checkin_response.enter_ota_mode)
+          {
+            enter_ota_mode();
+          }
           start_sensor_reads();
           set_state(proxy_base::PS_T_READING_SENSORS);
         }
@@ -44,7 +48,7 @@ namespace esphome
           }
           else
           {
-            set_state(proxy_base::PS_READY);
+            set_state(proxy_base::PS_COMPLETE);
           }
           return;
         }
@@ -61,6 +65,12 @@ namespace esphome
       {
         if (time_since_last_state_change_ms > READY_TO_CHECKIN_DELAY)
         {
+
+          ESP_LOGD(TAG->get_tag(), "");
+          ESP_LOGD(TAG->get_tag(), "----------------------");
+          ESP_LOGD(TAG->get_tag(), "******* WOKEN UP");
+          ESP_LOGD(TAG->get_tag(), "----------------------");
+
           // Want to send a checkin
           proxy_base::proxy_message msg;
           msg.message_type = proxy_base::T_TO_R_CHECKIN;
@@ -150,6 +160,18 @@ namespace esphome
         return;
       }
 
+      if (get_state() == proxy_base::PS_COMPLETE)
+      {
+        ESP_LOGD(TAG->get_tag(), "");
+        ESP_LOGD(TAG->get_tag(), "----------------------");
+        ESP_LOGD(TAG->get_tag(), "******* CYCLE COMPLETE");
+        ESP_LOGD(TAG->get_tag(), "----------------------");
+
+        go_to_sleep();
+
+        return;
+      }
+
       ESP_LOGD(TAG->get_tag(), "Unexpected state in loop - %d ", get_state());
     }
 
@@ -173,5 +195,14 @@ namespace esphome
       }
     }
 
+    void PeerReceiver::enter_ota_mode()
+    {
+      ESP_LOGD(TAG->get_tag(), "******* Enter OTA Mode set. Rebooting to safe mode...");
+    }
+
+    void PeerReceiver::go_to_sleep()
+    {
+      ESP_LOGD(TAG->get_tag(), "******* Enter OTA Mode set. Rebooting to safe mode...");
+    }
   } // namespace proxy_receiver
 } // namespace esphome
