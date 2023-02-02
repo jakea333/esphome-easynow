@@ -2,6 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
 #include <WiFi.h>
+#include "esphome/core/application.h"
 
 #define RESPONSE_TIMEOUT 5000
 #define READY_TO_CHECKIN_DELAY 5000
@@ -200,6 +201,8 @@ namespace esphome
     void PeerReceiver::enter_ota_mode()
     {
       ESP_LOGD(TAG->get_tag(), "******* Enter OTA Mode set. Rebooting to safe mode...");
+        App.safe_reboot();
+
     }
 
     void PeerReceiver::go_to_sleep()
