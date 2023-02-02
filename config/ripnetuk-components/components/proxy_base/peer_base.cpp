@@ -102,7 +102,7 @@ namespace esphome
     {
       proxy_message *message = (proxy_message *)malloc(sizeof(proxy_message));
 
-      memcpy(message, incomingData, sizeof(message));
+      memcpy(message, incomingData, sizeof(proxy_message));
       proxy_message_queue_->push(message);
     }
 
