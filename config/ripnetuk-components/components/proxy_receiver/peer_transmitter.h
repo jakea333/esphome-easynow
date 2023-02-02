@@ -11,6 +11,7 @@ namespace esphome
     class PeerTransmitter : public proxy_base::PeerBase
     {
     public:
+      const char *name;
       void loop();
 
     protected:

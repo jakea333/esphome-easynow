@@ -8,9 +8,10 @@ namespace esphome
   namespace proxy_receiver
   {
 
-    void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, int testinput)
+    void ProxyReceiverComponent::add_transmitter(uint64_t mac_address, const char *name)
     {
       PeerTransmitter *peer_transmitter = new PeerTransmitter();
+      peer_transmitter->name = name;
       peer_transmitter->mac_address.set_from_uint64_t(mac_address);
       peer_transmitters_->push_back(peer_transmitter);
     }

@@ -8,20 +8,43 @@ AUTO_LOAD = ['proxy_base']
 CONF_ESPNOW_CHANNEL = "espnow_channel"
 CONF_TRANSMITTERS = "transmitters"
 
+
 CONF_TRANSMITTER_MAC_ADDRESS = "mac_address"
+CONF_TRANSMITTER_NAME = "name"
+CONF_TRANSMITTER_PROXIED_SENSORS = "proxied_sensors"
+
+CONF_PROXIED_SENSOR_PROXY_ID = "proxy_id"
+CONF_PROXIED_SENSOR_NAME = "name"
+
+
+def validate_proxy_id(value):
+    value = cv.string_strict(value)
+    value = cv.Length(max=20)(value)
+    return value
 
 
 ns = cg.esphome_ns.namespace('proxy_receiver')
 ProxyReceiverComponent = ns.class_('ProxyReceiverComponent', cg.Component)
 
-SENDER_SCHEMA = cv.Schema({
-    cv.Required(CONF_TRANSMITTER_MAC_ADDRESS): cv.mac_address
+
+PROXIED_SENSOR_SCHEMA = cv.Schema({
+    cv.Required(CONF_PROXIED_SENSOR_PROXY_ID): validate_proxy_id,
+    cv.Required(CONF_PROXIED_SENSOR_NAME): cv.string_strict,
+
+})
+
+
+TRANSMITTER_SCHEMA = cv.Schema({
+    cv.Required(CONF_TRANSMITTER_MAC_ADDRESS): cv.mac_address,
+    cv.Required(CONF_TRANSMITTER_NAME): cv.string_strict,
+    cv.Required(CONF_TRANSMITTER_PROXIED_SENSORS): cv.ensure_list(PROXIED_SENSOR_SCHEMA)
 })
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ProxyReceiverComponent),
     cv.Required(CONF_ESPNOW_CHANNEL): cv.int_,
-    cv.Required(CONF_TRANSMITTERS): cv.ensure_list(SENDER_SCHEMA),
+    cv.Required(CONF_TRANSMITTERS): cv.ensure_list(TRANSMITTER_SCHEMA),
+
 })
 
 
@@ -32,4 +55,5 @@ def to_code(config):
     cg.add(var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
 
     for outputConf in config.get(CONF_TRANSMITTERS, []):
-        cg.add(var.add_transmitter(outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex, 10))
+        cg.add(var.add_transmitter(
+            outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex, outputConf[CONF_TRANSMITTER_NAME]))
