@@ -2,8 +2,8 @@ import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.const import CONF_ID
 
-DEPENDENCIES = ['logger', 'proxy_base', 'sensor']
-AUTO_LOAD = ['proxy_base', 'sensor']
+DEPENDENCIES = ['logger']
+AUTO_LOAD = ['proxy_base', 'sensor', 'switch']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
 CONF_TRANSMITTERS = "transmitters"
