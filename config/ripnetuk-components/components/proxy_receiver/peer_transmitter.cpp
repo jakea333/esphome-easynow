@@ -20,10 +20,11 @@ namespace esphome
       if (message->message_type == proxy_base::T_TO_R_SEND_SENSOR_STATE)
       {
         // Send a response
-        proxy_base::proxy_message msg;
-        msg.message_type = proxy_base::R_TO_T_SEND_SENDOR_STATE_REPONSE;
-        msg.send_sensor_state_response.sensor_index = message->send_sensor_state.sensor_index;
-        send_proxy_message(&msg);
+        proxy_base::proxy_message send_msg;
+        send_msg.message_type = proxy_base::R_TO_T_SEND_SENDOR_STATE_REPONSE;
+        memcpy(send_msg.send_sensor_state_response.proxy_id, message->send_sensor_state.proxy_id, PROXY_ID_MAX_LENGTH);
+        
+        send_proxy_message(&send_msg);
       }
     }
 

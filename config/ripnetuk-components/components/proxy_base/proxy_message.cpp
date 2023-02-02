@@ -24,7 +24,7 @@ namespace esphome
             case R_TO_T_SEND_SENDOR_STATE_REPONSE:
             {
                 std::string proxy_id = std::string(message->send_sensor_state.proxy_id);
-                output->append("R to C Send Sensor State Response [" + proxy_id + ")");
+                output->append("R to C Send Sensor State Response (" + proxy_id + ")");
                 break;
             }
             default:
