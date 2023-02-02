@@ -16,6 +16,11 @@ namespace esphome
             R_TO_T_SEND_SENDOR_STATE_REPONSE = 50
         };
 
+        typedef struct proxy_message_checkin_response
+        {
+            bool enter_ota_mode;
+        } proxy_message_checkin_response;
+
         typedef struct proxy_message_send_sensor_state
         {
             char proxy_id[PROXY_ID_MAX_LENGTH];
@@ -33,6 +38,7 @@ namespace esphome
             int time_stamp;
             union
             {
+                proxy_message_checkin_response checkin_response;
                 proxy_message_send_sensor_state send_sensor_state;
                 proxy_message_send_sensor_state_response send_sensor_state_response;
             };

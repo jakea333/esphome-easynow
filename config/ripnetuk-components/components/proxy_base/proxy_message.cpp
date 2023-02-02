@@ -12,7 +12,8 @@ namespace esphome
                 output->append("T to R Check in");
                 break;
             case R_TO_T_CHECKIN_RESP:
-                output->append("R to C Check in response");
+                std::string enter_ota_mode = std::to_string(message->checkin_response.enter_ota_mode);
+                output->append("R to C Check in response - enter OTA mode " + enter_ota_mode);
                 break;
             case T_TO_R_SEND_SENSOR_STATE:
             {

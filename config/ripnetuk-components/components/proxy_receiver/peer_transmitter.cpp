@@ -12,9 +12,9 @@ namespace esphome
       if (message->message_type == proxy_base::T_TO_R_CHECKIN)
       {
         // Send a response
-        proxy_base::proxy_message msg;
-        msg.message_type = proxy_base::R_TO_T_CHECKIN_RESP;
-        send_proxy_message(&msg);
+        proxy_base::proxy_message send_msg;
+        send_msg.message_type = proxy_base::R_TO_T_CHECKIN_RESP;
+        send_proxy_message(&send_msg);
       }
 
       if (message->message_type == proxy_base::T_TO_R_SEND_SENSOR_STATE)

@@ -5,6 +5,8 @@
 #include "../proxy_base/peer_mac_address.h"
 #include "proxied_sensor.h"
 #include "esphome/core/application.h"
+#include "ota_switch.h"
+#include <string>
 
 namespace esphome
 {
@@ -16,6 +18,19 @@ namespace esphome
       PeerTransmitter *peer_transmitter = new PeerTransmitter();
       peer_transmitter->name = name;
       peer_transmitter->mac_address.set_from_uint64_t(mac_address);
+
+      OTASwitchComponent *new_ota_switch = new OTASwitchComponent();
+
+      std::string *switch_name = new std::string();
+      switch_name->append(name);
+      switch_name->append(" OTA Mode");
+
+      new_ota_switch->set_name(*switch_name);
+      App.register_switch(new_ota_switch);
+      App.register_component(new_ota_switch);
+
+      peer_transmitter->ota_switch = new_ota_switch;
+
       peer_transmitters_->push_back(peer_transmitter);
     }
 
