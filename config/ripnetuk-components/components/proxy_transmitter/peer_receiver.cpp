@@ -5,7 +5,7 @@
 #include "esphome/core/application.h"
 
 #define RESPONSE_TIMEOUT 5000
-#define READY_TO_CHECKIN_DELAY 5000
+#define READY_TO_CHECKIN_DELAY 15000
 #define READ_SENSORS_TIMEOUT 2000
 #define SENDING_STATE_TIMEOUT 4000
 
