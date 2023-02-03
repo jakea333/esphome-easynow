@@ -1,14 +1,14 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_WIFI
 from esphome.components import sensor
+from esphome.components.wifi import WiFiComponent
 
-DEPENDENCIES = ['logger', 'ota']
+DEPENDENCIES = ['logger', 'ota', 'wifi']
 AUTO_LOAD = ['proxy_base', 'sensor', 'switch']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
 CONF_TRANSMITTERS = "transmitters"
-
 
 CONF_TRANSMITTER_MAC_ADDRESS = "mac_address"
 CONF_TRANSMITTER_NAME = "name"
@@ -52,7 +52,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ProxyReceiverComponent),
     cv.Required(CONF_ESPNOW_CHANNEL): cv.int_,
     cv.Required(CONF_TRANSMITTERS): cv.ensure_list(TRANSMITTER_SCHEMA),
-})
+}).extend({cv.GenerateID(CONF_WIFI): cv.use_id(WiFiComponent)})
 
 
 def to_code(config):
@@ -60,6 +60,8 @@ def to_code(config):
     receiver_var = cg.new_Pvariable(config[CONF_ID])
     yield cg.register_component(receiver_var, config)
     # Configure receiver component
+    wifi = yield cg.get_variable(config[CONF_WIFI])
+    cg.add(receiver_var.set_wifi(wifi))
 
     for transmitterConf in config.get(CONF_TRANSMITTERS, []):
         # Create the peer transmitter

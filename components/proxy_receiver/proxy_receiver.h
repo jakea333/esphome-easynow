@@ -17,6 +17,7 @@ namespace esphome
 
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyReceiverComponent");
+      virtual bool get_enable_wifi() { return true; }
 
     public:
       void loop() override;

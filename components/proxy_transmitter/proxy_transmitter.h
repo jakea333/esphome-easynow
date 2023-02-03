@@ -18,10 +18,11 @@ namespace esphome
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
       PeerReceiver *peer_receiver_ = new PeerReceiver();
+      virtual bool get_enable_wifi() { return false; }
 
     public:
       std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
-      void set_peer_receiver(PeerReceiver *peer_receiver) { peer_receiver_=peer_receiver;}
+      void set_peer_receiver(PeerReceiver *peer_receiver) { peer_receiver_ = peer_receiver; }
       void loop() override;
       void setup() override;
       // void set_espnow_channel(int channel) { espnow_channel_ = channel; }

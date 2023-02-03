@@ -12,17 +12,29 @@ namespace esphome
   {
     float ProxyBaseComponent::get_setup_priority() const
     {
-      return setup_priority::LATE;
-      int x;
+      return setup_priority::WIFI;
     }
 
     bool ProxyBaseComponent::setup_espnow()
     {
       espnow_is_setup_ = false;
 
-      ESP_LOGD(TAG->get_tag(), "Setting WiFi mode");
-      WiFi.mode(WIFI_AP_STA);
-      ESP_LOGD(TAG->get_tag(), "WiFi mode set");
+      if (get_enable_wifi())
+      {
+        ESP_LOGD(TAG->get_tag(), "Setting WiFi mode");
+        WiFi.mode(WIFI_AP_STA);
+        ESP_LOGD(TAG->get_tag(), "WiFi mode set");
+      }
+      else
+
+      {
+        ESP_LOGD(TAG->get_tag(), "Disconnecting WiFi");
+
+        wifi_->clear_sta();
+        WiFi.disconnect();
+        ESP_LOGD(TAG->get_tag(), "WiFi disconnected");
+      }
+
       if (esp_now_init() != ESP_OK)
       {
         ESP_LOGD(TAG->get_tag(), "Error initializing ESP-NOW");

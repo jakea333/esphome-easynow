@@ -226,7 +226,14 @@ namespace esphome
         ESP_LOGD(TAG->get_tag(), "******* Deep sleep disabled, will instead not do anything for %dms", FAKE_DEEP_SLEEP_TIME);
       }
       ESP_LOGD(TAG->get_tag(), "******* Going to deep sleep for %dms...", deep_sleep_length_);
-      sleep(deep_sleep_length_); // todo
+      App.run_safe_shutdown_hooks();
+#if defined(USE_ESP32)
+      esp_sleep_enable_timer_wakeup(deep_sleep_length_);
+      esp_deep_sleep_start();
+#endif
+#ifdef USE_ESP8266
+      ESP.deepSleep(deep_sleep_length_);
+#endif
     }
   } // namespace proxy_receiver
 } // namespace esphome

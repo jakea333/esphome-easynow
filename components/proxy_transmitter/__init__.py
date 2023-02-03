@@ -1,10 +1,11 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
-from esphome.const import CONF_ID, CONF_OTA
+from esphome.const import CONF_ID, CONF_OTA, CONF_WIFI
 from esphome.components import sensor
 from esphome.components.ota import OTAComponent
+from esphome.components.wifi import WiFiComponent
 
-DEPENDENCIES = ['logger', 'proxy_base', 'ota']
+DEPENDENCIES = ['logger', 'proxy_base', 'ota', 'wifi']
 AUTO_LOAD = ['proxy_base']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
@@ -44,11 +45,15 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_RECEIVER_MAC_ADDRESS): cv.mac_address,
     cv.Required(CONF_SENSORS): cv.ensure_list(SENSOR_SCHEMA),
     cv.Required(CONF_DEEP_SLEEP_LENGTH): cv.positive_time_period_milliseconds
-}).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)})
-
+}).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)
+}).extend({cv.GenerateID(CONF_WIFI): cv.use_id(WiFiComponent)})
 
 def to_code(config):
     transmitter_var = cg.new_Pvariable(config[CONF_ID])
+    # Consigure transmitter component
+    wifi = yield cg.get_variable(config[CONF_WIFI])
+    cg.add(transmitter_var.set_wifi(wifi))
+
     yield cg.register_component(transmitter_var, config)
 
     peer_receiver_id = cv.declare_id(PeerReceiver)("peer_receiver")
@@ -68,6 +73,8 @@ def to_code(config):
 
     ota = yield cg.get_variable(config[CONF_OTA])
     cg.add(peer_receiver_var.set_ota(ota))
+
+
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])
