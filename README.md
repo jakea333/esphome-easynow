@@ -1,12 +1,10 @@
-# test-esp32
+# Easynow - an ESPHome component to make ESPNow easy in ESPHome.
 
 
 
-## Getting started
+## Overview
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+This is a set of components designed to allow 2 ESP32 devices running [ESPHome](https://esphome.io/) proxy sensor data over the ESPNow protocol from a battery powered transmitter to a grid powered receiver.
 
 ## Add your files
 
