@@ -72,7 +72,7 @@ proxy_receiver:
           name: "another-transmitter ADC"
           unit_of_measurement: "V"          
 ```
-#### HomeAssistant remote sensors:
+#### HomeAssistant proxied sensors:
 ![Remote Sensors](assets/images/remote-sensors.png)
 #### HomeAssistant OTA switch
 ![Remote Sensors](assets/images/ota-mode-switch.png)
