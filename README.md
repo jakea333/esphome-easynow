@@ -1,4 +1,4 @@
-# Easynow - an ESPHome component to make ESPNow easy in ESPHome.
+# Easynow - an ESPHome component to make sensor proxying via ESPNow easy in ESPHome.
 ### Version 1.1.0
 [Check out my blog where im measuring how much power it saves and writing up progress on this project](https://ripnetuk.blogspot.com/)
 
@@ -98,6 +98,7 @@ If the receiver is linked to [HomeAssistant](https://www.home-assistant.io/) the
 - Turning off the regular wifi on the transmitters 
 - Ability to use a unconfigured instance of these components to determine mac address from log
 - Support for esp8266 devices (low priority, but no reason to think its a lot of work, it might already be OK)
+- Support for other entities like binary sensors
 
 ## Authors and acknowledgment
 Written by George Styles (george@ripnet.co.uk)
