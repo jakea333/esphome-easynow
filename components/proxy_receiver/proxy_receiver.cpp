@@ -32,6 +32,9 @@ namespace esphome
 
     void ProxyReceiverComponent::setup()
     {
+      // This seems to be needed to have ESPNow and WiFi working together
+      WiFi.mode(WIFI_AP_STA);
+      
       setup_espnow();
       ESP_LOGD(TAG->get_tag(), "Adding peers...");
       for (int i = 0; i < peer_transmitters_->size(); i++)
