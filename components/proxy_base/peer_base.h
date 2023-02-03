@@ -20,6 +20,8 @@ namespace esphome
     private:
       esp_now_peer_info_t peer_info_;
       peer_state state_ = PS_UNSET;
+      bool awaiting_send_ack_ = false;
+      int awaiting_send_ack_start_ms_;
       // This is a hack since I cannot find a way of passing a method pointer to the ESPNow callbacks...
       static std::vector<PeerBase *> *global_peer_list_;
       void on_data_send_callback(esp_now_send_status_t status);

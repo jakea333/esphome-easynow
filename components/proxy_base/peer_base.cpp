@@ -1,7 +1,7 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
 
-// #include <WiFi.h>
+#define SEND_ACK_TIMEOUT_MS 2000
 
 namespace esphome
 {
@@ -98,11 +98,20 @@ namespace esphome
     //
     void PeerBase::on_data_send_callback(esp_now_send_status_t status)
     {
-      ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+      if (!awaiting_send_ack_)
+      {
+        ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+      }
+      else
+      {
+        ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+      }
+      awaiting_send_ack_ = false;
     }
 
     void PeerBase::on_data_recv_callback(const uint8_t *incomingData, int len)
     {
+      // Enqueue message as this is called from a high priority wifi thread, and documentation says not to spend too long in here...
       proxy_message *message = (proxy_message *)malloc(sizeof(proxy_message));
 
       memcpy(message, incomingData, sizeof(proxy_message));
@@ -155,9 +164,22 @@ namespace esphome
 
     bool PeerBase::process_proxy_message_outgoing_queue()
     {
+      // See if we have an outstanding send that we havent had an ACK for yet
+      if (awaiting_send_ack_)
+      {
+        // See if we have times out awaiting the ack
+        if ((millis() - awaiting_send_ack_start_ms_) > SEND_ACK_TIMEOUT_MS)
+        {
+          ESP_LOGD(TAG->get_tag(), "Timeout waiting for send ack after %dms", SEND_ACK_TIMEOUT_MS);
+          awaiting_send_ack_ = false;
+        }
+
+        return true; // Dont allow loop to do other stuff as we are waiting for a send ACK or a timeout (or we have just got a timeout, so next time it will continue normally).
+      }
+
       if (proxy_message_outgoing_queue_->size() == 0)
       {
-        return false;
+        return false; // Nothing to send
       }
 
       proxy_message *next_message = proxy_message_outgoing_queue_->front();
@@ -167,6 +189,8 @@ namespace esphome
       describe_proxy_message(&desc, next_message);
 
       esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message));
+      awaiting_send_ack_ = true;
+      awaiting_send_ack_start_ms_ = millis();
 
       if (result != ESP_OK)
       {
