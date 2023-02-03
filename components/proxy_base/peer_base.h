@@ -27,7 +27,9 @@ namespace esphome
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
       const char *decode_espnow_error(esp_err_t error);
       std::queue<proxy_message *> *proxy_message_incoming_queue_ = new std::queue<proxy_message *>();
+      std::queue<proxy_message *> *proxy_message_outgoing_queue_ = new std::queue<proxy_message *>();
       bool process_proxy_message_incoming_queue();
+      bool process_proxy_message_outgoing_queue();
 
     public:
       PeerMacAddress mac_address;
@@ -45,7 +47,7 @@ namespace esphome
       void set_state(peer_state state);
       peer_state get_state();
       void reset_state(const char *reason);
-      bool send_proxy_message(proxy_message *message);
+      void send_proxy_message(proxy_message *message);
       virtual void handle_received_proxy_message(proxy_message *message) = 0;
       virtual void peer_workflow_loop() = 0;
     };

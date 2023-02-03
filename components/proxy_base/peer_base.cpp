@@ -40,23 +40,13 @@ namespace esphome
     //
     // Send Proxy Message
     //
-    bool PeerBase::send_proxy_message(proxy_message *message)
+    void PeerBase::send_proxy_message(proxy_message *message)
     {
       message->time_stamp = millis();
+      proxy_message *queue_message = (proxy_message *)malloc(sizeof(proxy_message));
 
-      std::string desc;
-      describe_proxy_message(&desc, message);
-
-      esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)message, sizeof(*message));
-
-      if (result != ESP_OK)
-      {
-        const char *decoded_error = decode_espnow_error(result);
-        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name, desc.c_str());
-        return false;
-      }
-      ESP_LOGD(TAG->get_tag(), "> %s %s", name, desc.c_str());
-      return true;
+      memcpy(queue_message, message, sizeof(proxy_message));
+      proxy_message_outgoing_queue_->push(queue_message);
     }
 
     //
@@ -86,7 +76,6 @@ namespace esphome
       }
       peer->on_data_send_callback(status);
     }
-
 
     void PeerBase::call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     {
@@ -120,13 +109,21 @@ namespace esphome
       proxy_message_incoming_queue_->push(message);
     }
 
-    
     //
     // Loop - this is called from the transmitter/receiver component
     //
     void PeerBase::loop()
     {
-      process_proxy_message_incoming_queue();
+      if (process_proxy_message_incoming_queue())
+      {
+        return; // Dont do anything else as we are not supposed to block for long in loop
+      }
+
+      if (process_proxy_message_outgoing_queue())
+      {
+        return;
+      }
+
       peer_workflow_loop();
     }
 
@@ -135,25 +132,54 @@ namespace esphome
     //
     bool PeerBase::process_proxy_message_incoming_queue()
     {
-      if (proxy_message_incoming_queue_->size() > 0)
+      if (proxy_message_incoming_queue_->size() == 0)
       {
-        proxy_message *next_message = proxy_message_incoming_queue_->front();
-        proxy_message_incoming_queue_->pop();
-
-        std::string desc;
-        describe_proxy_message(&desc, next_message);
-
-        ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
-
-        handle_received_proxy_message(next_message);
-
-        // And free it
-        free(next_message);
-
-        return true; // HAve processed message, so tell loop to not do other stuff
+        return false;
       }
 
-      return false;
+      proxy_message *next_message = proxy_message_incoming_queue_->front();
+      proxy_message_incoming_queue_->pop();
+
+      std::string desc;
+      describe_proxy_message(&desc, next_message);
+
+      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
+
+      handle_received_proxy_message(next_message);
+
+      // And free it
+      free(next_message);
+
+      return true; // HAve processed message, so tell loop to not do other stuff
+    }
+
+    bool PeerBase::process_proxy_message_outgoing_queue()
+    {
+      if (proxy_message_outgoing_queue_->size() == 0)
+      {
+        return false;
+      }
+
+      proxy_message *next_message = proxy_message_outgoing_queue_->front();
+      proxy_message_outgoing_queue_->pop();
+
+      std::string desc;
+      describe_proxy_message(&desc, next_message);
+
+      esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message));
+
+      if (result != ESP_OK)
+      {
+        const char *decoded_error = decode_espnow_error(result);
+        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name, desc.c_str());
+        return false;
+      }
+      ESP_LOGD(TAG->get_tag(), "> %s %s", name, desc.c_str());
+
+      // And free it
+      free(next_message);
+
+      return true;
     }
 
     //
