@@ -2,7 +2,9 @@
 #include <string>
 
 // Allow an extra byte for the null terminator
+// This also needs setting in the python file so people dont inject too large strings
 #define PROXY_ID_MAX_LENGTH 21
+#define MESSAGE_PROTOCOL_VERSION 10
 
 namespace esphome
 {
@@ -34,6 +36,7 @@ namespace esphome
 
         typedef struct proxy_message
         {
+            int message_protocol_version = MESSAGE_PROTOCOL_VERSION;
             proxy_message_type message_type;
             int time_stamp;
             union

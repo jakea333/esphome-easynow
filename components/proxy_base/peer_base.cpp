@@ -31,7 +31,7 @@ namespace esphome
       }
       global_peer_list_->push_back(this);
 
-      last_state_change_millis_ = millis(); 
+      last_state_change_millis_ = millis();
       reset_state("ESP Now Peer Added");
 
       return true;
@@ -216,6 +216,13 @@ namespace esphome
 
       proxy_message *next_message = proxy_message_incoming_queue_->front();
       proxy_message_incoming_queue_->pop();
+
+      if (next_message->message_protocol_version != MESSAGE_PROTOCOL_VERSION)
+      {
+        ESP_LOGD(TAG->get_tag(), "!!!! ERROR Received message with protocol version %d but version %d was expected. This means the receiver and the transmitter are not running the same version of the ESP Proxy component. Ignoring.", next_message->message_protocol_version, MESSAGE_PROTOCOL_VERSION);
+        free(next_message);
+        return true; // Dont want to do any more processing with this peer on this loop
+      }
 
       std::string desc;
       describe_proxy_message(&desc, next_message);
