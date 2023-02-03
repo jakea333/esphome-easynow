@@ -16,9 +16,11 @@ namespace esphome
     {
     public:
       std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
+      void set_deep_sleep_length(int deep_sleep_length) { deep_sleep_length_ = deep_sleep_length; }
       void peer_workflow_loop();
 
     private:
+      int deep_sleep_length_; // in ms
       void start_sensor_reads();
       SensorHolder *get_first_unsent_sensor();
       void enter_ota_mode();

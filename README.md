@@ -33,6 +33,7 @@ sensor:
 proxy_transmitter:
   espnow_channel: 11
   receiver_mac_address: "34:86:5D:FD:84:58"
+  deep_sleep_length: 60s  
   sensors:
     - sensor: "sensor_adc"
       proxy_id: "now_transmitter_adc"

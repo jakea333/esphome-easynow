@@ -9,6 +9,7 @@ AUTO_LOAD = ['proxy_base']
 
 CONF_ESPNOW_CHANNEL = "espnow_channel"
 CONF_RECEIVER_MAC_ADDRESS = "receiver_mac_address"
+CONF_DEEP_SLEEP_LENGTH = "deep_sleep_length"
 CONF_SENSORS = "sensors"
 
 CONF_SENSOR_SENSOR = "sensor"
@@ -42,7 +43,9 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_ESPNOW_CHANNEL): cv.int_,
     cv.Required(CONF_RECEIVER_MAC_ADDRESS): cv.mac_address,
     cv.Required(CONF_SENSORS): cv.ensure_list(SENSOR_SCHEMA),
+    cv.Required(CONF_DEEP_SLEEP_LENGTH): cv.positive_time_period_milliseconds
 }).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)})
+
 
 def to_code(config):
     transmitter_var = cg.new_Pvariable(config[CONF_ID])
@@ -55,6 +58,9 @@ def to_code(config):
         config[CONF_ESPNOW_CHANNEL]))
     cg.add(peer_receiver_var.set_mac_address(
         config[CONF_RECEIVER_MAC_ADDRESS].as_hex))
+    cg.add(peer_receiver_var.set_deep_sleep_length(
+        config[CONF_DEEP_SLEEP_LENGTH]))
+
     cg.add(peer_receiver_var.set_name(
         "receiver"))
     # Add peer receiver to transmitter component

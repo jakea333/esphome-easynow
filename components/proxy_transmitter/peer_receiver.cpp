@@ -4,10 +4,17 @@
 #include <WiFi.h>
 #include "esphome/core/application.h"
 
+// Give up on ACKs after this log, and reset and try again
 #define RESPONSE_TIMEOUT 5000
-#define READY_TO_CHECKIN_DELAY 1000
-#define READ_SENSORS_TIMEOUT 2000
-#define SENDING_STATE_TIMEOUT 4000
+
+// If deep sleep is disabled (ie, deep sleep time is 0), instead dont do anything for this long
+#define FAKE_DEEP_SLEEP_TIME 1000
+
+// Give up on reading sensors after this long
+#define READ_SENSORS_TIMEOUT 10000
+
+// Give up on sending states after this long
+#define SENDING_STATE_TIMEOUT 8000
 
 namespace esphome
 {
@@ -64,21 +71,27 @@ namespace esphome
 
       if (get_state() == proxy_base::PS_READY)
       {
-        if (time_since_last_state_change_ms > READY_TO_CHECKIN_DELAY)
+        // If deep sleep is disabled, fake it by not doing anything until FAKE_DEEP_SLEEP_TIME after last state change...
+        if (deep_sleep_length_ == 0)
         {
-
-          ESP_LOGD(TAG->get_tag(), "");
-          ESP_LOGD(TAG->get_tag(), "----------------------");
-          ESP_LOGD(TAG->get_tag(), "******* WOKEN UP");
-          ESP_LOGD(TAG->get_tag(), "----------------------");
-
-          // Want to send a checkin
-          proxy_base::proxy_message msg;
-          msg.message_type = proxy_base::MT_CHECKIN;
-          send_proxy_message(&msg);
-          // Set state to awaiting MT_ACK_CHECKIN
-          set_state(proxy_base::PS_WAIT_CHECKIN_ACK);
+          if (time_since_last_state_change_ms < FAKE_DEEP_SLEEP_TIME)
+          {
+            return;
+          }
         }
+
+        ESP_LOGD(TAG->get_tag(), "");
+        ESP_LOGD(TAG->get_tag(), "----------------------");
+        ESP_LOGD(TAG->get_tag(), "******* WOKEN UP");
+        ESP_LOGD(TAG->get_tag(), "----------------------");
+
+        // Want to send a checkin
+        proxy_base::proxy_message msg;
+        msg.message_type = proxy_base::MT_CHECKIN;
+        send_proxy_message(&msg);
+        // Set state to awaiting MT_ACK_CHECKIN
+        set_state(proxy_base::PS_WAIT_CHECKIN_ACK);
+
         return;
       }
 
@@ -208,7 +221,12 @@ namespace esphome
 
     void PeerReceiver::go_to_sleep()
     {
-      ESP_LOGD(TAG->get_tag(), "******* SLEEPING...");
+      if (deep_sleep_length_ == 0)
+      {
+        ESP_LOGD(TAG->get_tag(), "******* Deep sleep disabled, will instead not do anything for %dms", FAKE_DEEP_SLEEP_TIME);
+      }
+      ESP_LOGD(TAG->get_tag(), "******* Going to deep sleep for %dms...", deep_sleep_length_);
+      sleep(deep_sleep_length_); // todo
     }
   } // namespace proxy_receiver
 } // namespace esphome
