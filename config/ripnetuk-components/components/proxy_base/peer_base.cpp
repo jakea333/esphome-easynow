@@ -108,8 +108,31 @@ namespace esphome
 
     void PeerBase::loop()
     {
-      process_proxy_message_queue();
-      peer_workflow_loop();
+      {
+        int start_ms = millis();
+
+        process_proxy_message_queue();
+
+        int end_ms = millis();
+        int time = end_ms - start_ms;
+        if (time > 20)
+        {
+          ESP_LOGD(TAG->get_tag(), "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! process message queue took long %d", time);
+        }
+      }
+
+      {
+        int start_ms = millis();
+
+        peer_workflow_loop();
+
+        int end_ms = millis();
+        int time = end_ms - start_ms;
+        if (time > 20)
+        {
+          ESP_LOGD(TAG->get_tag(), "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! peer workflow loop took long %d", time);
+        }
+      }
     }
 
     void PeerBase::process_proxy_message_queue()
