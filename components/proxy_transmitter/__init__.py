@@ -12,7 +12,13 @@ CONF_RECEIVER_MAC_ADDRESS = "receiver_mac_address"
 CONF_SENSORS = "sensors"
 
 CONF_SENSOR_SENSOR = "sensor"
-CONF_SENDOR_PROXY_ID = "proxy_id"
+CONF_SENSOR_PROXY_ID = "proxy_id"
+
+ns = cg.esphome_ns.namespace('proxy_transmitter')
+ProxyTransmitterComponent = ns.class_(
+    'ProxyTransmitterComponent', cg.Component)
+PeerReceiver = ns.class_(
+    'PeerReceiver')
 
 
 def validate_proxy_id(value):
@@ -23,13 +29,13 @@ def validate_proxy_id(value):
 
 SENSOR_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSOR_SENSOR): cv.use_id(sensor.Sensor),
-    cv.Required(CONF_SENDOR_PROXY_ID): validate_proxy_id,
+    cv.Required(CONF_SENSOR_PROXY_ID): validate_proxy_id,
 })
 
+RECEIVER_SCHEMA = cv.Schema({
+    cv.GenerateID(): cv.declare_id(PeerReceiver),
+})
 
-ns = cg.esphome_ns.namespace('proxy_transmitter')
-ProxyTransmitterComponent = ns.class_(
-    'ProxyTransmitterComponent', cg.Component)
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(ProxyTransmitterComponent),
@@ -38,18 +44,27 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSORS): cv.ensure_list(SENSOR_SCHEMA),
 }).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)})
 
-
 def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID])
-    yield cg.register_component(var, config)
+    transmitter_var = cg.new_Pvariable(config[CONF_ID])
+    yield cg.register_component(transmitter_var, config)
 
-    cg.add(var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
-    cg.add(var.set_receiver(
-        config[CONF_RECEIVER_MAC_ADDRESS].as_hex, "receiver"), )
-    
+    peer_receiver_id = cv.declare_id(PeerReceiver)("peer_receiver")
+    peer_receiver_var = cg.new_Pvariable(peer_receiver_id)
+    # Configure peer receiver component
+    cg.add(peer_receiver_var.set_espnow_channel(
+        config[CONF_ESPNOW_CHANNEL]))
+    cg.add(peer_receiver_var.set_mac_address(
+        config[CONF_RECEIVER_MAC_ADDRESS].as_hex))
+    cg.add(peer_receiver_var.set_name(
+        "receiver"))
+    # Add peer receiver to transmitter component
+    cg.add(transmitter_var.set_peer_receiver(peer_receiver_var))
+
     ota = yield cg.get_variable(config[CONF_OTA])
-    cg.add(var.set_ota(ota))
+    cg.add(peer_receiver_var.set_ota(ota))
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])
-        cg.add(var.add_sensor(sensor, sensor_config[CONF_SENDOR_PROXY_ID]))
+        cg.add(transmitter_var.add_sensor(
+            sensor,
+            sensor_config[CONF_SENSOR_PROXY_ID]))

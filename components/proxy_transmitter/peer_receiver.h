@@ -6,7 +6,7 @@
 #include <vector>
 #include "esphome/components/sensor/sensor.h"
 #include "sensor_holder.h"
-#include "esphome/components/ota/ota_component.h"
+
 
 namespace esphome
 {
@@ -15,7 +15,6 @@ namespace esphome
     class PeerReceiver : public proxy_base::PeerBase
     {
     public:
-      ota::OTAComponent *ota;
       std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
       void peer_workflow_loop();
 
