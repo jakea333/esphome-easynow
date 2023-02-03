@@ -51,14 +51,14 @@ CONFIG_SCHEMA = cv.Schema({
 def to_code(config):
     transmitter_var = cg.new_Pvariable(config[CONF_ID])
     # Consigure transmitter component
-    wifi = yield cg.get_variable(config[CONF_WIFI])
-    cg.add(transmitter_var.set_wifi(wifi))
+
 
     yield cg.register_component(transmitter_var, config)
 
     peer_receiver_id = cv.declare_id(PeerReceiver)("peer_receiver")
     peer_receiver_var = cg.new_Pvariable(peer_receiver_id)
     # Configure peer receiver component
+    
     cg.add(peer_receiver_var.set_espnow_channel(
         config[CONF_ESPNOW_CHANNEL]))
     cg.add(peer_receiver_var.set_mac_address(
@@ -74,7 +74,8 @@ def to_code(config):
     ota = yield cg.get_variable(config[CONF_OTA])
     cg.add(peer_receiver_var.set_ota(ota))
 
-
+    wifi = yield cg.get_variable(config[CONF_WIFI])
+    cg.add(peer_receiver_var.set_wifi(wifi))
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])

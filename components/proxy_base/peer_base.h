@@ -10,6 +10,7 @@
 #include <string.h>
 #include <queue>
 #include "esphome/components/ota/ota_component.h"
+#include "esphome/components/wifi/wifi_component.h"
 
 namespace esphome
 {
@@ -39,6 +40,7 @@ namespace esphome
 
     public:
       void set_ota(ota::OTAComponent *ota) { ota_ = ota; }
+      void set_wifi(wifi::WiFiComponent *wifi) { wifi_ = wifi; }
       void set_espnow_channel(int espnow_channel) { espnow_channel_ = espnow_channel; }
       void set_name(const char *name) { name_ = name; }
       void set_mac_address(uint64_t mac_address_uint64_t) { mac_address_.set_from_uint64_t(mac_address_uint64_t); }
@@ -53,6 +55,7 @@ namespace esphome
       LogTag *TAG = new LogTag("PeerBase");
 
       ota::OTAComponent *ota_;
+      wifi::WiFiComponent *wifi_;
       PeerMacAddress mac_address_;
       const char *name_;
       int last_state_change_millis_;
