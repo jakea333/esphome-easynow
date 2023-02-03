@@ -20,11 +20,10 @@ namespace esphome
       PeerReceiver *peer_receiver_ = new PeerReceiver();
 
     public:
-      std::vector<SensorHolder *> *sensors = new std::vector<SensorHolder *>();
+
       void set_peer_receiver(PeerReceiver *peer_receiver) { peer_receiver_ = peer_receiver; }
       void loop() override;
       void setup() override;
-      void add_sensor(sensor::Sensor *sensor, const char *proxy_id) { sensors->push_back(new SensorHolder(sensor, proxy_id)); };
     };
   } // namespace proxy_transmitter
 } // namespace esphome

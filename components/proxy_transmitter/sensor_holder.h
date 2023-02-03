@@ -20,7 +20,6 @@ namespace esphome
     public:
       SensorHolder(sensor::Sensor *sensor, const char *proxy_id);
       const char *proxy_id;
-      int sensor_index{0};
       bool is_sent = false;
       bool has_state = false;
       float state = NAN;

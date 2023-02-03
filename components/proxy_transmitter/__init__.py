@@ -79,6 +79,6 @@ def to_code(config):
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])
-        cg.add(transmitter_var.add_sensor(
+        cg.add(peer_receiver_var.add_sensor(
             sensor,
             sensor_config[CONF_SENSOR_PROXY_ID]))

@@ -112,9 +112,9 @@ namespace esphome
         }
 
         bool has_outstanding_reads = false;
-        for (int i = 0; i < sensors->size(); i++)
+        for (int i = 0; i < sensors_->size(); i++)
         {
-          if (!sensors->at(i)->has_state)
+          if (!sensors_->at(i)->has_state)
           {
             has_outstanding_reads = true;
           }
@@ -123,9 +123,9 @@ namespace esphome
         if (!has_outstanding_reads <= 0)
         {
           // Have finished reading, so now move on to sending states to receiver
-          for (int i = 0; i < sensors->size(); i++)
+          for (int i = 0; i < sensors_->size(); i++)
           {
-            sensors->at(i)->is_sent = false;
+            sensors_->at(i)->is_sent = false;
           }
           set_state(proxy_base::PS_SENDING_STATES);
         }
@@ -193,20 +193,20 @@ namespace esphome
 
     SensorHolder *PeerReceiver::get_first_unsent_sensor()
     {
-      for (int i = 0; i < sensors->size(); i++)
+      for (int i = 0; i < sensors_->size(); i++)
       {
-        if (!sensors->at(i)->is_sent)
-          return sensors->at(i);
+        if (!sensors_->at(i)->is_sent)
+          return sensors_->at(i);
       }
       return NULL;
     }
 
     void PeerReceiver::start_sensor_reads()
     {
-      ESP_LOGD(TAG->get_tag(), "Waiting for state from %d sensors ", sensors->size());
-      for (int i = 0; i < sensors->size(); i++)
+      ESP_LOGD(TAG->get_tag(), "Waiting for state from %d sensors ", sensors_->size());
+      for (int i = 0; i < sensors_->size(); i++)
       {
-        SensorHolder *sensor = sensors->at(i);
+        SensorHolder *sensor = sensors_->at(i);
         sensor->has_state = false;
       }
     }
