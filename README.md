@@ -72,6 +72,10 @@ proxy_receiver:
           name: "another-transmitter ADC"
           unit_of_measurement: "V"          
 ```
+#### HomeAssistant remote sensors:
+![Remote Sensors](assets/images/remote-sensors.png)
+#### HomeAssistant OTA switch
+![Remote Sensors](assets/images/ota-mode-switch.png)
 ## Overview
 
 Easynow is a pair of components which allow 1 or more battery powered ESP32 devices running [ESPHome](https://esphome.io/) to proxy sensor data over the [ESPNow](https://www.espressif.com/en/products/software/esp-now/overview ) protocol to a grid powered receiver ESP32 device also running ESPHome.
