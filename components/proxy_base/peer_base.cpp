@@ -15,9 +15,9 @@ namespace esphome
 
     bool PeerBase::add_espnow_peer(int espnow_channel)
     {
-      ESP_LOGD(TAG->get_tag(), "Add peer %s", mac_address.as_string);
+      ESP_LOGD(TAG->get_tag(), "Add peer %s", mac_address_.as_string);
 
-      memcpy(&peer_info_.peer_addr, &mac_address.as_uint8_t_array, sizeof(peer_info_.peer_addr));
+      memcpy(&peer_info_.peer_addr, &mac_address_.as_uint8_t_array, sizeof(peer_info_.peer_addr));
 
       // peer_info_.peer_addr = mac_address.as_uint8_t_array;
       peer_info_.channel = espnow_channel;
@@ -25,13 +25,13 @@ namespace esphome
 
       if (esp_now_add_peer(&peer_info_) != ESP_OK)
       {
-        ESP_LOGD(TAG->get_tag(), "Failed to add peer %s %s", name, mac_address.as_string);
+        ESP_LOGD(TAG->get_tag(), "Failed to add peer %s %s", name_, mac_address_.as_string);
         return false;
-        ESP_LOGD(TAG->get_tag(), "Peer Added %s %s", name, mac_address.as_string);
+        ESP_LOGD(TAG->get_tag(), "Peer Added %s %s", name_, mac_address_.as_string);
       }
       global_peer_list_->push_back(this);
 
-      last_state_change_millis_ = millis();
+      last_state_change_millis_ = millis(); 
       reset_state("ESP Now Peer Added");
 
       return true;
@@ -56,7 +56,7 @@ namespace esphome
     {
       for (int i = 0; i < global_peer_list_->size(); i++)
       {
-        if (global_peer_list_->at(i)->mac_address.mac_address_equals(peer))
+        if (global_peer_list_->at(i)->mac_address_.mac_address_equals(peer))
           return global_peer_list_->at(i);
       }
 
@@ -157,11 +157,11 @@ namespace esphome
         proxy_message_sendack_queue_->pop();
         if (!awaiting_send_ack_)
         {
-          ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+          ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address_.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
         }
         else
         {
-          ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+          ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address_.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
           awaiting_send_ack_ = false;
         }
         return true; // Dont do anything else in this loop as we have processed a sendack and (maybe) set the awaiting flag to not waiting anymore.
@@ -196,10 +196,10 @@ namespace esphome
       if (result != ESP_OK)
       {
         const char *decoded_error = decode_espnow_error(result);
-        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name, desc.c_str());
+        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name_, desc.c_str());
         return false;
       }
-      ESP_LOGD(TAG->get_tag(), "> %s %s", name, desc.c_str());
+      ESP_LOGD(TAG->get_tag(), "> %s %s", name_, desc.c_str());
 
       // And free it
       free(next_message);
@@ -220,7 +220,7 @@ namespace esphome
       std::string desc;
       describe_proxy_message(&desc, next_message);
 
-      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
+      ESP_LOGD(TAG->get_tag(), "< %s %s", name_, desc.c_str());
 
       handle_received_proxy_message(next_message);
 

@@ -13,7 +13,7 @@ namespace esphome
       {
         ESP_LOGD(TAG->get_tag(), "");
         ESP_LOGD(TAG->get_tag(), "------------------------------");
-        ESP_LOGD(TAG->get_tag(), "******* CHECKIN FROM %s", name);
+        ESP_LOGD(TAG->get_tag(), "******* CHECKIN FROM %s", get_name());
         ESP_LOGD(TAG->get_tag(), "------------------------------");
 
         // Send a response
@@ -22,7 +22,7 @@ namespace esphome
         send_msg.checkin_response.enter_ota_mode = ota_switch->state;
         send_proxy_message(&send_msg);
         // Switch off OTA mode switch once message sent... we could wait for an ack, but then
-        // the ack might get lost even though the reboot has happened, and thus it would enter OTA mode
+        // the ack might get lost even though the reboot has happened, and thus it  would enter OTA mode
         // next time it does a full boot. Two generals problem.
         if (ota_switch->state)
         {
@@ -69,11 +69,11 @@ namespace esphome
 
       if (!proxied_sensor)
       {
-        ESP_LOGD(TAG->get_tag(), "Received sensor state from %s (%s) with proxy_id of %s but no such proxied sensor exists.", name, mac_address.as_string, message->send_sensor_state.proxy_id);
+        ESP_LOGD(TAG->get_tag(), "Received sensor state from %s (%s) with proxy_id of %s but no such proxied sensor exists.", get_name(), mac_address_.as_string, message->send_sensor_state.proxy_id);
         return;
       }
       float state = message->send_sensor_state.state;
-      ESP_LOGD(TAG->get_tag(), "^^Publish state from %s (%s) with proxy_id of %s - state is %f", name, mac_address.as_string, message->send_sensor_state.proxy_id, state);
+      ESP_LOGD(TAG->get_tag(), "^^Publish state from %s (%s) with proxy_id of %s - state is %f", get_name(), mac_address_.as_string, message->send_sensor_state.proxy_id, state);
       proxied_sensor->publish_state(state);
     }
 
