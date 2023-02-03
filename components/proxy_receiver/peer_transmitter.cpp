@@ -58,11 +58,11 @@ namespace esphome
     {
       // Need to find the sensor with our proxy_id
       ProxiedSensorComponent *proxied_sensor = NULL;
-      for (int i = 0; i < proxied_sensors->size(); i++)
+      for (int i = 0; i < proxied_sensors_->size(); i++)
       {
-        if (strcmp(message->send_sensor_state.proxy_id, proxied_sensors->at(i)->proxy_id))
+        if (strcmp(message->send_sensor_state.proxy_id, proxied_sensors_->at(i)->get_proxied_sensor_id()))
         {
-          proxied_sensor = proxied_sensors->at(i);
+          proxied_sensor = proxied_sensors_->at(i);
           break;
         }
       }
@@ -76,5 +76,37 @@ namespace esphome
       ESP_LOGD(TAG->get_tag(), "^^Publish state from %s (%s) with proxy_id of %s - state is %f", name, mac_address.as_string, message->send_sensor_state.proxy_id, state);
       proxied_sensor->publish_state(state);
     }
+
+    // void PeerTransmitter::add_proxied_sensor(ProxiedSensorComponent *proxied_sensore)
+    // {
+    //   // Find peer transmitter with this mac address...
+    //   PeerTransmitter *peer_transmitter = NULL;
+    //   proxy_base::PeerMacAddress peer_mac_address;
+    //   peer_mac_address.set_from_uint64_t(mac_address);
+
+    //   for (int i = 0; i < peer_transmitters_->size(); i++)
+    //   {
+    //     if (peer_transmitters_->at(i)->mac_address.mac_address_equals(&peer_mac_address))
+    //     {
+    //       peer_transmitter = peer_transmitters_->at(i);
+    //     }
+    //   }
+
+    //   if (peer_transmitter == NULL)
+    //   {
+    //     ESP_LOGD(TAG->get_tag(), "Error - Attempt to add a proxied sensor to transmitter with mac address %s but we dont have such a transmitter", peer_mac_address.as_string);
+    //     return;
+    //   }
+
+    //   ProxiedSensorComponent *new_proxied_sensor = new ProxiedSensorComponent();
+    //   new_proxied_sensor->set_name(name);
+    //   new_proxied_sensor->proxy_id = proxy_id;
+    //   new_proxied_sensor->set_accuracy_decimals(4);
+
+    //   // App.register_sensor(new_proxied_sensor);
+    //   // App.register_component(new_proxied_sensor);
+
+    //   peer_transmitter->proxied_sensors->push_back(new_proxied_sensor);
+    // }
   } // namespace proxy_receiver
 } // namespace esphome

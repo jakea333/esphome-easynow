@@ -14,12 +14,12 @@ namespace esphome
     class PeerTransmitter : public proxy_base::PeerBase
     {
     private:
+      std::vector<ProxiedSensorComponent *> *proxied_sensors_ = new std::vector<ProxiedSensorComponent *>();
       void update_proxied_sensor(proxy_base::proxy_message *message);
 
     public:
-      std::vector<ProxiedSensorComponent *> *proxied_sensors = new std::vector<ProxiedSensorComponent *>();
       OTASwitchComponent *ota_switch;
-
+      void add_proxied_sensor(ProxiedSensorComponent *proxied_sensor) { proxied_sensors_->push_back(proxied_sensor); }
       void peer_workflow_loop();
 
     protected:

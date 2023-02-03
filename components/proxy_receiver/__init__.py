@@ -26,17 +26,23 @@ def validate_proxy_id(value):
 
 ns = cg.esphome_ns.namespace('proxy_receiver')
 ProxyReceiverComponent = ns.class_('ProxyReceiverComponent', cg.Component)
+ProxiedSensorComponent = ns.class_(
+    'ProxiedSensorComponent', cg.Component, sensor.Sensor)
+PeerTransmitter = ns.class_(
+    'PeerTransmitter')
 
 PROXIED_SENSOR_SCHEMA = cv.All(
     sensor.sensor_schema(
     )
     .extend(
         {
+            cv.GenerateID(): cv.declare_id(ProxiedSensorComponent),
             cv.Required(CONF_PROXIED_SENSOR_PROXY_ID): validate_proxy_id,
         }
     ))
 
 TRANSMITTER_SCHEMA = cv.Schema({
+    cv.GenerateID(): cv.declare_id(PeerTransmitter),
     cv.Required(CONF_TRANSMITTER_MAC_ADDRESS): cv.mac_address,
     cv.Required(CONF_TRANSMITTER_NAME): cv.string_strict,
     cv.Required(CONF_TRANSMITTER_PROXIED_SENSORS): cv.ensure_list(PROXIED_SENSOR_SCHEMA)
@@ -50,17 +56,29 @@ CONFIG_SCHEMA = cv.Schema({
 
 
 def to_code(config):
-    var = cg.new_Pvariable(config[CONF_ID])
-    yield cg.register_component(var, config)
+    # Create receiver component
+    receiver_var = cg.new_Pvariable(config[CONF_ID])
+    yield cg.register_component(receiver_var, config)
+    # Configure receiver component
+    cg.add(receiver_var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
 
-    cg.add(var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
+    for transmitterConf in config.get(CONF_TRANSMITTERS, []):
+        # Create the peer transmitter
+        peer_transmitter_var = cg.new_Pvariable(transmitterConf[CONF_ID])
+        # Configure peer receiver component
+        cg.add(peer_transmitter_var.set_mac_address(transmitterConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex))
+        cg.add(peer_transmitter_var.set_name(transmitterConf[CONF_TRANSMITTER_NAME]))
+        # Add peer transmitter to receiver component
+        cg.add(receiver_var.add_peer_transmitter(peer_transmitter_var))
 
-    for outputConf in config.get(CONF_TRANSMITTERS, []):
-        cg.add(var.add_transmitter(
-            outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex, outputConf[CONF_TRANSMITTER_NAME]))
-        for proxiedSensorConf in outputConf.get(CONF_TRANSMITTER_PROXIED_SENSORS, []):
-            cg.add(var.add_proxied_sensor(
-                outputConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex,
-                proxiedSensorConf[CONF_PROXIED_SENSOR_PROXY_ID],
-                proxiedSensorConf[CONF_PROXIED_SENSOR_NAME],
-            ))
+
+        for proxiedSensorConf in transmitterConf.get(CONF_TRANSMITTER_PROXIED_SENSORS, []):
+            # Crate proxied sensor
+            proxied_sesnor_var = cg.new_Pvariable(proxiedSensorConf[CONF_ID])
+            # Configure proxied sensor
+            cg.add(proxied_sesnor_var.set_proxied_sensor_id(proxiedSensorConf[CONF_PROXIED_SENSOR_PROXY_ID]))
+            # Add proxied sensor to peer transmitter
+            cg.add(peer_transmitter_var.add_proxied_sensor(proxied_sesnor_var))
+            # Register proxied sensor
+            yield sensor.register_sensor(proxied_sesnor_var, proxiedSensorConf)
+            yield cg.register_component(proxied_sesnor_var, proxiedSensorConf)

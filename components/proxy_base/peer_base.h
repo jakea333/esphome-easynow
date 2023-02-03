@@ -36,9 +36,10 @@ namespace esphome
       bool process_proxy_message_incoming_queue();
 
     public:
-      PeerMacAddress mac_address;
-      const char *name;
+      void set_name(const char *name) { this->name = name; }
+      void set_mac_address(uint64_t mac_address_uint64_t) { mac_address.set_from_uint64_t(mac_address_uint64_t); }
       bool add_espnow_peer(int espnow_channel);
+      const char *get_name() { return name; }
       // Callbacks from ESPNow
       static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);
       static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
@@ -47,6 +48,8 @@ namespace esphome
     protected:
       LogTag *TAG = new LogTag("PeerBase");
 
+      PeerMacAddress mac_address;
+      const char *name;
       int last_state_change_millis_;
       void set_state(peer_state state);
       peer_state get_state();
