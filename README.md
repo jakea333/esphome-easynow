@@ -18,7 +18,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v1.0.0
+    ref: v1.1.0
   refresh: 1min
 
 sensor:
@@ -46,7 +46,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v1.0.0
+    ref: v1.1.0
   refresh: 1min
 
 proxy_receiver:
