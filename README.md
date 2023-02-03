@@ -1,5 +1,6 @@
 # Easynow - an ESPHome component to make ESPNow easy in ESPHome.
-version 1.1.0
+### Version 1.1.0
+[Check out my blog where im measuring how much power it saves and writing up progress on this project](https://ripnetuk.blogspot.com/)
 
 ## Example Config Files
 If you have a pair of ESP32s and are running ESPHome you can try this right away thanks to ESPHome's ability to pull external components from a git repo.
@@ -75,7 +76,7 @@ proxy_receiver:
 
 Easynow is a pair of components which allow 1 or more battery powered ESP32 devices running [ESPHome](https://esphome.io/) to proxy sensor data over the [ESPNow](https://www.espressif.com/en/products/software/esp-now/overview ) protocol to a grid powered receiver ESP32 device also running ESPHome.
 
-Once configured in the ESPHome YAML (see below for examples) the receiver will have a regular sensor component created for each relayed sensor.
+Once configured in the ESPHome YAML (see above for examples) the receiver will have a regular sensor component created for each relayed sensor.
 
 The sensor states will be updated via ESPNow from the remote device(s).
 
@@ -92,7 +93,7 @@ If the receiver is linked to [HomeAssistant](https://www.home-assistant.io/) the
 - Actually going to sleep - for now it just waits for 5s before starting the next update.
 - Turning off the regular wifi on the transmitters 
 - Ability to use a unconfigured instance of these components to determine mac address from log
-- Support for esp8266 devices (low priority, but no reason to think its a lot of work)
+- Support for esp8266 devices (low priority, but no reason to think its a lot of work, it might already be OK)
 
 ## Authors and acknowledgment
 Written by George Styles (george@ripnet.co.uk)
@@ -100,6 +101,23 @@ Written by George Styles (george@ripnet.co.uk)
 ## License
 This project is released under the MIT License.
 
+## How it works
+- The components contain a state machine, with states like READY, AWAIT_CHECKIN_ACK etc
+- This is needed because ESPHome uses co-operative multi tasking, so we cannot spend more than 20-30ms in the loop
+- So we must write it in a way that it does what it has to do, then yields to other components. We cannot wait in the usual maner by using sleep, or busy waiting while loops
+- When a transmitter starts up, it sends a CHECKIN messsage to its receiver.
+- The receiver responds with a acknowledgment containing a 'go into OTA mode' flag (which it gets from a switch component in the receiver, which in turn is set from the HomeAssistant UI if connected)
+- Once the transmitter has got the acknowledgment, it will reboot into OTA mode if the flag is set
+- Otherwise, it will set a 'not read' flag for each of its sensor.
+- It hooks the updated state callback on each sensor, and as they are read (in whatever way the sensor usually reads states)
+- When it receives a callback it marks that sensor as read and captures the state of the sensor
+- Once all sensors are read, it moves onto sensing the states back to the receiver
+- It sends each state as an ESPNow message along with a proxy_id which links the real sensor in the transmitter to the proxied sensor in the receiver
+- Once its done this, it
+
+(in the next version) WILL GO TO DEEP SLEEP - AT THE MOMENT IT JUST DOESNT DO ANYTHING FOR 5s FOR TESTING
+
+- When it wakes up, it starts the cycle again
 ## Version History
 
 ### 1.0.0
