@@ -18,6 +18,7 @@ namespace esphome
     class PeerBase
     {
     private:
+      int espnow_channel_;
       esp_now_peer_info_t peer_info_;
       peer_state state_ = PS_UNSET;
       bool awaiting_send_ack_ = false;
@@ -36,9 +37,10 @@ namespace esphome
       bool process_proxy_message_incoming_queue();
 
     public:
+      void set_espnow_channel(int espnow_channel) { espnow_channel_ = espnow_channel; }
       void set_name(const char *name) { name_ = name; }
       void set_mac_address(uint64_t mac_address_uint64_t) { mac_address_.set_from_uint64_t(mac_address_uint64_t); }
-      bool add_espnow_peer(int espnow_channel);
+      bool espnow_add_peer();
       const char *get_name() { return name_; }
       // Callbacks from ESPNow
       static void call_on_data_send_callback(const uint8_t *mac_addr, esp_now_send_status_t status);

@@ -20,9 +20,9 @@ namespace esphome
 
     protected:
       LogTag *TAG = new LogTag("ProxyBaseComponent");
-      int espnow_channel_;
+      // int espnow_channel_;
       bool espnow_is_setup_{false};
-      bool setup_espnow(int channel);
+      bool setup_espnow();
     };
 
   } // namespace proxy_base

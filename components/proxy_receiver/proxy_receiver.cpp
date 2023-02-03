@@ -32,11 +32,11 @@ namespace esphome
 
     void ProxyReceiverComponent::setup()
     {
-      setup_espnow(espnow_channel_);
+      setup_espnow();
       ESP_LOGD(TAG->get_tag(), "Adding peers...");
       for (int i = 0; i < peer_transmitters_->size(); i++)
       {
-        peer_transmitters_->at(i)->add_espnow_peer(espnow_channel_);
+        peer_transmitters_->at(i)->espnow_add_peer();
       }
     }
 

@@ -16,7 +16,7 @@ namespace esphome
       int x;
     }
 
-    bool ProxyBaseComponent::setup_espnow(int channel)
+    bool ProxyBaseComponent::setup_espnow()
     {
       espnow_is_setup_ = false;
 

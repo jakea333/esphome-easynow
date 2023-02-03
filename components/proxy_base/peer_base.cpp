@@ -13,14 +13,14 @@ namespace esphome
     // Add ESPNow peer
     //
 
-    bool PeerBase::add_espnow_peer(int espnow_channel)
+    bool PeerBase::espnow_add_peer()
     {
       ESP_LOGD(TAG->get_tag(), "Add peer %s", mac_address_.as_string);
 
       memcpy(&peer_info_.peer_addr, &mac_address_.as_uint8_t_array, sizeof(peer_info_.peer_addr));
 
       // peer_info_.peer_addr = mac_address.as_uint8_t_array;
-      peer_info_.channel = espnow_channel;
+      peer_info_.channel = espnow_channel_;
       peer_info_.encrypt = false;
 
       if (esp_now_add_peer(&peer_info_) != ESP_OK)

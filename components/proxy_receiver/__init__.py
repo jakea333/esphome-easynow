@@ -60,12 +60,13 @@ def to_code(config):
     receiver_var = cg.new_Pvariable(config[CONF_ID])
     yield cg.register_component(receiver_var, config)
     # Configure receiver component
-    cg.add(receiver_var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
+    
 
     for transmitterConf in config.get(CONF_TRANSMITTERS, []):
         # Create the peer transmitter
         peer_transmitter_var = cg.new_Pvariable(transmitterConf[CONF_ID])
         # Configure peer receiver component
+        cg.add(peer_transmitter_var.set_espnow_channel(config[CONF_ESPNOW_CHANNEL]))
         cg.add(peer_transmitter_var.set_mac_address(transmitterConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex))
         cg.add(peer_transmitter_var.set_name(transmitterConf[CONF_TRANSMITTER_NAME]))
         # Add peer transmitter to receiver component
