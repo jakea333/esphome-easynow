@@ -9,6 +9,10 @@ namespace esphome
   {
     std::vector<PeerBase *> *PeerBase::global_peer_list_ = new std::vector<PeerBase *>();
 
+    //
+    // Add ESPNow peer
+    //
+
     bool PeerBase::add_espnow_peer(int espnow_channel)
     {
       ESP_LOGD(TAG->get_tag(), "Add peer %s", mac_address.as_string);
@@ -33,6 +37,9 @@ namespace esphome
       return true;
     }
 
+    //
+    // Send Proxy Message
+    //
     bool PeerBase::send_proxy_message(proxy_message *message)
     {
       message->time_stamp = millis();
@@ -52,6 +59,9 @@ namespace esphome
       return true;
     }
 
+    //
+    // Static callbacks (will find correct instance and call non static flavour)
+    //
     PeerBase *PeerBase::find_peer_in_global_peer_list(PeerMacAddress *peer)
     {
       for (int i = 0; i < global_peer_list_->size(); i++)
@@ -77,6 +87,7 @@ namespace esphome
       peer->on_data_send_callback(status);
     }
 
+
     void PeerBase::call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len)
     {
 
@@ -93,6 +104,9 @@ namespace esphome
       peer->on_data_recv_callback(incomingData, len);
     }
 
+    //
+    // Non static callbacks
+    //
     void PeerBase::on_data_send_callback(esp_now_send_status_t status)
     {
       ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
@@ -103,44 +117,28 @@ namespace esphome
       proxy_message *message = (proxy_message *)malloc(sizeof(proxy_message));
 
       memcpy(message, incomingData, sizeof(proxy_message));
-      proxy_message_queue_->push(message);
+      proxy_message_incoming_queue_->push(message);
     }
 
+    
+    //
+    // Loop - this is called from the transmitter/receiver component
+    //
     void PeerBase::loop()
     {
-      {
-        int start_ms = millis();
-
-        process_proxy_message_queue();
-
-        int end_ms = millis();
-        int time = end_ms - start_ms;
-        if (time > 20)
-        {
-          ESP_LOGD(TAG->get_tag(), "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! process message queue took long %d", time);
-        }
-      }
-
-      {
-        int start_ms = millis();
-
-        peer_workflow_loop();
-
-        int end_ms = millis();
-        int time = end_ms - start_ms;
-        if (time > 20)
-        {
-          ESP_LOGD(TAG->get_tag(), "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! peer workflow loop took long %d", time);
-        }
-      }
+      process_proxy_message_incoming_queue();
+      peer_workflow_loop();
     }
 
-    void PeerBase::process_proxy_message_queue()
+    //
+    // Process message queues
+    //
+    bool PeerBase::process_proxy_message_incoming_queue()
     {
-      while (proxy_message_queue_->size() > 0)
+      if (proxy_message_incoming_queue_->size() > 0)
       {
-        proxy_message *next_message = proxy_message_queue_->front();
-        proxy_message_queue_->pop();
+        proxy_message *next_message = proxy_message_incoming_queue_->front();
+        proxy_message_incoming_queue_->pop();
 
         std::string desc;
         describe_proxy_message(&desc, next_message);
@@ -151,9 +149,16 @@ namespace esphome
 
         // And free it
         free(next_message);
+
+        return true; // HAve processed message, so tell loop to not do other stuff
       }
+
+      return false;
     }
 
+    //
+    // State
+    //
     peer_state PeerBase::get_state()
     {
       return state_;
@@ -180,6 +185,9 @@ namespace esphome
       set_state(PS_READY);
     }
 
+    //
+    // Decode ESPNow errors
+    //
     const char *PeerBase::decode_espnow_error(esp_err_t error)
     {
       switch (error)

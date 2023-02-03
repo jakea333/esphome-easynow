@@ -26,8 +26,8 @@ namespace esphome
       void on_data_recv_callback(const uint8_t *incomingData, int len);
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
       const char *decode_espnow_error(esp_err_t error);
-      std::queue<proxy_message *> *proxy_message_queue_ = new std::queue<proxy_message *>();
-      void process_proxy_message_queue();
+      std::queue<proxy_message *> *proxy_message_incoming_queue_ = new std::queue<proxy_message *>();
+      bool process_proxy_message_incoming_queue();
 
     public:
       PeerMacAddress mac_address;
