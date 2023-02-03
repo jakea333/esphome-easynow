@@ -30,8 +30,10 @@ namespace esphome
       const char *decode_espnow_error(esp_err_t error);
       std::queue<proxy_message *> *proxy_message_incoming_queue_ = new std::queue<proxy_message *>();
       std::queue<proxy_message *> *proxy_message_outgoing_queue_ = new std::queue<proxy_message *>();
-      bool process_proxy_message_incoming_queue();
+      std::queue<esp_now_send_status_t> *proxy_message_sendack_queue_ = new std::queue<esp_now_send_status_t>();
+      bool process_proxy_message_sendack_queue();
       bool process_proxy_message_outgoing_queue();
+      bool process_proxy_message_incoming_queue();
 
     public:
       PeerMacAddress mac_address;

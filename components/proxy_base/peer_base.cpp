@@ -1,7 +1,7 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
 
-#define SEND_ACK_TIMEOUT_MS 2000
+#define SEND_ACK_TIMEOUT_MS 4000
 
 namespace esphome
 {
@@ -98,15 +98,7 @@ namespace esphome
     //
     void PeerBase::on_data_send_callback(esp_now_send_status_t status)
     {
-      if (!awaiting_send_ack_)
-      {
-        ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
-      }
-      else
-      {
-        ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
-      }
-      awaiting_send_ack_ = false;
+      proxy_message_sendack_queue_->push(status);
     }
 
     void PeerBase::on_data_recv_callback(const uint8_t *incomingData, int len)
@@ -123,12 +115,17 @@ namespace esphome
     //
     void PeerBase::loop()
     {
-      if (process_proxy_message_incoming_queue())
+      if (process_proxy_message_sendack_queue())
       {
         return; // Dont do anything else as we are not supposed to block for long in loop
       }
 
       if (process_proxy_message_outgoing_queue())
+      {
+        return; // Dont do anything else as we are not supposed to block for long in loop
+      }
+
+      if (process_proxy_message_incoming_queue())
       {
         return;
       }
@@ -139,32 +136,9 @@ namespace esphome
     //
     // Process message queues
     //
-    bool PeerBase::process_proxy_message_incoming_queue()
+    bool PeerBase::process_proxy_message_sendack_queue()
     {
-      if (proxy_message_incoming_queue_->size() == 0)
-      {
-        return false;
-      }
-
-      proxy_message *next_message = proxy_message_incoming_queue_->front();
-      proxy_message_incoming_queue_->pop();
-
-      std::string desc;
-      describe_proxy_message(&desc, next_message);
-
-      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
-
-      handle_received_proxy_message(next_message);
-
-      // And free it
-      free(next_message);
-
-      return true; // HAve processed message, so tell loop to not do other stuff
-    }
-
-    bool PeerBase::process_proxy_message_outgoing_queue()
-    {
-      // See if we have an outstanding send that we havent had an ACK for yet
+      // If we have been waiting too long for a send ack, give up, reset to not waiting, so on next loop it will move on
       if (awaiting_send_ack_)
       {
         // See if we have times out awaiting the ack
@@ -172,10 +146,37 @@ namespace esphome
         {
           ESP_LOGD(TAG->get_tag(), "Timeout waiting for send ack after %dms", SEND_ACK_TIMEOUT_MS);
           awaiting_send_ack_ = false;
+          return true; // Dont do anything else in this loop, but next loop will continue normally
         }
-
-        return true; // Dont allow loop to do other stuff as we are waiting for a send ACK or a timeout (or we have just got a timeout, so next time it will continue normally).
       }
+
+      if (proxy_message_sendack_queue_->size() > 0)
+      {
+        // Process first sendack queue item
+        esp_now_send_status_t next_sendack = proxy_message_sendack_queue_->front();
+        proxy_message_sendack_queue_->pop();
+        if (!awaiting_send_ack_)
+        {
+          ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+        }
+        else
+        {
+          ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
+          awaiting_send_ack_ = false;
+        }
+        return true; // Dont do anything else in this loop as we have processed a sendack and (maybe) set the awaiting flag to not waiting anymore.
+      }
+
+      if (awaiting_send_ack_)
+      {
+        return true; // Dont allow loop to do other stuff as we are still waiting for a send ACK and havent timed out
+      }
+      // If we are here, we are not awaiting sendack, and we have nothing in the sendack queue, so continue to next bit of loop
+      return false;
+    }
+
+    bool PeerBase::process_proxy_message_outgoing_queue()
+    {
 
       if (proxy_message_outgoing_queue_->size() == 0)
       {
@@ -204,6 +205,29 @@ namespace esphome
       free(next_message);
 
       return true;
+    }
+
+    bool PeerBase::process_proxy_message_incoming_queue()
+    {
+      if (proxy_message_incoming_queue_->size() == 0)
+      {
+        return false;
+      }
+
+      proxy_message *next_message = proxy_message_incoming_queue_->front();
+      proxy_message_incoming_queue_->pop();
+
+      std::string desc;
+      describe_proxy_message(&desc, next_message);
+
+      ESP_LOGD(TAG->get_tag(), "< %s %s", name, desc.c_str());
+
+      handle_received_proxy_message(next_message);
+
+      // And free it
+      free(next_message);
+
+      return true; // HAve processed message, so tell loop to not do other stuff
     }
 
     //
