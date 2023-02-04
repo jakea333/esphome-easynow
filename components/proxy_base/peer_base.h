@@ -30,7 +30,7 @@ namespace esphome
       void on_data_send_callback(esp_now_send_status_t status);
       void on_data_recv_callback(const uint8_t *incomingData, int len);
       static PeerBase *find_peer_in_global_peer_list(PeerMacAddress *peer);
-      const char *decode_espnow_error(esp_err_t error);
+      
       std::queue<proxy_message *> *proxy_message_incoming_queue_ = new std::queue<proxy_message *>();
       std::queue<proxy_message *> *proxy_message_outgoing_queue_ = new std::queue<proxy_message *>();
       std::queue<esp_now_send_status_t> *proxy_message_sendack_queue_ = new std::queue<esp_now_send_status_t>();

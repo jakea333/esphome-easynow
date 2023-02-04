@@ -1,5 +1,6 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
+#include "decode_esp_error.h"
 
 #define SEND_ACK_TIMEOUT_MS 4000
 
@@ -195,7 +196,7 @@ namespace esphome
 
       if (result != ESP_OK)
       {
-        const char *decoded_error = decode_espnow_error(result);
+        const char *decoded_error = decode_esp_error(result);
         ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name_, desc.c_str());
         return false;
       }
@@ -264,36 +265,6 @@ namespace esphome
     {
       ESP_LOGD(TAG->get_tag(), "*** Resetting state - %s", reason);
       set_state(PS_READY);
-    }
-
-    //
-    // Decode ESPNow errors
-    //
-    const char *PeerBase::decode_espnow_error(esp_err_t error)
-    {
-      switch (error)
-      {
-      case ESP_ERR_ESPNOW_BASE:
-        return "ESP_ERR_ESPNOW_BASE";
-      case ESP_ERR_ESPNOW_NOT_INIT:
-        return "ESP_ERR_ESPNOW_NOT_INIT";
-      case ESP_ERR_ESPNOW_ARG:
-        return "ESP_ERR_ESPNOW_ARG";
-      case ESP_ERR_ESPNOW_NO_MEM:
-        return "ESP_ERR_ESPNOW_NO_MEM";
-      case ESP_ERR_ESPNOW_FULL:
-        return "ESP_ERR_ESPNOW_FULL";
-      case ESP_ERR_ESPNOW_NOT_FOUND:
-        return "ESP_ERR_ESPNOW_NOT_FOUND";
-      case ESP_ERR_ESPNOW_INTERNAL:
-        return "ESP_ERR_ESPNOW_INTERNAL";
-      case ESP_ERR_ESPNOW_EXIST:
-        return "ESP_ERR_ESPNOW_EXIST";
-      case ESP_ERR_ESPNOW_IF:
-        return "ESP_ERR_ESPNOW_IF";
-      default:
-        return "(UNKNOWN ERROR)";
-      }
     }
   } // namespace proxy_base
 } // namespace esphome
