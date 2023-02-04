@@ -43,7 +43,7 @@ namespace esphome
             case ESP_FAIL:
                 return "ESP_FAIL";
             default:
-                return "(UNKNOWN ERROR)";
+                return "(Undecoded ERROR)";
             }
         }
 
