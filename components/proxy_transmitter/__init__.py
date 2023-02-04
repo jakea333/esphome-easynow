@@ -46,19 +46,22 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_SENSORS): cv.ensure_list(SENSOR_SCHEMA),
     cv.Required(CONF_DEEP_SLEEP_LENGTH): cv.positive_time_period_milliseconds
 }).extend({cv.GenerateID(CONF_OTA): cv.use_id(OTAComponent)
-}).extend({cv.GenerateID(CONF_WIFI): cv.use_id(WiFiComponent)})
+           }).extend({cv.GenerateID(CONF_WIFI): cv.use_id(WiFiComponent)})
+
 
 def to_code(config):
+    ota = yield cg.get_variable(config[CONF_OTA])
+    wifi = yield cg.get_variable(config[CONF_WIFI])
+
     transmitter_var = cg.new_Pvariable(config[CONF_ID])
     # Consigure transmitter component
-
-
+    cg.add(transmitter_var.set_wifi(wifi))
     yield cg.register_component(transmitter_var, config)
 
     peer_receiver_id = cv.declare_id(PeerReceiver)("peer_receiver")
     peer_receiver_var = cg.new_Pvariable(peer_receiver_id)
     # Configure peer receiver component
-    
+
     cg.add(peer_receiver_var.set_espnow_channel(
         config[CONF_ESPNOW_CHANNEL]))
     cg.add(peer_receiver_var.set_mac_address(
@@ -71,11 +74,9 @@ def to_code(config):
     # Add peer receiver to transmitter component
     cg.add(transmitter_var.set_peer_receiver(peer_receiver_var))
 
-    ota = yield cg.get_variable(config[CONF_OTA])
     cg.add(peer_receiver_var.set_ota(ota))
 
-    wifi = yield cg.get_variable(config[CONF_WIFI])
-    cg.add(peer_receiver_var.set_wifi(wifi))
+    #cg.add(peer_receiver_var.set_wifi(wifi))
 
     for sensor_config in config.get(CONF_SENSORS, []):
         sensor = yield cg.get_variable(sensor_config[CONF_SENSOR_SENSOR])

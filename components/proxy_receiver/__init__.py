@@ -59,6 +59,13 @@ CONFIG_SCHEMA = cv.Schema({
 
 
 def to_code(config):
+    
+ 
+    # ota = yield cg.get_variable(config[CONF_OTA])
+    # cg.add(peer_transmitter_var.set_ota(ota))
+
+    # wifi = yield cg.get_variable(config[CONF_WIFI])
+    # cg.add(peer_transmitter_var.set_wifi(wifi))   
     # Create receiver component
     receiver_var = cg.new_Pvariable(config[CONF_ID])
     yield cg.register_component(receiver_var, config)
@@ -75,13 +82,7 @@ def to_code(config):
             transmitterConf[CONF_TRANSMITTER_MAC_ADDRESS].as_hex))
         cg.add(peer_transmitter_var.set_name(
             transmitterConf[CONF_TRANSMITTER_NAME]))
-
  
-        ota = yield cg.get_variable(config[CONF_OTA])
-        cg.add(peer_transmitter_var.set_ota(ota))
-
-        wifi = yield cg.get_variable(config[CONF_WIFI])
-        cg.add(peer_transmitter_var.set_wifi(wifi))    
 
         # Add peer transmitter to receiver component
         cg.add(receiver_var.add_peer_transmitter(peer_transmitter_var))

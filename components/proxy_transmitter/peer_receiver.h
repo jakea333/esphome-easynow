@@ -6,12 +6,13 @@
 #include <vector>
 #include "esphome/components/sensor/sensor.h"
 #include "sensor_holder.h"
+#include "../proxy_base/ota_holder.h"
 
 namespace esphome
 {
   namespace proxy_transmitter
   {
-    class PeerReceiver : public proxy_base::PeerBase
+    class PeerReceiver : public proxy_base::PeerBase, public proxy_base::OtaHolder
     {
     public:
       void add_sensor(sensor::Sensor *sensor, const char *proxy_id) { sensors_->push_back(new SensorHolder(sensor, proxy_id)); };

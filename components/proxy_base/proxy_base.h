@@ -14,7 +14,6 @@ namespace esphome
     {
     private:
     public:
-
     protected:
       LogTag *TAG = new LogTag("ProxyBaseComponent");
 

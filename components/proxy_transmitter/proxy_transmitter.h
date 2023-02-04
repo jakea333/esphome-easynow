@@ -7,12 +7,13 @@
 #include <vector>
 #include "sensor_holder.h"
 #include "esphome/components/ota/ota_component.h"
+#include "../proxy_base/wifi_holder.h"
 
 namespace esphome
 {
   namespace proxy_transmitter
   {
-    class ProxyTransmitterComponent : public proxy_base::ProxyBaseComponent
+    class ProxyTransmitterComponent : public proxy_base::ProxyBaseComponent, public proxy_base::WiFiHolder
     {
     private:
       int loop_run_ = false;
