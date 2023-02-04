@@ -14,7 +14,6 @@ namespace esphome
     {
     private:
     public:
-      float get_setup_priority() const override;
 
     protected:
       LogTag *TAG = new LogTag("ProxyBaseComponent");

@@ -42,6 +42,7 @@ namespace esphome
       void set_ota(ota::OTAComponent *ota) { ota_ = ota; }
       void set_wifi(wifi::WiFiComponent *wifi) { wifi_ = wifi; }
       void set_espnow_channel(int espnow_channel) { espnow_channel_ = espnow_channel; }
+      int get_espnow_channel() { return espnow_channel_; }
       void set_name(const char *name) { name_ = name; }
       void set_mac_address(uint64_t mac_address_uint64_t) { mac_address_.set_from_uint64_t(mac_address_uint64_t); }
       bool espnow_add_peer();
@@ -53,6 +54,7 @@ namespace esphome
 
     protected:
       LogTag *TAG = new LogTag("PeerBase");
+
 
       ota::OTAComponent *ota_;
       wifi::WiFiComponent *wifi_;

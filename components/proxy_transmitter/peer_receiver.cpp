@@ -65,8 +65,15 @@ namespace esphome
       }
     }
 
+    void PeerReceiver::peer_setup()
+    {
+      ESP_LOGD(TAG->get_tag(), "Killing Wifi Component");
+      wifi_->clear_sta();
+    }
+
     void PeerReceiver::peer_workflow_loop()
     {
+
       int time_since_last_state_change_ms = millis() - last_state_change_millis_;
 
       if (get_state() == proxy_base::PS_READY)
@@ -82,7 +89,7 @@ namespace esphome
 
         ESP_LOGD(TAG->get_tag(), "");
         ESP_LOGD(TAG->get_tag(), "----------------------");
-        ESP_LOGD(TAG->get_tag(), "******* WOKEN UP");
+        ESP_LOGD(TAG->get_tag(), "******* READY");
         ESP_LOGD(TAG->get_tag(), "----------------------");
 
         // Want to send a checkin
@@ -232,7 +239,7 @@ namespace esphome
       esp_deep_sleep_start();
 #endif
 #ifdef USE_ESP8266
-      ESP.deepSleep(deep_sleep_length_ * 1000); //todo: check the '266 also uses microseconds
+      ESP.deepSleep(deep_sleep_length_ * 1000); // todo: check the '266 also uses microseconds
 #endif
     }
   } // namespace proxy_receiver

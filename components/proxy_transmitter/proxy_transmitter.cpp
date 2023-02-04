@@ -12,24 +12,26 @@ namespace esphome
   {
     void ProxyTransmitterComponent::setup()
     {
-      // This seems to be needed to have ESPNow and WiFi working together
-      WiFi.mode(WIFI_AP_STA);
-
-      setup_espnow();
-
-      // // Turn off wifi
-
-      // ESP_LOGD(TAG->get_tag(), "Disconnecting WiFi");
-      // //        wifi_->clear_sta();
-      // WiFi.disconnect();
-      // ESP_LOGD(TAG->get_tag(), "WiFi disconnected");
-
-      peer_receiver_->espnow_add_peer();
+      // Need to do this before setting up ESPNow as it switches wifi off...
+      peer_receiver_->peer_setup(); // this kills the wifi component
     }
 
     void ProxyTransmitterComponent::loop()
     {
+      // Setup ESPNow stuff here as we know WiFi component has finished messing with the wifi
+      if (!loop_has_run_)
+      {
+        // This seems to be needed to have ESPNow and WiFi working together
+        WiFi.mode(WIFI_AP_STA);
+        WiFi.channel(peer_receiver_->get_espnow_channel());
+
+        setup_espnow();
+
+        peer_receiver_->espnow_add_peer();
+      }
+
       peer_receiver_->loop();
+      loop_has_run_ = true;
     }
   } // namespace proxy_transmitter
 } // namespace esphome

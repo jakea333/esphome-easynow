@@ -19,9 +19,11 @@ namespace esphome
       proxy_base::LogTag *TAG = new proxy_base::LogTag("ProxyReceiverComponent");
 
     public:
+      void add_peer_transmitter(PeerTransmitter *peer_transmitter);
+      float get_setup_priority() const override { return setup_priority::WIFI; }
       void loop() override;
       void setup() override;
-      void add_peer_transmitter(PeerTransmitter *peer_transmitter);
+      
     };
 
   } // namespace proxy_receiver

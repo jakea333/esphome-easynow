@@ -10,11 +10,6 @@ namespace esphome
 {
   namespace proxy_base
   {
-    float ProxyBaseComponent::get_setup_priority() const
-    {
-      return setup_priority::WIFI;
-    }
-
     bool ProxyBaseComponent::setup_espnow()
     {
       espnow_is_setup_ = false;

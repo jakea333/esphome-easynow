@@ -15,13 +15,15 @@ namespace esphome
     class ProxyTransmitterComponent : public proxy_base::ProxyBaseComponent
     {
     private:
+      bool loop_has_run_ = false;
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
       PeerReceiver *peer_receiver_ = new PeerReceiver();
 
     public:
-
       void set_peer_receiver(PeerReceiver *peer_receiver) { peer_receiver_ = peer_receiver; }
+      // Hardware priority so we can kill off the wifi component before it starts...
+      float get_setup_priority() const override { return setup_priority::HARDWARE; }
       void loop() override;
       void setup() override;
     };
