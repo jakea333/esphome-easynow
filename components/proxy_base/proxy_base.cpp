@@ -3,6 +3,7 @@
 
 #include <WiFi.h>
 #include "log_tag.h"
+#include "decode_esp_result.h"
 
 #define PROXY_LOG_PERIOD 60000
 
@@ -13,16 +14,10 @@ namespace esphome
     bool ProxyBaseComponent::setup_espnow()
     {
       espnow_is_setup_ = false;
+      check_esp_result(esp_now_init(), "esp_now_init");
 
-      if (esp_now_init() != ESP_OK)
-      {
-        ESP_LOGD(TAG->get_tag(), "Error initializing ESP-NOW");
-        return false;
-      }
-      ESP_LOGD(TAG->get_tag(), "ESP-NOW Initialized");
-
-      esp_now_register_send_cb(PeerBase::call_on_data_send_callback);
-      esp_now_register_recv_cb(PeerBase::call_on_data_recv_callback);
+      check_esp_result(esp_now_register_send_cb(PeerBase::call_on_data_send_callback), "esp_now_register_send_cb");
+      check_esp_result(esp_now_register_recv_cb(PeerBase::call_on_data_recv_callback), "esp_now_register_recv_cb");
 
       espnow_is_setup_ = true;
 

@@ -1,11 +1,12 @@
-#include "decode_esp_error.h"
+#include "decode_esp_result.h"
 #include <esp_now.h>
 #include <WiFi.h>
 #include <esp_wifi.h>
+#include "esphome/core/component.h"
 
-const char *decode_esp_error(esp_err_t error)
+const char *decode_esp_result(esp_err_t result)
 {
-    switch (error)
+    switch (result)
     {
     case ESP_ERR_ESPNOW_BASE:
         return "ESP_ERR_ESPNOW_BASE";
@@ -39,5 +40,17 @@ const char *decode_esp_error(esp_err_t error)
         return "ESP_FAIL";
     default:
         return "(UNKNOWN ERROR)";
+    }
+}
+
+void check_esp_result(esp_err_t result, const char *operation)
+{
+    if (result == ESP_OK)
+    {
+        ESP_LOGD("CHECKESPESULT", "%s - OK", operation);
+    }
+    else
+    {
+        ESP_LOGD("CHECKESPESULT", "%s - Failed %d - %s", operation, result, decode_esp_result(result));
     }
 }

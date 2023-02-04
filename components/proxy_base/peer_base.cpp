@@ -1,6 +1,6 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
-#include "decode_esp_error.h"
+#include "decode_esp_result.h"
 
 #define SEND_ACK_TIMEOUT_MS 4000
 
@@ -24,12 +24,7 @@ namespace esphome
       peer_info_.channel = espnow_channel_;
       peer_info_.encrypt = false;
 
-      if (esp_now_add_peer(&peer_info_) != ESP_OK)
-      {
-        ESP_LOGD(TAG->get_tag(), "Failed to add peer %s %s", name_, mac_address_.as_string);
-        return false;
-        ESP_LOGD(TAG->get_tag(), "Peer Added %s %s", name_, mac_address_.as_string);
-      }
+      check_esp_result(esp_now_add_peer(&peer_info_), "esp_now_add_peer");
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
@@ -196,7 +191,7 @@ namespace esphome
 
       if (result != ESP_OK)
       {
-        const char *decoded_error = decode_esp_error(result);
+        const char *decoded_error = decode_esp_result(result);
         ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name_, desc.c_str());
         return false;
       }

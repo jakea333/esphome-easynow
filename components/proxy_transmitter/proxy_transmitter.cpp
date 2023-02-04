@@ -3,7 +3,7 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 #include "../proxy_base/proxy_messages.h"
-#include "../proxy_base/decode_esp_error.h"
+#include "../proxy_base/decode_esp_result.h"
 
 #define TEST_MESSAGE_PERIOD 5000
 
@@ -26,7 +26,7 @@ namespace esphome
     void ProxyTransmitterComponent::first_loop()
     {
       // This seems to be needed to have ESPNow and WiFi working together
-      WiFi.mode(WIFI_AP_STA);
+      check_esp_result(WiFi.mode(WIFI_AP_STA), "Set wifi mode");
 
       setup_espnow();
 
@@ -86,7 +86,7 @@ namespace esphome
 //   // }
 //   // else
 //   // {
-//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s init wifi", init_result, decode_esp_error(init_result));
+//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s init wifi", init_result, decode_esp_result(init_result));
 //   // }
 
 //   int channel = peer_receiver_->get_espnow_channel();
@@ -98,7 +98,7 @@ namespace esphome
 //   // }
 //   // else
 //   // {
-//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s setting channel", channel_result, decode_esp_error(channel_result));
+//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s setting channel", channel_result, decode_esp_result(channel_result));
 //   // }
 //   // esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE);
 
@@ -111,7 +111,7 @@ namespace esphome
 //   // }
 //   // else
 //   // {
-//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s setting mode", mode_result, decode_esp_error(mode_result));
+//   //   ESP_LOGD(TAG->get_tag(), "Error %d %s setting mode", mode_result, decode_esp_result(mode_result));
 //   // }
 
 //   // setup_espnow();
