@@ -15,7 +15,7 @@ namespace esphome
     class ProxyTransmitterComponent : public proxy_base::ProxyBaseComponent
     {
     private:
-      int loop_count_ = 0;
+      int loop_run_ = false;
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
       PeerReceiver *peer_receiver_ = new PeerReceiver();
