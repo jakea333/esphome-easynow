@@ -25,21 +25,28 @@ namespace esphome
 
     void ProxyTransmitterComponent::first_loop()
     {
-      // This seems to be needed to have ESPNow and WiFi working together
-      wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-      // cfg.nvs_enable = false;
-      proxy_base::ESPResultDecoder::check_esp_result(esp_netif_init(), "esp_netif_init");
-      proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_init(&cfg), "esp_wifi_init");
+      // // This seems to be needed to have ESPNow and WiFi working together
+      // wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+      // // cfg.nvs_enable = false;
+      // proxy_base::ESPResultDecoder::check_esp_result(esp_netif_init(), "esp_netif_init");
+      // proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_init(&cfg), "esp_wifi_init");
 
-      proxy_base::ESPResultDecoder::check_esp_result(WiFi.mode(WIFI_AP), "Set wifi mode");
+      // proxy_base::ESPResultDecoder::check_esp_result(WiFi.mode(WIFI_AP), "Set wifi mode");
       int channel = peer_receiver_->get_espnow_channel();
-      // ESP_LOGD(TAG->get_tag(), "Setting WiFi channels to %d / none", channel);
-      // proxy_base::ESPResultDecoder::check_esp_result(WiFi.channel(channel), "WiFi.channel");
+      // // ESP_LOGD(TAG->get_tag(), "Setting WiFi channels to %d / none", channel);
+      // // proxy_base::ESPResultDecoder::check_esp_result(WiFi.channel(channel), "WiFi.channel");
 
-      proxy_base::ESPResultDecoder::check_esp_result(WiFi.softAP("dummyssid", "dummypassword", channel), "WiFi.softAP");
+      // proxy_base::ESPResultDecoder::check_esp_result(WiFi.softAP("dummyssid", "dummypassword", channel), "WiFi.softAP");
+
+      // proxy_base::ESPResultDecoder::check_esp_result(WiFi.mode(WIFI_STA), "WiFi.mode");
+      // proxy_base::ESPResultDecoder::check_esp_result(WiFi.disconnect(), "WiFi.disconnect");
+
+      // get_wifi()->setup();
+
       setup_espnow();
 
       peer_receiver_->espnow_add_peer();
+      //proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE), "esp_wifi_set_channel");
     }
 
     void ProxyTransmitterComponent::loop()
@@ -47,7 +54,9 @@ namespace esphome
       if (!loop_run_)
       {
         loop_run_ = true;
+        // ESP_LOGD(TAG->get_tag(), "************************************************************************** FIRST LOOP START");
         first_loop();
+        // ESP_LOGD(TAG->get_tag(), "************************************************************************** FIRST LOOP END");
         return;
       }
 
