@@ -22,8 +22,10 @@ namespace esphome
       if (!loop_has_run_)
       {
         // This seems to be needed to have ESPNow and WiFi working together
-        WiFi.mode(WIFI_AP_STA);
         WiFi.channel(peer_receiver_->get_espnow_channel());
+
+        WiFi.mode(WIFI_AP_STA);
+
 
         setup_espnow();
 

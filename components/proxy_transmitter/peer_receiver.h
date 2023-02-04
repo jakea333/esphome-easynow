@@ -19,6 +19,7 @@ namespace esphome
       void peer_workflow_loop();
       void peer_setup();
     private:
+      int failed_ack_checkin_count_ = 0;
       std::vector<SensorHolder *> *sensors_ = new std::vector<SensorHolder *>();
       int deep_sleep_length_; // in ms
       void start_sensor_reads();

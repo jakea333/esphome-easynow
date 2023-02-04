@@ -16,6 +16,9 @@
 // Give up on sending states after this long
 #define SENDING_STATE_TIMEOUT 8000
 
+// Reboot into safe mode after this many timeouts waiting for checking ACK
+#define MAX_CHECKIN_RESPONSE_TIMEOUTS 10
+
 namespace esphome
 {
   namespace proxy_transmitter
@@ -26,6 +29,7 @@ namespace esphome
       {
         if (message->message_type == proxy_base::MT_ACK_CHECKIN)
         {
+          failed_ack_checkin_count_ = 0;
           if (message->checkin_response.enter_ota_mode)
           {
             enter_ota_mode();
@@ -106,6 +110,14 @@ namespace esphome
       {
         if (time_since_last_state_change_ms > RESPONSE_TIMEOUT)
         {
+          failed_ack_checkin_count_++;
+          if (failed_ack_checkin_count_ > MAX_CHECKIN_RESPONSE_TIMEOUTS)
+          {
+            ESP_LOGD(TAG->get_tag(), "Exceeded %d checking response timeouts in a row. Rebooting to safe mode", MAX_CHECKIN_RESPONSE_TIMEOUTS);
+            enter_ota_mode();
+            return;
+          }
+
           reset_state("Timeout waiting for R to T Check in respponse");
         }
         return;
