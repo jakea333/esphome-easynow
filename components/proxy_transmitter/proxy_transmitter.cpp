@@ -20,7 +20,7 @@ namespace esphome
     void ProxyTransmitterComponent::setup()
     {
       // This runs before wifi component starts up...
-      get_wifi()->mark_failed(); // To kill it
+      //get_wifi()->mark_failed(); // To kill it
     }
 
     void ProxyTransmitterComponent::first_loop()
