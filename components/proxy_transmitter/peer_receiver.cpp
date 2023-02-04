@@ -17,7 +17,7 @@
 #define SENDING_STATE_TIMEOUT 8000
 
 // Reboot into safe mode after this many timeouts waiting for checking ACK
-#define MAX_CHECKIN_RESPONSE_TIMEOUTS 10
+#define MAX_CHECKIN_RESPONSE_TIMEOUTS 4
 
 namespace esphome
 {
