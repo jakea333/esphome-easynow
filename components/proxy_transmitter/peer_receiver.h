@@ -18,7 +18,6 @@ namespace esphome
       void add_sensor(sensor::Sensor *sensor, const char *proxy_id) { sensors_->push_back(new SensorHolder(sensor, proxy_id)); };
       void set_deep_sleep_length(int deep_sleep_length) { deep_sleep_length_ = deep_sleep_length; }
       void peer_workflow_loop();
-      void peer_setup();
     private:
       int failed_ack_checkin_count_ = 0;
       std::vector<SensorHolder *> *sensors_ = new std::vector<SensorHolder *>();

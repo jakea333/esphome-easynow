@@ -69,12 +69,6 @@ namespace esphome
       }
     }
 
-    void PeerReceiver::peer_setup()
-    {
-      // ESP_LOGD(TAG->get_tag(), "Killing Wifi Component");
-      // wifi_->clear_sta();
-    }
-
     void PeerReceiver::peer_workflow_loop()
     {
 

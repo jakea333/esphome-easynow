@@ -7,6 +7,13 @@
 
 #define TEST_MESSAGE_PERIOD 5000
 
+    // void PeerReceiver::peer_setup()
+    // {
+    //   // ESP_LOGD(TAG->get_tag(), "Killing Wifi Component");
+    //   // wifi_->clear_sta();
+    // }
+
+
 namespace esphome
 {
   namespace proxy_transmitter
@@ -42,10 +49,11 @@ namespace esphome
 
     void ProxyTransmitterComponent::loop()
     {
-      // if (!loop_run_)
-      // {
-      // }
-
+      if (!loop_run_)
+      {
+      }
+      loop_run_ = true;
+      
       // loop_count_++;
       // // Allow a few loops for the wifi component to do its thing
       // // if (loop_count_ < 50)
