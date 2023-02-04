@@ -3,7 +3,7 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 #include "../proxy_base/proxy_messages.h"
-#include "../proxy_base/decode_esp_result.h"
+#include "../proxy_base/esp_result_decoder.h"
 
 #define TEST_MESSAGE_PERIOD 5000
 
@@ -26,7 +26,7 @@ namespace esphome
     void ProxyTransmitterComponent::first_loop()
     {
       // This seems to be needed to have ESPNow and WiFi working together
-      check_esp_result(WiFi.mode(WIFI_AP_STA), "Set wifi mode");
+      proxy_base::ESPResultDecoder::check_esp_result(WiFi.mode(WIFI_AP_STA), "Set wifi mode");
 
       setup_espnow();
 

@@ -1,6 +1,6 @@
 #include "peer_base.h"
 #include "esphome/core/log.h"
-#include "decode_esp_result.h"
+#include "esp_result_decoder.h"
 
 #define SEND_ACK_TIMEOUT_MS 4000
 
@@ -24,7 +24,7 @@ namespace esphome
       peer_info_.channel = espnow_channel_;
       peer_info_.encrypt = false;
 
-      check_esp_result(esp_now_add_peer(&peer_info_), "esp_now_add_peer");
+      ESPResultDecoder::check_esp_result(esp_now_add_peer(&peer_info_), "esp_now_add_peer");
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
@@ -185,17 +185,12 @@ namespace esphome
       std::string desc;
       describe_proxy_message(&desc, next_message);
 
-      esp_err_t result = esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message));
+      ESP_LOGD(TAG->get_tag(), "> %s %s", name_, desc.c_str());
+
+      ESPResultDecoder::check_esp_result(esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message)), "esp_now_send");
+
       awaiting_send_ack_ = true;
       awaiting_send_ack_start_ms_ = millis();
-
-      if (result != ESP_OK)
-      {
-        const char *decoded_error = decode_esp_result(result);
-        ESP_LOGD(TAG->get_tag(), "> *FAILED* (%d) - %s -> %s %s", result, decoded_error, name_, desc.c_str());
-        return false;
-      }
-      ESP_LOGD(TAG->get_tag(), "> %s %s", name_, desc.c_str());
 
       // And free it
       free(next_message);
