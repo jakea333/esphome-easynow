@@ -17,6 +17,7 @@ namespace esphome
     {
     private:
       int loop_run_ = false;
+      void first_loop();
     protected:
       proxy_base::LogTag *TAG = new proxy_base::LogTag("PeerReceiver");
       PeerReceiver *peer_receiver_ = new PeerReceiver();
