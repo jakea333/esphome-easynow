@@ -25,8 +25,8 @@ namespace esphome
     public:
       void set_peer_receiver(PeerReceiver *peer_receiver) { peer_receiver_ = peer_receiver; }
       // Hardware priority so we can kill off the wifi component before it starts...
-      // float get_setup_priority() const override { return setup_priority::PROCESSOR; }
-      float get_setup_priority() const override { return setup_priority::WIFI; }
+      float get_setup_priority() const override { return setup_priority::PROCESSOR; }
+      // float get_setup_priority() const override { return setup_priority::WIFI; }
       void proxy_loop();
       void proxy_setup();
     };

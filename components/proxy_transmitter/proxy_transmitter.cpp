@@ -20,17 +20,33 @@ namespace esphome
     void ProxyTransmitterComponent::proxy_setup()
     {
       // This runs before wifi component starts up...
-      // get_wifi()->mark_failed(); // To kill it
+      get_wifi()->mark_failed(); // To kill it
 
-      proxy_base::ESPResultDecoder::check_esp_result_bool(WiFi.mode(WIFI_AP_STA), "WiFi.mode");
+      int channel = peer_receiver_->get_espnow_channel();
+
+      ESP_ERROR_CHECK(esp_netif_init());
+      ESP_ERROR_CHECK(esp_event_loop_create_default());
+      wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+      ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+      ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
+      ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+      ESP_ERROR_CHECK(esp_wifi_start());
+
+      // proxy_base::ESPResultDecoder::check_esp_result_bool(WiFi.mode(WIFI_AP_STA), "WiFi.mode");
+
+      // ESP_LOGD(TAG->get_tag(), "Setting WiFi channels to %d", channel);
+      // proxy_base::ESPResultDecoder::check_esp_result_code(WiFi.channel(channel)
 
       setup_espnow();
 
       peer_receiver_->espnow_add_peer();
+
+      proxy_base::ESPResultDecoder::check_esp_result_code(esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE), "WiFi.channel");
     }
 
     void ProxyTransmitterComponent::first_loop()
     {
+
       // // This seems to be needed to have ESPNow and WiFi working together
       // wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
       // // cfg.nvs_enable = false;
