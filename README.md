@@ -9,7 +9,7 @@ Just add the following to your sender and receiver ESPHome YAML and fix up the M
 
 Also fix up the WiFi channel to be the same as the one you usually use.
 
-You can get the mac address from the logs by having an empty proxy_transmitter or proxy_receiver (you will need to supply empty lists for the peer devices/sensors)
+You can get the mac address by flashing a default/empty ESPHome YAML and its the first thing the WiFi component outputs. It will be in the form XX:XX:XX:XX:XX:XX
 
 Once these are running, you will see the sensors which are physically on the transmitter appear as entities in HomeAssistant on the receiver.
 
