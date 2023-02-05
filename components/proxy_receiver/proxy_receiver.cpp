@@ -6,7 +6,8 @@
 #include "proxied_sensor.h"
 #include "esphome/core/application.h"
 #include "ota_switch.h"
-#include <string>
+// #include <string>
+#include "../proxy_base/esp_result_decoder.h"
 
 namespace esphome
 {
@@ -33,10 +34,10 @@ namespace esphome
     void ProxyReceiverComponent::proxy_setup()
     {
       // This seems to be needed to have ESPNow and WiFi working together
-      WiFi.mode(WIFI_AP_STA);
-      
+      proxy_base::ESPResultDecoder::check_esp_result_bool(WiFi.mode(WIFI_AP_STA), "WiFi.mode");
+
       setup_espnow();
-      
+
       ESP_LOGD(TAG->get_tag(), "Adding peers...");
       for (int i = 0; i < peer_transmitters_->size(); i++)
       {

@@ -24,7 +24,7 @@ namespace esphome
       peer_info_.channel = espnow_channel_;
       peer_info_.encrypt = false;
 
-      ESPResultDecoder::check_esp_result(esp_now_add_peer(&peer_info_), "esp_now_add_peer");
+      ESPResultDecoder::check_esp_result_code(esp_now_add_peer(&peer_info_), "esp_now_add_peer");
       global_peer_list_->push_back(this);
 
       last_state_change_millis_ = millis();
@@ -187,7 +187,7 @@ namespace esphome
 
       ESP_LOGD(TAG->get_tag(), "> %s %s", name_, desc.c_str());
 
-      ESPResultDecoder::check_esp_result(esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message)), "esp_now_send");
+      ESPResultDecoder::check_esp_result_code(esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message)), "esp_now_send");
 
       awaiting_send_callback_ = true;
       awaiting_send_callback_start_ms_ = millis();

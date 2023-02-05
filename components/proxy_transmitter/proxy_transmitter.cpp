@@ -22,7 +22,7 @@ namespace esphome
       // This runs before wifi component starts up...
       // get_wifi()->mark_failed(); // To kill it
 
-      WiFi.mode(WIFI_AP_STA);
+      proxy_base::ESPResultDecoder::check_esp_result_bool(WiFi.mode(WIFI_AP_STA), "WiFi.mode");
 
       setup_espnow();
 

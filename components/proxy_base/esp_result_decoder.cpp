@@ -47,15 +47,27 @@ namespace esphome
             }
         }
 
-        void ESPResultDecoder::check_esp_result(esp_err_t result, const char *operation)
+        void ESPResultDecoder::check_esp_result_code(esp_err_t result, const char *operation)
         {
             if (result == ESP_OK)
             {
-                ESP_LOGD("CHECKESPESULT", "[[[ %s ]]] - OK", operation);
+                ESP_LOGD("CHECKESPESULTCODE", "[[[ %s ]]] - OK", operation);
             }
             else
             {
-                ESP_LOGD("CHECKESPESULT", "[[[ !!!!!!!!!!!!!!!!!!!! %s ]]] - Failed %d - %s", operation, result, decode_esp_result(result));
+                ESP_LOGD("CHECKESPESULTCODE", "[[[ !!!!!!!!!!!!!!!!!!!! %s ]]] - Failed %d - %s", operation, result, decode_esp_result(result));
+            }
+        }
+
+        void ESPResultDecoder::check_esp_result_bool(bool result, const char *operation)
+        {
+            if (result)
+            {
+                ESP_LOGD("CHECKESPESULTBOOL", "[[[ %s ]]] - OK", operation);
+            }
+            else
+            {
+                ESP_LOGD("CHECKESPESULTBOOL", "[[[ !!!!!!!!!!!!!!!!!!!! %s ]]] - Failed", operation);
             }
         }
     } // namespace
