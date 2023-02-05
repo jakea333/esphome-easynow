@@ -60,7 +60,7 @@ namespace esphome
       ProxiedSensorComponent *proxied_sensor = NULL;
       for (int i = 0; i < proxied_sensors_->size(); i++)
       {
-        if (strcmp(message->send_sensor_state.proxy_id, proxied_sensors_->at(i)->get_proxied_sensor_id()))
+        if (strcmp(message->send_sensor_state.proxy_id, proxied_sensors_->at(i)->get_proxied_sensor_id()) == 0)
         {
           proxied_sensor = proxied_sensors_->at(i);
           break;
@@ -73,7 +73,7 @@ namespace esphome
         return;
       }
       float state = message->send_sensor_state.state;
-      ESP_LOGD(TAG->get_tag(), "^^Publish state from %s (%s) with proxy_id of %s - publishing to proxied sensor %s - state is %f", get_name(), mac_address_.as_string, message->send_sensor_state.proxy_id, proxied_sensor->get_name(), state);
+      ESP_LOGD(TAG->get_tag(), "^^Publish state from %s (%s) with proxy_id of %s - state is %f", get_name(), mac_address_.as_string, message->send_sensor_state.proxy_id, state);
       proxied_sensor->publish_state(state);
     }
 
