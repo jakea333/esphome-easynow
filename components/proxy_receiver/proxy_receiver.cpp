@@ -30,7 +30,7 @@ namespace esphome
       peer_transmitters_->push_back(peer_transmitter);
     }
 
-    void ProxyReceiverComponent::setup()
+    void ProxyReceiverComponent::proxy_setup()
     {
       // This seems to be needed to have ESPNow and WiFi working together
       WiFi.mode(WIFI_AP_STA);
@@ -44,7 +44,7 @@ namespace esphome
       }
     }
 
-    void ProxyReceiverComponent::loop()
+    void ProxyReceiverComponent::proxy_loop()
     {
       for (int i = 0; i < peer_transmitters_->size(); i++)
       {

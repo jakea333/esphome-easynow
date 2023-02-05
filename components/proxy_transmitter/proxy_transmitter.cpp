@@ -17,10 +17,13 @@ namespace esphome
 {
   namespace proxy_transmitter
   {
-    void ProxyTransmitterComponent::setup()
+    void ProxyTransmitterComponent::proxy_setup()
     {
       // This runs before wifi component starts up...
-      //get_wifi()->mark_failed(); // To kill it
+      // get_wifi()->mark_failed(); // To kill it
+      setup_espnow();
+
+      peer_receiver_->espnow_add_peer();
     }
 
     void ProxyTransmitterComponent::first_loop()
@@ -32,7 +35,7 @@ namespace esphome
       // proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_init(&cfg), "esp_wifi_init");
 
       // proxy_base::ESPResultDecoder::check_esp_result(WiFi.mode(WIFI_AP), "Set wifi mode");
-      int channel = peer_receiver_->get_espnow_channel();
+      // int channel = peer_receiver_->get_espnow_channel();
       // // ESP_LOGD(TAG->get_tag(), "Setting WiFi channels to %d / none", channel);
       // // proxy_base::ESPResultDecoder::check_esp_result(WiFi.channel(channel), "WiFi.channel");
 
@@ -43,13 +46,10 @@ namespace esphome
 
       // get_wifi()->setup();
 
-      setup_espnow();
-
-      peer_receiver_->espnow_add_peer();
-      //proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE), "esp_wifi_set_channel");
+      // proxy_base::ESPResultDecoder::check_esp_result(esp_wifi_set_channel(channel, WIFI_SECOND_CHAN_NONE), "esp_wifi_set_channel");
     }
 
-    void ProxyTransmitterComponent::loop()
+    void ProxyTransmitterComponent::proxy_loop()
     {
       if (!loop_run_)
       {

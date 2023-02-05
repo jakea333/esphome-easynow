@@ -21,8 +21,8 @@ namespace esphome
     public:
       void add_peer_transmitter(PeerTransmitter *peer_transmitter);
       float get_setup_priority() const override { return setup_priority::WIFI; }
-      void loop() override;
-      void setup() override;
+      void proxy_loop();
+      void proxy_setup();
       
     };
 

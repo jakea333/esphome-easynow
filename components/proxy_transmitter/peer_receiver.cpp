@@ -5,7 +5,7 @@
 #include "esphome/core/application.h"
 
 // Give up on ACKs after this log, and reset and try again
-#define RESPONSE_TIMEOUT 5000
+#define RESPONSE_TIMEOUT 20000
 
 // If deep sleep is disabled (ie, deep sleep time is 0), instead dont do anything for this long
 #define FAKE_DEEP_SLEEP_TIME 1000
@@ -17,7 +17,7 @@
 #define SENDING_STATE_TIMEOUT 8000
 
 // Reboot into safe mode after this many timeouts waiting for checking ACK
-#define MAX_CHECKIN_RESPONSE_TIMEOUTS 4
+#define MAX_CHECKIN_RESPONSE_TIMEOUTS 100
 
 namespace esphome
 {
@@ -107,7 +107,7 @@ namespace esphome
           failed_ack_checkin_count_++;
           if (failed_ack_checkin_count_ > MAX_CHECKIN_RESPONSE_TIMEOUTS)
           {
-            ESP_LOGD(TAG->get_tag(), "Exceeded %d checking response timeouts in a row. Rebooting to safe mode", MAX_CHECKIN_RESPONSE_TIMEOUTS);
+            ESP_LOGD(TAG->get_tag(), "Exceeded %d CHECKIN RESPONSE timeouts in a row. Rebooting to safe mode", MAX_CHECKIN_RESPONSE_TIMEOUTS);
             enter_ota_mode();
             return;
           }

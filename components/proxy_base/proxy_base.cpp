@@ -5,7 +5,7 @@
 #include "log_tag.h"
 #include "esp_result_decoder.h"
 
-#define PROXY_LOG_PERIOD 60000
+#define STARTUP_DELAY 3000
 
 namespace esphome
 {
@@ -23,5 +23,21 @@ namespace esphome
 
       return true;
     }
+
+    void ProxyBaseComponent::setup()
+    {
+      proxy_setup();
+      setup_ms_ = millis();
+    }
+
+    void ProxyBaseComponent::loop()
+    {
+      if (millis() < (setup_ms_ + STARTUP_DELAY))
+      {
+        return;
+      }
+      proxy_loop();
+    }
+
   } // namespace proxy_base
 } // namespace esphome
