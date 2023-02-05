@@ -2,7 +2,7 @@
 #include "esphome/core/log.h"
 #include "esp_result_decoder.h"
 
-#define SEND_ACK_TIMEOUT_MS 4000
+#define ESP_SEND_CALLBACK_TIMEOUT_MS 8000
 
 namespace esphome
 {
@@ -135,13 +135,13 @@ namespace esphome
     bool PeerBase::process_proxy_message_sendack_queue()
     {
       // If we have been waiting too long for a send ack, give up, reset to not waiting, so on next loop it will move on
-      if (awaiting_send_ack_)
+      if (awaiting_send_callback_)
       {
         // See if we have times out awaiting the ack
-        if ((millis() - awaiting_send_ack_start_ms_) > SEND_ACK_TIMEOUT_MS)
+        if ((millis() - awaiting_send_callback_start_ms_) > ESP_SEND_CALLBACK_TIMEOUT_MS)
         {
-          ESP_LOGD(TAG->get_tag(), "Timeout waiting for send ack after %dms", SEND_ACK_TIMEOUT_MS);
-          awaiting_send_ack_ = false;
+          ESP_LOGD(TAG->get_tag(), "No ESP Send callback after %dms", ESP_SEND_CALLBACK_TIMEOUT_MS);
+          awaiting_send_callback_ = false;
           return true; // Dont do anything else in this loop, but next loop will continue normally
         }
       }
@@ -151,19 +151,19 @@ namespace esphome
         // Process first sendack queue item
         esp_now_send_status_t next_sendack = proxy_message_sendack_queue_->front();
         proxy_message_sendack_queue_->pop();
-        if (!awaiting_send_ack_)
+        if (!awaiting_send_callback_)
         {
           ESP_LOGD(TAG->get_tag(), "+ UNEXPECTED ACK %s - %s", mac_address_.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
         }
         else
         {
           ESP_LOGD(TAG->get_tag(), "+ ACK %s - %s", mac_address_.as_string, (next_sendack == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail"));
-          awaiting_send_ack_ = false;
+          awaiting_send_callback_ = false;
         }
         return true; // Dont do anything else in this loop as we have processed a sendack and (maybe) set the awaiting flag to not waiting anymore.
       }
 
-      if (awaiting_send_ack_)
+      if (awaiting_send_callback_)
       {
         return true; // Dont allow loop to do other stuff as we are still waiting for a send ACK and havent timed out
       }
@@ -189,8 +189,8 @@ namespace esphome
 
       ESPResultDecoder::check_esp_result(esp_now_send(peer_info_.peer_addr, (uint8_t *)next_message, sizeof(proxy_message)), "esp_now_send");
 
-      awaiting_send_ack_ = true;
-      awaiting_send_ack_start_ms_ = millis();
+      awaiting_send_callback_ = true;
+      awaiting_send_callback_start_ms_ = millis();
 
       // And free it
       free(next_message);
