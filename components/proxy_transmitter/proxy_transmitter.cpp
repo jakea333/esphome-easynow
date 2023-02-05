@@ -21,6 +21,9 @@ namespace esphome
     {
       // This runs before wifi component starts up...
       // get_wifi()->mark_failed(); // To kill it
+
+      WiFi.mode(WIFI_AP_STA);
+
       setup_espnow();
 
       peer_receiver_->espnow_add_peer();
