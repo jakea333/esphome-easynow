@@ -4,7 +4,7 @@
 // Allow an extra byte for the null terminator
 // This also needs setting in the python file so people dont inject too large strings
 #define PROXY_ID_MAX_LENGTH 21
-#define MESSAGE_PROTOCOL_VERSION 11
+#define MESSAGE_PROTOCOL_VERSION 210
 
 namespace esphome
 {
