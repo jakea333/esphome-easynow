@@ -130,10 +130,11 @@ namespace esphome
           if (!sensors_->at(i)->has_state)
           {
             has_outstanding_reads = true;
+            break;
           }
         }
 
-        if (!has_outstanding_reads <= 0)
+        if (!has_outstanding_reads)
         {
           // Have finished reading, so now move on to sending states to receiver
           for (int i = 0; i < sensors_->size(); i++)

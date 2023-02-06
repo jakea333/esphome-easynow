@@ -1,6 +1,6 @@
 #include "sensor_holder.h"
 #include "esphome/core/log.h"
-#include <math.h>
+#include <cmath>
 
 namespace esphome
 {
@@ -16,7 +16,7 @@ namespace esphome
 
     void SensorHolder::on_state_callback(float state)
     {
-      if (!isnan(state))
+      if (!std::isnan(state))
       {
         has_state = true;
         this->state = state;
