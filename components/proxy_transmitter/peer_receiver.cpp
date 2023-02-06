@@ -5,7 +5,7 @@
 #include "esphome/core/application.h"
 
 // Give up on ACKs after this log, and reset and try again
-#define RESPONSE_TIMEOUT 20000
+#define RESPONSE_TIMEOUT 4000
 
 // If deep sleep is disabled (ie, deep sleep time is 0), instead dont do anything for this long
 #define FAKE_DEEP_SLEEP_TIME 1000
@@ -17,7 +17,7 @@
 #define SENDING_STATE_TIMEOUT 8000
 
 // Reboot into safe mode after this many timeouts waiting for checking ACK
-#define MAX_CHECKIN_RESPONSE_TIMEOUTS 100
+#define MAX_CHECKIN_RESPONSE_TIMEOUTS 8
 
 namespace esphome
 {
