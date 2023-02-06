@@ -241,6 +241,7 @@ namespace esphome
       if (deep_sleep_length_ == 0)
       {
         ESP_LOGD(TAG->get_tag(), "******* Deep sleep disabled, will instead not do anything for %dms", FAKE_DEEP_SLEEP_TIME);
+        return;
       }
       ESP_LOGD(TAG->get_tag(), "******* Going to deep sleep for %dms...", deep_sleep_length_);
       App.run_safe_shutdown_hooks();
