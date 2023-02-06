@@ -124,9 +124,7 @@ This project is released under the MIT License.
 - When it receives a callback it marks that sensor as read and captures the state of the sensor
 - Once all sensors are read, it moves onto sensing the states back to the receiver
 - It sends each state as an ESPNow message along with a proxy_id which links the real sensor in the transmitter to the proxied sensor in the receiver
-- Once its done this, it
-
-(in the next version) WILL GO TO DEEP SLEEP - AT THE MOMENT IT JUST DOESNT DO ANYTHING FOR 5s FOR TESTING
+- Once its done this, it goes into deep sleep for the period defined in the YAML
 
 - When it wakes up, it starts the cycle again
 ## Version History
