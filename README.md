@@ -1,5 +1,5 @@
 # Easynow - an ESPHome component to make sensor proxying via ESPNow easy in ESPHome.
-### Version 2.0.1
+### Version 2.0.2
 [Check out my blog where im measuring how much power it saves and writing up progress on this project](https://ripnetuk.blogspot.com/)
 
 ## Example Config Files
@@ -20,7 +20,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v2.0.1
+    ref: v2.0.2
   refresh: 1min
 
 sensor:
@@ -49,7 +49,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v2.0.1
+    ref: v2.0.2
   refresh: 1min
 
 proxy_receiver:
@@ -130,6 +130,9 @@ This project is released under the MIT License.
 
 - When it wakes up, it starts the cycle again
 ## Version History
+
+### 2.0.2
+- Forgot to merge dev into main before releasing... Time for a rest :)
 
 ### 2.0.1
 - Forgot strcmp() returns 0 on match, meaning the sensor states were going to the wrong sensor. Doh!
