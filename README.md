@@ -1,5 +1,5 @@
 # Easynow - an ESPHome component to make sensor proxying via ESPNow easy in ESPHome.
-### Version 1.1.0
+### Version 2.0.1
 [Check out my blog where im measuring how much power it saves and writing up progress on this project](https://ripnetuk.blogspot.com/)
 
 ## Example Config Files
@@ -7,7 +7,9 @@ If you have a pair of ESP32s and are running ESPHome you can try this right away
 
 Just add the following to your sender and receiver ESPHome YAML and fix up the MAC addresses
 
-You can get the mac address from the logs by having an empty proxy_transmitter or proxy_receiver (you will need to supply empty lists for the peer devices/sensors)
+Also fix up the WiFi channel to be the same as the one you usually use.
+
+You can get the mac address by flashing a default/empty ESPHome YAML and its the first thing the WiFi component outputs. It will be in the form XX:XX:XX:XX:XX:XX
 
 Once these are running, you will see the sensors which are physically on the transmitter appear as entities in HomeAssistant on the receiver.
 
@@ -18,7 +20,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v1.1.0
+    ref: v2.0.1
   refresh: 1min
 
 sensor:
@@ -47,7 +49,7 @@ external_components:
   source:
     type: git
     url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v1.1.0
+    ref: v2.0.1
   refresh: 1min
 
 proxy_receiver:
@@ -81,6 +83,8 @@ proxy_receiver:
 
 Easynow is a pair of components which allow 1 or more battery powered ESP32 devices running [ESPHome](https://esphome.io/) to proxy sensor data over the [ESPNow](https://www.espressif.com/en/products/software/esp-now/overview ) protocol to a grid powered receiver ESP32 device also running ESPHome.
 
+This means that the transmitter uses very little power - it wakes up, spends about 1s grabbing and sending sensor states over ESPNow (which is connectionless), then sleeps for a user defined period. My USB tester reads 0 when its sleeping (and 0.1 when awake on a cheap dev board).
+
 Once configured in the ESPHome YAML (see above for examples) the receiver will have a regular sensor component created for each relayed sensor.
 
 The sensor states will be updated via ESPNow from the remote device(s).
@@ -92,17 +96,18 @@ If the receiver is linked to [HomeAssistant](https://www.home-assistant.io/) the
 - Configuration using YAML in the usual ESPHome fashion
 - Sensors appear on HomeAssistant without any config outside of the 2 components
 - A "ota mode" switch appears on HomeAssistant for each remote device.
+- WiFi management. When its in safe mode (which can be selected from the HA UI) it has full OTA functionality. When its not, it doesnt turn on WiFi, except enough for ESPNow, which is super quick
 
 ## What doesnt work yet (in priority order)
 
-- Actually going to sleep - for now it just waits for 5s before starting the next update.
-- Turning off the regular wifi on the transmitters 
 - Ability to use a unconfigured instance of these components to determine mac address from log
 - Support for esp8266 devices (low priority, but no reason to think its a lot of work, it might already be OK)
 - Support for other entities like binary sensors
 
 ## Authors and acknowledgment
 Written by George Styles (george@ripnet.co.uk)
+
+Thanks to ssieb on the [ESPHome Discord](https://discord.gg/KhAMKrd) for tirelessly answering mine and others questions, and for suggesting I wrap this stuff up in a proper external component with Python config stuff, rather than continue battling with custom components :)
 
 ## License
 This project is released under the MIT License.
@@ -126,11 +131,18 @@ This project is released under the MIT License.
 - When it wakes up, it starts the cycle again
 ## Version History
 
-### 1.0.0
- - Initial public released
- - Sensors relay but with no units
+### 2.0.1
+- Forgot strcmp() returns 0 on match, meaning the sensor states were going to the wrong sensor. Doh!
+
+### 2.0.0
+- Deep sleep now works. It reads 0 on my USB tester while asleep. Am going to do full e-cigarette battery rundown test on my blog this week.
 
 ### 1.1.0
  - Receiver sensors are now proper Sensor::sensor objects so have all the YAML config that any other sensor HomeAssistant
  - ESPNow messages are now put into a queue before sending / processing in line with Expresif documentation
  - Readme added
+
+### 1.0.0
+ - Initial public released
+ - Sensors relay but with no units
+
