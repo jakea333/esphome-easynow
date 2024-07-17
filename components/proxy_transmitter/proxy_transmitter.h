@@ -6,7 +6,7 @@
 #include "../proxy_base/log_tag.h"
 #include <vector>
 #include "sensor_holder.h"
-#include "esphome/components/ota/ota_component.h"
+#include "esphome/components/ota/ota_backend.h"
 #include "../proxy_base/wifi_holder.h"
 
 namespace esphome
