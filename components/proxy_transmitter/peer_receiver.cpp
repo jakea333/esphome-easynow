@@ -3,6 +3,7 @@
 #include "esphome/core/hal.h"
 #include <WiFi.h>
 #include "esphome/core/application.h"
+#include "esphome/components/safe_mode/safe_mode.h"
 
 // Give up on ACKs after this log, and reset and try again
 #define RESPONSE_TIMEOUT 4000
