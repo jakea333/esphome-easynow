@@ -7,6 +7,7 @@
 #include "esphome/components/sensor/sensor.h"
 #include "sensor_holder.h"
 #include "../proxy_base/ota_holder.h"
+#include "esphome/components/safe_mode/safe_mode.h"
 
 namespace esphome
 {
