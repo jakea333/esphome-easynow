@@ -1,5 +1,5 @@
 #pragma once
-#include "esphome/components/ota/ota_component.h"
+#include "esphome/components/ota/ota_backend.h"
 
 namespace esphome
 {
