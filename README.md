@@ -1,5 +1,8 @@
 # Easynow - an ESPHome component to make sensor proxying via ESPNow easy in ESPHome.
 
+
+### BUILD ERROR FIXED 16 July 2024
+Updated to fix the OTA backend breaking change - Jake
 ### BUILD ERROR FIXED 25 April 2023
 
 A breaking change in a recent ESPHome release broke this component. It is now fixed in main
