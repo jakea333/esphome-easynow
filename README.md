@@ -37,8 +37,8 @@ Once these are running, you will see the sensors which are physically on the tra
 external_components:
   source:
     type: git
-    url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v2.1.0
+    url: https://github.com/jakea333/esphome-easynow
+    ref: main
   refresh: 1min
 
 sensor:
@@ -66,8 +66,8 @@ proxy_transmitter:
 external_components:
   source:
     type: git
-    url: https://gitlab.com/ripnetuk-public/espnow/ripnetuk-esphome-easynow.git
-    ref: v2.1.0
+    url: https://github.com/jakea333/esphome-easynow
+    ref: main
   refresh: 1min
 
 proxy_receiver:
